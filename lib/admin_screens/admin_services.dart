@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
+import 'package:wash_mesh/widgets/custom_colors.dart';
 import 'package:wash_mesh/widgets/custom_multiselect.dart';
 import 'package:wash_mesh/widgets/custom_navigation_bar_admin.dart';
 
@@ -92,11 +93,16 @@ class _AdminServicesState extends State<AdminServices> {
               Column(
                 children: [
                   Wrap(
-                    alignment: WrapAlignment.center,
+                    alignment: WrapAlignment.start,
                     spacing: 5,
                     children: _selectedWashItems
                         .map(
                           (e) => Chip(
+                            backgroundColor: Colors.white,
+                            labelStyle: TextStyle(
+                              color: CustomColor().mainColor,
+                              fontSize: 16,
+                            ),
                             label: Text(e),
                           ),
                         )
@@ -125,11 +131,16 @@ class _AdminServicesState extends State<AdminServices> {
               Column(
                 children: [
                   Wrap(
-                    alignment: WrapAlignment.center,
+                    alignment: WrapAlignment.start,
                     spacing: 5,
                     children: _selectedMeshItems
                         .map(
                           (e) => Chip(
+                            backgroundColor: Colors.white,
+                            labelStyle: TextStyle(
+                              color: CustomColor().mainColor,
+                              fontSize: 16,
+                            ),
                             label: Text(e),
                           ),
                         )
@@ -144,7 +155,7 @@ class _AdminServicesState extends State<AdminServices> {
                   ),
                 ],
               ),
-              SizedBox(height: 30.h),
+              SizedBox(height: 20.h),
             ],
           ),
         ),

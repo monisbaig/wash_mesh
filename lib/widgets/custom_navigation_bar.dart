@@ -86,7 +86,6 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
           height: 70.h,
           index: 2,
           key: _bottomNavigationKey,
-          letIndexChange: (value) => true,
           animationDuration: const Duration(milliseconds: 300),
           onTap: (index) {
             _page = index;

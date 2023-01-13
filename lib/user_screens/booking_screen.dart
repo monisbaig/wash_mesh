@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wash_mesh/user_screens/user_home_screen.dart';
 
 import '../widgets/custom_background.dart';
-import '../widgets/custom_button.dart';
 import '../widgets/custom_logo.dart';
 
 class BookingScreen extends StatelessWidget {
@@ -35,8 +33,8 @@ class BookingScreen extends StatelessWidget {
               Image.asset('assets/images/booking.png'),
               SizedBox(height: 30.h),
               Container(
-                width: 300,
-                height: 360,
+                width: 300.w,
+                height: 450.h,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
@@ -59,20 +57,20 @@ class BookingScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 30.h),
-              CustomButton(
-                onTextPress: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const UserHomeScreen(),
-                    ),
-                  );
-                },
-                buttonText: 'OK',
-                v: 15.h,
-                h: 140.w,
-              ),
-              SizedBox(height: 20.h),
+              // SizedBox(height: 30.h),
+              // CustomButton(
+              //   onTextPress: () {
+              //     Navigator.of(context).push(
+              //       MaterialPageRoute(
+              //         builder: (context) => const UserHomeScreen(),
+              //       ),
+              //     );
+              //   },
+              //   buttonText: 'OK',
+              //   v: 15.h,
+              //   h: 140.w,
+              // ),
+              // SizedBox(height: 20.h),
             ],
           ),
         ),
