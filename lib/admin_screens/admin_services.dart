@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wash_mesh/widgets/custom_checkbox.dart';
+import 'package:wash_mesh/widgets/custom_button.dart';
+import 'package:wash_mesh/widgets/custom_multiselect.dart';
 import 'package:wash_mesh/widgets/custom_navigation_bar_admin.dart';
 
 import '../widgets/custom_logo.dart';
@@ -13,110 +14,141 @@ class AdminServices extends StatefulWidget {
 }
 
 class _AdminServicesState extends State<AdminServices> {
-  bool isChecked = false;
-  List washItems = [
-    'Car Wash',
-    'Car Detailing',
-    'House Wash',
-    'Upholstery Cleaning',
-    'Water Tank Cleaning',
-    'Laundry',
-  ];
-  List meshItems = [
-    'Electrician',
-    'Plumber',
-    'Carpenter',
-    'Painter',
-    'Mechanic',
-    'Labor',
-    'AC Expert',
-    'House Maid',
-    'Beauty & Healthcare',
-    'Gardner',
-  ];
+  List<String> _selectedWashItems = [];
+  List<String> _selectedMeshItems = [];
+
+  void _showWashCategory() async {
+    final List<String> washItems = [
+      'Car Wash',
+      'Car Detailing',
+      'House Wash',
+      'Upholstery Cleaning',
+      'Water Tank Cleaning',
+      'Laundry',
+    ];
+
+    final List<String>? results = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomMultiSelect(items: washItems);
+      },
+    );
+
+    if (results != null) {
+      setState(() {
+        _selectedWashItems = results;
+      });
+    }
+  }
+
+  void _showMeshCategory() async {
+    final List<String> meshItems = [
+      'Electrician',
+      'Plumber',
+      'Carpenter',
+      'Painter',
+      'Mechanic',
+      'Labor',
+      'AC Expert',
+      'House Maid',
+      'Beauty & Healthcare',
+      'Gardner',
+    ];
+
+    final List<String>? results = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomMultiSelect(items: meshItems);
+      },
+    );
+
+    if (results != null) {
+      setState(() {
+        _selectedMeshItems = results;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return CustomNavigationBarAdmin(
       op: 0.1,
       ch: SafeArea(
-        child: Column(
-          children: [
-            const CustomLogo(),
-            SizedBox(height: 15.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset(
-                  'assets/images/wash.png',
-                  fit: BoxFit.cover,
-                ),
-                Image.asset(
-                  'assets/images/mesh.png',
-                  fit: BoxFit.cover,
-                ),
-              ],
-            ),
-            SizedBox(height: 10.h),
-            SizedBox(
-              child: Column(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const CustomLogo(),
+              SizedBox(height: 15.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomCheckBox(
-                    catText: 'Car Wash',
-                    onCheck: (value) {
-                      setState(() {
-                        isChecked = value!;
-                      });
-                    },
-                    isChecked: isChecked,
-                  ),
-                  CustomCheckBox(
-                    catText: 'Car Wash',
-                    onCheck: (value) {
-                      setState(() {
-                        isChecked = value!;
-                      });
-                    },
-                    isChecked: isChecked,
+                  Image.asset(
+                    'assets/images/wash.png',
+                    fit: BoxFit.cover,
                   ),
                 ],
               ),
-            ),
-          ],
+              SizedBox(height: 10.h),
+              Column(
+                children: [
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 5,
+                    children: _selectedWashItems
+                        .map(
+                          (e) => Chip(
+                            label: Text(e),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                  SizedBox(height: 10.h),
+                  CustomButton(
+                    onTextPress: _showWashCategory,
+                    buttonText: 'Select Wash Category',
+                    v: 15.h,
+                    h: 20.w,
+                  ),
+                ],
+              ),
+              SizedBox(height: 30.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset(
+                    'assets/images/mesh.png',
+                    fit: BoxFit.cover,
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.h),
+              Column(
+                children: [
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 5,
+                    children: _selectedMeshItems
+                        .map(
+                          (e) => Chip(
+                            label: Text(e),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                  SizedBox(height: 10.h),
+                  CustomButton(
+                    onTextPress: _showMeshCategory,
+                    buttonText: 'Select Mesh Category',
+                    v: 15.h,
+                    h: 20.w,
+                  ),
+                ],
+              ),
+              SizedBox(height: 30.h),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
-// GridView.builder(
-// gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-// crossAxisCount: 1,
-// mainAxisExtent: 40,
-// ),
-// itemCount: washItems.length,
-// padding: const EdgeInsets.only(right: 16),
-// itemBuilder: (context, index) => Row(
-// mainAxisAlignment: MainAxisAlignment.start,
-// children: [
-// Checkbox(
-// value: isChecked,
-// onChanged: (bool? value) {
-// setState(() {
-// isChecked = value;
-// });
-// },
-// ),
-// Flexible(
-// child: Text(
-// washItems[index],
-// overflow: TextOverflow.ellipsis,
-// style: TextStyle(
-// fontSize: 18.sp,
-// fontWeight: FontWeight.bold,
-// ),
-// ),
-// ),
-// ],
-// ),
-// ),
