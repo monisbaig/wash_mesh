@@ -56,29 +56,31 @@ class AdminSettings extends StatelessWidget {
                   color: CustomColor().mainColor,
                   borderRadius: BorderRadius.circular(14.r),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(
-                      Icons.perm_contact_cal_outlined,
-                      size: 30.sp,
-                      color: Colors.white,
-                    ),
-                    Text(
-                      'Edit Profile',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 22.sp,
+                child: Padding(
+                  padding:  EdgeInsets.only(left: 10.w, right: 10.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        Icons.perm_contact_cal_outlined,
+                        size: 30.sp,
                         color: Colors.white,
                       ),
-                    ),
-                    SizedBox(width: 65.w),
-                    Icon(
-                      Icons.arrow_forward_ios_outlined,
-                      size: 25.sp,
-                      color: Colors.white,
-                    ),
-                  ],
+                      Text(
+                        'Edit Profile',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 22.sp,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        size: 25.sp,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -98,29 +100,31 @@ class AdminSettings extends StatelessWidget {
                   color: CustomColor().mainColor,
                   borderRadius: BorderRadius.circular(14.r),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(
-                      Icons.language_outlined,
-                      size: 30.sp,
-                      color: Colors.white,
-                    ),
-                    Text(
-                      'App Language',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 22.sp,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        Icons.language_outlined,
+                        size: 30.sp,
                         color: Colors.white,
                       ),
-                    ),
-                    SizedBox(width: 10.w),
-                    Icon(
-                      Icons.arrow_forward_ios_outlined,
-                      size: 25.sp,
-                      color: Colors.white,
-                    ),
-                  ],
+                      Text(
+                        'App Language',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 22.sp,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        size: 25.sp,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -140,28 +144,31 @@ class AdminSettings extends StatelessWidget {
                   color: CustomColor().mainColor,
                   borderRadius: BorderRadius.circular(14.r),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(
-                      Icons.lock,
-                      size: 30.sp,
-                      color: Colors.white,
-                    ),
-                    Text(
-                      'Change Password',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 22.sp,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        Icons.lock,
+                        size: 30.sp,
                         color: Colors.white,
                       ),
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios_outlined,
-                      size: 25.sp,
-                      color: Colors.white,
-                    ),
-                  ],
+                      Text(
+                        'Change Password',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 22.sp,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        size: 25.sp,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -175,29 +182,31 @@ class AdminSettings extends StatelessWidget {
                   color: CustomColor().mainColor,
                   borderRadius: BorderRadius.circular(14.r),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(
-                      Icons.error_outline_outlined,
-                      size: 30.sp,
-                      color: Colors.white,
-                    ),
-                    Text(
-                      'About',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 22.sp,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        Icons.error_outline_outlined,
+                        size: 30.sp,
                         color: Colors.white,
                       ),
-                    ),
-                    SizedBox(width: 100.w),
-                    Icon(
-                      Icons.arrow_forward_ios_outlined,
-                      size: 25.sp,
-                      color: Colors.white,
-                    ),
-                  ],
+                      Text(
+                        'About',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 22.sp,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        size: 25.sp,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

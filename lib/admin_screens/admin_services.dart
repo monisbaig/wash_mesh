@@ -81,6 +81,19 @@ class _AdminServicesState extends State<AdminServices> {
               const CustomLogo(),
               SizedBox(height: 15.h),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Services',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 30.sp,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.h),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Image.asset(
@@ -111,7 +124,7 @@ class _AdminServicesState extends State<AdminServices> {
                   SizedBox(height: 10.h),
                   CustomButton(
                     onTextPress: _showWashCategory,
-                    buttonText: 'Select Wash Category',
+                    buttonText: 'Select Wash Service',
                     v: 15.h,
                     h: 20.w,
                   ),
@@ -149,7 +162,7 @@ class _AdminServicesState extends State<AdminServices> {
                   SizedBox(height: 10.h),
                   CustomButton(
                     onTextPress: _showMeshCategory,
-                    buttonText: 'Select Mesh Category',
+                    buttonText: 'Select Mesh Service',
                     v: 15.h,
                     h: 20.w,
                   ),

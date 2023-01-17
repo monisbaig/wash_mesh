@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wash_mesh/admin_screens/admin_home_screen.dart';
 import 'package:wash_mesh/admin_screens/admin_services.dart';
 import 'package:wash_mesh/admin_screens/admin_settings.dart';
+import 'package:wash_mesh/user_screens/booking_screen.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 
 class CustomNavigationBarAdmin extends StatefulWidget {
@@ -96,9 +97,19 @@ class _CustomNavigationBarAdminState extends State<CustomNavigationBarAdmin> {
           animationDuration: const Duration(milliseconds: 300),
           onTap: (index) {
             _page = index;
-            if (_page == 0) {}
+            if (_page == 0) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => BookingScreen(),
+                ),
+              );
+            }
             if (_page == 1) {
-              return _showCategory();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const AdminServices(),
+                ),
+              );
             }
             if (_page == 2) {
               Navigator.of(context).push(
