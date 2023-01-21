@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:wash_mesh/widgets/custom_text_field.dart';
 
 import '../providers/auth_provider.dart';
+import '../widgets/custom_background.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_logo.dart';
-import '../widgets/custom_navigation_bar.dart';
+import '../widgets/custom_text_field.dart';
 
-class UserChangePassword extends StatefulWidget {
-  const UserChangePassword({Key? key}) : super(key: key);
+class AdminRecreatePassword extends StatefulWidget {
+  const AdminRecreatePassword({Key? key}) : super(key: key);
 
   @override
-  State<UserChangePassword> createState() => _UserChangePasswordState();
+  State<AdminRecreatePassword> createState() => _AdminRecreatePasswordState();
 }
 
-class _UserChangePasswordState extends State<UserChangePassword> {
+class _AdminRecreatePasswordState extends State<AdminRecreatePassword> {
   TextEditingController newPassword = TextEditingController();
   final formKey = GlobalKey<FormFieldState>();
 
   onPassChange() async {
-    final userPassword = Provider.of<AuthProvider>(context, listen: false);
+    final adminPassword = Provider.of<AuthProvider>(context, listen: false);
     try {
-      final result = await userPassword.updateUserPassword(
+      final result = await adminPassword.updateAdminPassword(
         newPassword: newPassword.text,
       );
       newPassword.clear();
@@ -39,7 +39,7 @@ class _UserChangePasswordState extends State<UserChangePassword> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomNavigationBar(
+    return CustomBackground(
       op: 0.1,
       ch: SingleChildScrollView(
         child: Column(
@@ -50,7 +50,7 @@ class _UserChangePasswordState extends State<UserChangePassword> {
             Container(
               alignment: Alignment.center,
               child: Text(
-                'Change Password',
+                'Re-Create Password',
                 style: TextStyle(
                   fontSize: 30.sp,
                 ),
@@ -73,7 +73,7 @@ class _UserChangePasswordState extends State<UserChangePassword> {
             SizedBox(height: 250.h),
             CustomButton(
               onTextPress: onPassChange,
-              buttonText: 'Confirm',
+              buttonText: 'Okay',
               v: 15.h,
               h: 110.w,
             ),

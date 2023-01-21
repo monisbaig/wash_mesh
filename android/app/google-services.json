@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "624241858558",
+    "project_id": "wash-mesh",
+    "storage_bucket": "wash-mesh.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:624241858558:android:f57cb602b1dc5ead9ad2af",
+        "android_client_info": {
+          "package_name": "com.example.wash_mesh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "624241858558-mkr2psggqisc1f1j0dfa4g6tkgqfa7d1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFdwEshCku6zpICl_03d0uMo31JlxdFK4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "624241858558-mkr2psggqisc1f1j0dfa4g6tkgqfa7d1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

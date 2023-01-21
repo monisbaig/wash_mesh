@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:wash_mesh/admin_screens/admin_home_screen.dart';
 import 'package:wash_mesh/user_screens/user_forget_password.dart';
-import 'package:wash_mesh/user_screens/user_home_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
@@ -10,28 +10,28 @@ import 'package:wash_mesh/widgets/custom_text_field.dart';
 
 import '../providers/auth_provider.dart';
 
-class UserLoginForm extends StatefulWidget {
-  const UserLoginForm({Key? key}) : super(key: key);
+class AdminLoginForm extends StatefulWidget {
+  const AdminLoginForm({Key? key}) : super(key: key);
 
   @override
-  State<UserLoginForm> createState() => _UserLoginFormState();
+  State<AdminLoginForm> createState() => _AdminLoginFormState();
 }
 
-class _UserLoginFormState extends State<UserLoginForm> {
+class _AdminLoginFormState extends State<AdminLoginForm> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController emailPhone = TextEditingController();
+  TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
 
   onSubmit() async {
-    final userData = Provider.of<AuthProvider>(context, listen: false);
+    final adminData = Provider.of<AuthProvider>(context, listen: false);
     try {
       final isValid = formKey.currentState!.validate();
       if (isValid) {
-        final result = await userData.loginUser(
-          input: emailPhone.text,
+        final result = await adminData.loginAdmin(
+          input: username.text,
           password: password.text,
         );
-        emailPhone.clear();
+        username.clear();
         password.clear();
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -40,16 +40,16 @@ class _UserLoginFormState extends State<UserLoginForm> {
           ),
         );
 
-        if (result == 'Login Successfully') {
+        if (result == 'Vendor Login Successfully!') {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => const UserHomeScreen(),
+              builder: (context) => const AdminHomeScreen(),
             ),
           );
         } else {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => const UserLoginForm(),
+              builder: (context) => const AdminLoginForm(),
             ),
           );
         }
@@ -88,11 +88,11 @@ class _UserLoginFormState extends State<UserLoginForm> {
                   children: [
                     SizedBox(height: 8.h),
                     CustomTextField(
-                      hint: 'Email / Phone No',
-                      controller: emailPhone,
+                      hint: 'Username',
+                      controller: username,
                       validator: (value) {
-                        if (value!.isEmpty || !value.contains('@')) {
-                          return 'Please enter your email address';
+                        if (value!.isEmpty) {
+                          return 'Please enter your username';
                         }
                         return null;
                       },

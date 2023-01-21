@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,7 +7,9 @@ import 'package:wash_mesh/providers/auth_provider.dart';
 import 'package:wash_mesh/splash_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -33,8 +36,8 @@ class MyApp extends StatelessWidget {
             ),
           ),
           home: const CustomBackground(
-            ch: SplashScreen(),
             op: 1,
+            ch: SplashScreen(),
           ),
         ),
       ),

@@ -6,6 +6,7 @@ import 'package:wash_mesh/user_screens/user_login_form.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
+import 'package:wash_mesh/widgets/custom_text_field.dart';
 
 class UserRegistrationForm extends StatefulWidget {
   const UserRegistrationForm({Key? key}) : super(key: key);
@@ -16,15 +17,7 @@ class UserRegistrationForm extends StatefulWidget {
 
 class _UserRegistrationFormState extends State<UserRegistrationForm> {
   bool? isChecked = false;
-  final formKey = GlobalKey<FormFieldState>();
-
-  var _firstName = '';
-  var _lastName = '';
-  var _email = '';
-  var _phoneNo = '';
-  var _password = '';
-  var _confirmPassword = '';
-  var _address = '';
+  final formKey = GlobalKey<FormState>();
 
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
@@ -34,19 +27,51 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
   TextEditingController confirmPassword = TextEditingController();
   TextEditingController address = TextEditingController();
 
-  Future<void> onSubmit() async {
-    formKey.currentState?.save();
+  onRegister() async {
     final userData = Provider.of<AuthProvider>(context, listen: false);
-    final result = await userData.registerUser(
-      firstName: firstName.text,
-      lastName: lastName.text,
-      email: email.text,
-      phoneNo: phoneNo.text,
-      password: password.text,
-      confirmPassword: confirmPassword.text,
-      address: address.text,
-    );
-    return result;
+    try {
+      final isValid = formKey.currentState!.validate();
+      if (isValid) {
+        final result = await userData.registerUser(
+          firstName: firstName.text,
+          lastName: lastName.text,
+          email: email.text,
+          phoneNo: phoneNo.text,
+          password: password.text,
+          confirmPassword: confirmPassword.text,
+          address: address.text,
+        );
+        firstName.clear();
+        lastName.clear();
+        email.clear();
+        phoneNo.clear();
+        password.clear();
+        confirmPassword.clear();
+        address.clear();
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('$result'),
+          ),
+        );
+
+        if (result == 'Registered Successfully') {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const UserLoginForm(),
+            ),
+          );
+        } else {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const UserRegistrationForm(),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
@@ -74,150 +99,82 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                 key: formKey,
                 child: Column(
                   children: [
-                    TextFormField(
-                      key: const ValueKey('firstName'),
+                    CustomTextField(
+                      hint: 'First Name',
                       controller: firstName,
-                      decoration: InputDecoration(
-                        hintText: 'First Name',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.r),
-                          borderSide: const BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
-                      ),
-                      onSaved: (firstName) {
-                        _firstName = firstName!;
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your first name';
+                        }
+                        return null;
                       },
                     ),
                     SizedBox(height: 10.h),
-                    TextFormField(
-                      key: const ValueKey('lastName'),
+                    CustomTextField(
+                      hint: 'Last Name',
                       controller: lastName,
-                      decoration: InputDecoration(
-                        hintText: 'Last Name',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.r),
-                          borderSide: const BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
-                      ),
-                      onSaved: (lastName) {
-                        _lastName = lastName!;
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your last name';
+                        }
+                        return null;
                       },
                     ),
                     SizedBox(height: 10.h),
-                    TextFormField(
-                      key: const ValueKey('email'),
+                    CustomTextField(
+                      hint: 'Email*',
                       controller: email,
-                      decoration: InputDecoration(
-                        hintText: 'Email*',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.r),
-                          borderSide: const BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
-                      ),
-                      onSaved: (email) {
-                        _email = email!;
+                      validator: (value) {
+                        if (value!.isEmpty || !value.contains('@')) {
+                          return 'Please enter your email address';
+                        }
+                        return null;
                       },
                     ),
                     SizedBox(height: 10.h),
-                    TextFormField(
-                      key: const ValueKey('phoneNo'),
+                    CustomTextField(
+                      hint: 'Phone No.*',
                       controller: phoneNo,
-                      decoration: InputDecoration(
-                        hintText: 'Phone No.*',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.r),
-                          borderSide: const BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
-                      ),
-                      onSaved: (phoneNo) {
-                        _phoneNo = phoneNo!;
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your phone number';
+                        }
+                        return null;
                       },
                     ),
                     SizedBox(height: 10.h),
-                    TextFormField(
-                      key: const ValueKey('password'),
+                    CustomTextField(
+                      hint: 'Password',
                       controller: password,
-                      decoration: InputDecoration(
-                        hintText: 'Password',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.r),
-                          borderSide: const BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
-                      ),
-                      onSaved: (password) {
-                        _password = password!;
+                      validator: (value) {
+                        if (value!.isEmpty || value.length < 5) {
+                          return 'Please enter your password with at least 5 characters';
+                        }
+                        return null;
                       },
                     ),
                     SizedBox(height: 10.h),
-                    TextFormField(
-                      key: const ValueKey('confirmPassword'),
+                    CustomTextField(
+                      hint: 'Confirm Password',
                       controller: confirmPassword,
-                      decoration: InputDecoration(
-                        hintText: 'Confirm Password',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.r),
-                          borderSide: const BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
-                      ),
-                      onSaved: (confirmPassword) {
-                        _confirmPassword = confirmPassword!;
+                      validator: (value) {
+                        if (value!.isEmpty || value.length < 5) {
+                          return 'Please re-enter your password';
+                        } else if (password.text != confirmPassword.text) {
+                          return "password doesn't match";
+                        }
+                        return null;
                       },
                     ),
                     SizedBox(height: 10.h),
-                    TextFormField(
-                      key: const ValueKey('address'),
+                    CustomTextField(
+                      hint: 'Address',
                       controller: address,
-                      decoration: InputDecoration(
-                        hintText: 'Address',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.r),
-                          borderSide: const BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
-                      ),
-                      onSaved: (address) {
-                        _address = address!;
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your address';
+                        }
+                        return null;
                       },
                     ),
                   ],
@@ -269,7 +226,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                 ],
               ),
               CustomButton(
-                onTextPress: onSubmit,
+                onTextPress: onRegister,
                 buttonText: 'SIGN IN',
                 v: 15.h,
                 h: 110.w,

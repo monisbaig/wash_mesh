@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wash_mesh/admin_screens/admin_login_form.dart';
 import 'package:wash_mesh/admin_screens/admin_profile.dart';
 
 import '../widgets/custom_colors.dart';
@@ -57,7 +59,7 @@ class AdminSettings extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14.r),
                 ),
                 child: Padding(
-                  padding:  EdgeInsets.only(left: 10.w, right: 10.w),
+                  padding: EdgeInsets.only(left: 10.w, right: 10.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -211,12 +213,23 @@ class AdminSettings extends StatelessWidget {
               ),
             ),
             SizedBox(height: 90.h),
-            Text(
-              'Logout',
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.bold,
-                color: CustomColor().mainColor,
+            InkWell(
+              onTap: () async {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const AdminLoginForm(),
+                  ),
+                );
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.remove('token');
+              },
+              child: Text(
+                'Logout',
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                  color: CustomColor().mainColor,
+                ),
               ),
             ),
             const Text(

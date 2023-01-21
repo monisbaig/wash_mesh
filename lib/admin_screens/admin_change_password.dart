@@ -1,14 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wash_mesh/admin_screens/admin_home_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:wash_mesh/widgets/custom_navigation_bar_admin.dart';
 
+import '../providers/auth_provider.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_logo.dart';
-import '../widgets/custom_navigation_bar_admin.dart';
 import '../widgets/custom_text_field.dart';
 
-class AdminChangePassword extends StatelessWidget {
+class AdminChangePassword extends StatefulWidget {
   const AdminChangePassword({Key? key}) : super(key: key);
+
+  @override
+  State<AdminChangePassword> createState() => _AdminChangePasswordState();
+}
+
+class _AdminChangePasswordState extends State<AdminChangePassword> {
+  TextEditingController newPassword = TextEditingController();
+  final formKey = GlobalKey<FormFieldState>();
+
+  onPassChange() async {
+    final adminPassword = Provider.of<AuthProvider>(context, listen: false);
+    try {
+      final result = await adminPassword.updateAdminPassword(
+        newPassword: newPassword.text,
+      );
+      newPassword.clear();
+      // Password Upadate Successfully!
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('$result'),
+        ),
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,21 +56,23 @@ class AdminChangePassword extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 40.h),
-            const CustomTextField(hint: 'Enter your old Password'),
-            SizedBox(height: 10.h),
-            const CustomTextField(hint: 'Enter your new Password'),
-            SizedBox(height: 10.h),
-            const CustomTextField(hint: 'Re-enter your new Password'),
-            SizedBox(height: 40.h),
+            SizedBox(height: 100.h),
+            Form(
+              key: formKey,
+              child: CustomTextField(
+                hint: 'Enter your new Password',
+                controller: newPassword,
+                validator: (value) {
+                  if (value!.isEmpty || value.length < 5) {
+                    return 'Please enter your password with at least 5 characters';
+                  }
+                  return null;
+                },
+              ),
+            ),
+            SizedBox(height: 250.h),
             CustomButton(
-              onTextPress: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const AdminHomeScreen(),
-                  ),
-                );
-              },
+              onTextPress: onPassChange,
               buttonText: 'Confirm',
               v: 15.h,
               h: 110.w,

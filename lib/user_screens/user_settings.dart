@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/user_screens/user_app_language.dart';
 import 'package:wash_mesh/user_screens/user_change_password.dart';
+import 'package:wash_mesh/user_screens/user_login_form.dart';
 import 'package:wash_mesh/user_screens/user_profile.dart';
 
 import '../widgets/custom_colors.dart';
@@ -9,7 +11,7 @@ import '../widgets/custom_logo.dart';
 import '../widgets/custom_navigation_bar.dart';
 
 class UserSettings extends StatelessWidget {
-  const UserSettings({Key? key}) : super(key: key);
+  const UserSettings({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,7 @@ class UserSettings extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14.r),
                 ),
                 child: Padding(
-                  padding:  EdgeInsets.only(left: 10.w, right: 10.w),
+                  padding: EdgeInsets.only(left: 10.w, right: 10.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -211,12 +213,23 @@ class UserSettings extends StatelessWidget {
               ),
             ),
             SizedBox(height: 90.h),
-            Text(
-              'Logout',
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.bold,
-                color: CustomColor().mainColor,
+            InkWell(
+              onTap: () async {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const UserLoginForm(),
+                  ),
+                );
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.remove('token');
+              },
+              child: Text(
+                'Logout',
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                  color: CustomColor().mainColor,
+                ),
               ),
             ),
             const Text(

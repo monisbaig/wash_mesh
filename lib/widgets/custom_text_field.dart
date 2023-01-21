@@ -3,12 +3,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextField extends StatelessWidget {
   final String hint;
+  final TextEditingController controller;
+  final FormFieldValidator<String>? validator;
 
-  const CustomTextField({super.key, required this.hint});
+  const CustomTextField({
+    super.key,
+    required this.hint,
+    required this.controller,
+    required this.validator,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       decoration: InputDecoration(
         hintText: hint,
         enabledBorder: OutlineInputBorder(
@@ -22,6 +30,7 @@ class CustomTextField extends StatelessWidget {
         fillColor: Colors.white,
         filled: true,
       ),
+      validator: validator,
     );
   }
 }

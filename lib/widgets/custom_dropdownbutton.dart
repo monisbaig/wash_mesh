@@ -51,18 +51,6 @@ class CustomDropdownButton extends StatelessWidget {
               value: 'car-wash',
               child: Text('Car Wash'),
             ),
-            DropdownMenuItem(
-              value: 'car-wash',
-              child: Text('Car Wash'),
-            ),
-            DropdownMenuItem(
-              value: 'car-wash',
-              child: Text('Car Wash'),
-            ),
-            DropdownMenuItem(
-              value: 'car-wash',
-              child: Text('Car Wash'),
-            ),
           ],
           onChanged: (value) {},
         ),
