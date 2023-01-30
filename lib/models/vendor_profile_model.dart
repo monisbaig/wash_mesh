@@ -1,15 +1,11 @@
-class AdminModel {
+class VendorProfileModel {
   int? status;
   String? message;
   Data? data;
 
-  AdminModel({
-    this.status,
-    this.message,
-    this.data,
-  });
+  VendorProfileModel({this.status, this.message, this.data});
 
-  AdminModel.fromJson(Map<String, dynamic> json) {
+  VendorProfileModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
@@ -30,10 +26,7 @@ class Data {
   String? token;
   Vendor? vendor;
 
-  Data({
-    this.token,
-    this.vendor,
-  });
+  Data({this.token, this.vendor});
 
   Data.fromJson(Map<String, dynamic> json) {
     token = json['token'];
@@ -59,21 +52,22 @@ class Vendor {
   String? userName;
   String? referralCode;
   String? userType;
-  Null image;
+  String? image;
+  String? status;
   VendorDetails? vendorDetails;
 
-  Vendor({
-    this.firstName,
-    this.lastName,
-    this.phone,
-    this.address,
-    this.email,
-    this.userName,
-    this.referralCode,
-    this.userType,
-    this.image,
-    this.vendorDetails,
-  });
+  Vendor(
+      {this.firstName,
+      this.lastName,
+      this.phone,
+      this.address,
+      this.email,
+      this.userName,
+      this.referralCode,
+      this.userType,
+      this.image,
+      this.status,
+      this.vendorDetails});
 
   Vendor.fromJson(Map<String, dynamic> json) {
     firstName = json['first_name'];
@@ -85,6 +79,7 @@ class Vendor {
     referralCode = json['referral_code'];
     userType = json['user_type'];
     image = json['image'];
+    status = json['status'];
     vendorDetails = json['vendor_details'] != null
         ? VendorDetails.fromJson(json['vendor_details'])
         : null;
@@ -101,6 +96,7 @@ class Vendor {
     data['referral_code'] = referralCode;
     data['user_type'] = userType;
     data['image'] = image;
+    data['status'] = status;
     if (vendorDetails != null) {
       data['vendor_details'] = vendorDetails!.toJson();
     }
@@ -109,42 +105,49 @@ class Vendor {
 }
 
 class VendorDetails {
+  int? id;
   String? userId;
   String? cnic;
   String? experience;
-  Null experienceCertImg;
-  Null cnicFrontImg;
+  String? experienceCertImg;
+  String? cnicFrontImg;
   String? cnicBackImg;
+  String? availability;
   String? gender;
 
-  VendorDetails({
-    this.userId,
-    this.cnic,
-    this.experience,
-    this.experienceCertImg,
-    this.cnicFrontImg,
-    this.cnicBackImg,
-    this.gender,
-  });
+  VendorDetails(
+      {this.id,
+      this.userId,
+      this.cnic,
+      this.experience,
+      this.experienceCertImg,
+      this.cnicFrontImg,
+      this.cnicBackImg,
+      this.availability,
+      this.gender});
 
   VendorDetails.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     userId = json['user_id'];
     cnic = json['cnic'];
     experience = json['experience'];
     experienceCertImg = json['experience_cert_img'];
     cnicFrontImg = json['cnic_front_img'];
     cnicBackImg = json['cnic_back_img'];
+    availability = json['availability'];
     gender = json['gender'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
     data['user_id'] = userId;
     data['cnic'] = cnic;
     data['experience'] = experience;
     data['experience_cert_img'] = experienceCertImg;
     data['cnic_front_img'] = cnicFrontImg;
     data['cnic_back_img'] = cnicBackImg;
+    data['availability'] = availability;
     data['gender'] = gender;
     return data;
   }
