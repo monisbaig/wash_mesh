@@ -11,47 +11,6 @@ class AuthProvider extends ChangeNotifier {
 
   // User Authentication Code:
 
-  registerUser({
-    var firstName,
-    var lastName,
-    var email,
-    var phoneNo,
-    var password,
-    var confirmPassword,
-    var address,
-  }) async {
-    var jsonObject = {
-      'first_name': firstName,
-      'last_name': lastName,
-      'email': email,
-      'phone': phoneNo,
-      'password': password,
-      'confirm_password': confirmPassword,
-      'address': address,
-    };
-    var jsonString = jsonEncode(jsonObject);
-    final url = Uri.parse('$baseURL/user/customer/register');
-    final response = await http.post(
-      url,
-      body: jsonString,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    );
-    if (response.statusCode == 200) {
-      if (jsonDecode(response.body)['message'] == 'Registered Successfully') {
-        SharedPreferences pref = await SharedPreferences.getInstance();
-        pref.setString('User', response.body);
-        pref.setString('token', jsonDecode(response.body)['data']['token']);
-      }
-      return jsonDecode(response.body)['message'];
-    } else {
-      print(response.body);
-    }
-    notifyListeners();
-  }
-
   Future<CustomerRegistrationModel> registerCustomer(
       CustomerRegistrationModel data) async {
     final url = Uri.parse('$baseURL/user/customer/register');
