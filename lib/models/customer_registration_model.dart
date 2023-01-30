@@ -1,7 +1,7 @@
 class CustomerRegistrationModel {
-  int? status;
-  String? message;
-  Data? data;
+  dynamic status;
+  dynamic message;
+  dynamic data;
 
   CustomerRegistrationModel({this.status, this.message, this.data});
 
