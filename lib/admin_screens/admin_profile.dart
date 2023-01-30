@@ -11,7 +11,7 @@ import 'package:wash_mesh/admin_screens/admin_settings.dart';
 import 'package:wash_mesh/widgets/custom_navigation_bar_admin.dart';
 import 'package:wash_mesh/widgets/custom_text_field.dart';
 
-import '../providers/auth_provider.dart';
+import '../providers/admin_provider/admin_auth_provider.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_logo.dart';
 import 'admin_home_screen.dart';
@@ -62,7 +62,7 @@ class _AdminProfileState extends State<AdminProfile> {
   }
 
   onUpdateAdmin() async {
-    final adminData = Provider.of<AuthProvider>(context, listen: false);
+    final adminData = Provider.of<AdminAuthProvider>(context, listen: false);
     try {
       final isValid = formKey.currentState!.validate();
       if (isValid) {
@@ -101,7 +101,7 @@ class _AdminProfileState extends State<AdminProfile> {
   }
 
   onUpdateImage() async {
-    final adminData = Provider.of<AuthProvider>(context, listen: false);
+    final adminData = Provider.of<AdminAuthProvider>(context, listen: false);
     try {
       final result = await adminData.updateAdminImage(
         image: convertedImage,

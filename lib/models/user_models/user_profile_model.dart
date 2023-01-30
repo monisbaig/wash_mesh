@@ -1,11 +1,11 @@
-class CustomerProfileModel {
+class UserProfileModel {
   int? status;
   String? message;
   Data? data;
 
-  CustomerProfileModel({this.status, this.message, this.data});
+  UserProfileModel({this.status, this.message, this.data});
 
-  CustomerProfileModel.fromJson(Map<String, dynamic> json) {
+  UserProfileModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;

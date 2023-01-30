@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:wash_mesh/providers/auth_provider.dart';
+import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
 import 'package:wash_mesh/splash_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => AuthProvider(),
+          create: (context) => AdminAuthProvider(),
         ),
       ],
       child: ScreenUtilInit(

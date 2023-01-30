@@ -1,11 +1,11 @@
-class CustomerRegistrationModel {
+class UserRegistrationModel {
   dynamic status;
   dynamic message;
   dynamic data;
 
-  CustomerRegistrationModel({this.status, this.message, this.data});
+  UserRegistrationModel({this.status, this.message, this.data});
 
-  CustomerRegistrationModel.fromJson(Map<String, dynamic> json) {
+  UserRegistrationModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
@@ -48,6 +48,8 @@ class User {
   dynamic lastName;
   dynamic email;
   dynamic phone;
+  dynamic password;
+  dynamic confirmPassword;
   dynamic address;
   dynamic userType;
 
@@ -56,6 +58,8 @@ class User {
       this.lastName,
       this.email,
       this.phone,
+      this.password,
+      this.confirmPassword,
       this.address,
       this.userType});
 
@@ -64,6 +68,8 @@ class User {
     lastName = json['last_name'];
     email = json['email'];
     phone = json['phone'];
+    password = json['password'];
+    confirmPassword = json['confirm_password'];
     address = json['address'];
     userType = json['user_type'];
   }
@@ -74,6 +80,8 @@ class User {
     data['last_name'] = lastName;
     data['email'] = email;
     data['phone'] = phone;
+    data['password'] = password;
+    data['confirm_password'] = confirmPassword;
     data['address'] = address;
     data['user_type'] = userType;
     return data;

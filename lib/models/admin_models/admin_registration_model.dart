@@ -1,11 +1,11 @@
-class VendorProfileModel {
+class AdminRegistrationModel {
   int? status;
   String? message;
   Data? data;
 
-  VendorProfileModel({this.status, this.message, this.data});
+  AdminRegistrationModel({this.status, this.message, this.data});
 
-  VendorProfileModel.fromJson(Map<String, dynamic> json) {
+  AdminRegistrationModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
@@ -44,6 +44,7 @@ class Data {
 }
 
 class Vendor {
+  int? id;
   String? firstName;
   String? lastName;
   String? phone;
@@ -52,12 +53,13 @@ class Vendor {
   String? userName;
   String? referralCode;
   String? userType;
-  String? image;
+  Null? image;
   String? status;
   VendorDetails? vendorDetails;
 
   Vendor(
-      {this.firstName,
+      {this.id,
+      this.firstName,
       this.lastName,
       this.phone,
       this.address,
@@ -70,6 +72,7 @@ class Vendor {
       this.vendorDetails});
 
   Vendor.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     firstName = json['first_name'];
     lastName = json['last_name'];
     phone = json['phone'];
@@ -87,6 +90,7 @@ class Vendor {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
     data['first_name'] = firstName;
     data['last_name'] = lastName;
     data['phone'] = phone;

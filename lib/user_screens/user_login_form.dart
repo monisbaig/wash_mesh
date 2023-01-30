@@ -8,7 +8,7 @@ import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
 import 'package:wash_mesh/widgets/custom_text_field.dart';
 
-import '../providers/auth_provider.dart';
+import '../providers/user_provider/user_auth_provider.dart';
 
 class UserLoginForm extends StatefulWidget {
   const UserLoginForm({Key? key}) : super(key: key);
@@ -23,7 +23,7 @@ class _UserLoginFormState extends State<UserLoginForm> {
   TextEditingController password = TextEditingController();
 
   onSubmit() async {
-    final userData = Provider.of<AuthProvider>(context, listen: false);
+    final userData = Provider.of<UserAuthProvider>(context, listen: false);
     try {
       final isValid = formKey.currentState!.validate();
       if (isValid) {

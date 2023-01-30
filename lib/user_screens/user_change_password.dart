@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/widgets/custom_text_field.dart';
 
-import '../providers/auth_provider.dart';
+import '../providers/user_provider/user_auth_provider.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_logo.dart';
 import '../widgets/custom_navigation_bar.dart';
@@ -20,7 +20,7 @@ class _UserChangePasswordState extends State<UserChangePassword> {
   final formKey = GlobalKey<FormFieldState>();
 
   onPassChange() async {
-    final userPassword = Provider.of<AuthProvider>(context, listen: false);
+    final userPassword = Provider.of<UserAuthProvider>(context, listen: false);
     try {
       final result = await userPassword.updateUserPassword(
         newPassword: newPassword.text,

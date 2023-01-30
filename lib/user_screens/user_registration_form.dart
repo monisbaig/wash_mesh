@@ -1,16 +1,14 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:wash_mesh/providers/auth_provider.dart';
 import 'package:wash_mesh/user_screens/user_login_form.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
 import 'package:wash_mesh/widgets/custom_text_field.dart';
-import '../models/customer_registration_model.dart';
-import '../providers/auth_provider.dart' as api;
+
+import '../models/user_models/user_registration_model.dart';
+import '../providers/user_provider/user_auth_provider.dart';
 
 class UserRegistrationForm extends StatefulWidget {
   const UserRegistrationForm({Key? key}) : super(key: key);
@@ -32,8 +30,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
   TextEditingController address = TextEditingController();
 
   onRegister() async {
-    final userData =
-        Provider.of<AuthProvider>(context as BuildContext, listen: false);
+    final userData = Provider.of<UserAuthProvider>(context, listen: false);
     try {
       final isValid = formKey.currentState!.validate();
       if (isValid) {
@@ -41,24 +38,13 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
           firstName: firstName.text,
           lastName: lastName.text,
           email: email.text,
+          password: password.text,
+          confirmPassword: confirmPassword.text,
           address: address.text,
           phone: phoneNo.text,
         );
-        Data d = Data(token: '', user: u);
-        CustomerRegistrationModel crm =
-            CustomerRegistrationModel(data: d, message: '', status: '');
+        userData.registerUser(u);
 
-        userData.registerCustomer(crm);
-
-        // final result = await userData.registerUser(
-        //   firstName: firstName.text,
-        //   lastName: lastName.text,
-        //   email: email.text,
-        //   phoneNo: phoneNo.text,
-        //   password: password.text,
-        //   confirmPassword: confirmPassword.text,
-        //   address: address.text,
-        // );
         firstName.clear();
         lastName.clear();
         email.clear();

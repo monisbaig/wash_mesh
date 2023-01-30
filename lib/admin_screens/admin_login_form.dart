@@ -8,7 +8,7 @@ import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
 import 'package:wash_mesh/widgets/custom_text_field.dart';
 
-import '../providers/auth_provider.dart';
+import '../providers/admin_provider/admin_auth_provider.dart';
 
 class AdminLoginForm extends StatefulWidget {
   const AdminLoginForm({Key? key}) : super(key: key);
@@ -23,7 +23,7 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
   TextEditingController password = TextEditingController();
 
   onSubmit() async {
-    final adminData = Provider.of<AuthProvider>(context, listen: false);
+    final adminData = Provider.of<AdminAuthProvider>(context, listen: false);
     try {
       final isValid = formKey.currentState!.validate();
       if (isValid) {

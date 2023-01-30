@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/admin_screens/admin_home_screen.dart';
 import 'package:wash_mesh/admin_screens/admin_login_form.dart';
-import 'package:wash_mesh/providers/auth_provider.dart';
+import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
@@ -93,7 +93,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
   }
 
   onRegister() async {
-    final adminData = Provider.of<AuthProvider>(context, listen: false);
+    final adminData = Provider.of<AdminAuthProvider>(context, listen: false);
     try {
       final isValid = formKey.currentState!.validate();
       if (isValid) {

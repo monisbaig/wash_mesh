@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/user_screens/user_home_screen.dart';
 import 'package:wash_mesh/user_screens/user_settings.dart';
 
-import '../providers/auth_provider.dart';
+import '../providers/user_provider/user_auth_provider.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_logo.dart';
 import '../widgets/custom_navigation_bar.dart';
@@ -59,7 +59,7 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   onUpdateUser() async {
-    final adminData = Provider.of<AuthProvider>(context, listen: false);
+    final adminData = Provider.of<UserAuthProvider>(context, listen: false);
     try {
       final isValid = formKey.currentState!.validate();
       if (isValid) {
