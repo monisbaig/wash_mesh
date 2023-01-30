@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:wash_mesh/models/customer_registration_model.dart';
 import 'package:wash_mesh/providers/auth_provider.dart';
 import 'package:wash_mesh/user_screens/user_login_form.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
@@ -29,17 +30,20 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
 
   onRegister() async {
     final userData = Provider.of<AuthProvider>(context, listen: false);
+    CustomerRegistrationModel customerData = CustomerRegistrationModel();
     try {
       final isValid = formKey.currentState!.validate();
       if (isValid) {
-        final result = await userData.registerUser(
-          firstName: firstName.text,
-          lastName: lastName.text,
-          email: email.text,
-          phoneNo: phoneNo.text,
-          password: password.text,
-          confirmPassword: confirmPassword.text,
-          address: address.text,
+        final result = await userData.registerCustomer(
+          customerData.data!.user!.firstName,
+
+          // firstName: firstName.text,
+          // lastName: lastName.text,
+          // email: email.text,
+          // phoneNo: phoneNo.text,
+          // password: password.text,
+          // confirmPassword: confirmPassword.text,
+          // address: address.text,
         );
         firstName.clear();
         lastName.clear();

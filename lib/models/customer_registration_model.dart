@@ -44,12 +44,12 @@ class Data {
 }
 
 class User {
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? phone;
-  String? address;
-  String? userType;
+  dynamic firstName;
+  dynamic lastName;
+  dynamic email;
+  dynamic phone;
+  dynamic address;
+  dynamic userType;
 
   User(
       {this.firstName,

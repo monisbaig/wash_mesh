@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wash_mesh/models/customer_registration_model.dart';
 
 class AuthProvider extends ChangeNotifier {
   static const baseURL = 'https://washmesh.stackbuffers.com/api';
@@ -49,6 +50,32 @@ class AuthProvider extends ChangeNotifier {
       print(response.body);
     }
     notifyListeners();
+  }
+
+  Future<CustomerRegistrationModel> registerCustomer(
+      CustomerRegistrationModel data) async {
+    final url = Uri.parse('$baseURL/user/customer/register');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(data.toJson()),
+    );
+    try {
+      if (response.statusCode == 201) {
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        pref.setString('UserData', response.body);
+        pref.setString('token', data.data!.token.toString());
+
+        return CustomerRegistrationModel.fromJson(jsonDecode(response.body));
+      }
+      notifyListeners();
+      return CustomerRegistrationModel.fromJson(jsonDecode(response.body));
+    } catch (e) {
+      rethrow;
+    }
   }
 
   loginUser({
