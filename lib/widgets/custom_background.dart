@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 
 class CustomBackground extends StatelessWidget {
@@ -17,19 +16,16 @@ class CustomBackground extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 25.h, horizontal: 11.w),
-            child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  opacity: op,
-                  image: const AssetImage(
-                    'assets/images/app-icon.png',
-                  ),
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                opacity: op,
+                image: const AssetImage(
+                  'assets/images/app-icon.png',
                 ),
               ),
-              child: ch,
             ),
+            child: ch,
           ),
         ),
       ),

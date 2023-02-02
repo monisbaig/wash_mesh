@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:wash_mesh/widgets/custom_navigation_bar_admin.dart';
+import 'package:wash_mesh/widgets/custom_background.dart';
 
 import '../providers/admin_provider/admin_auth_provider.dart';
 import '../widgets/custom_button.dart';
@@ -40,7 +40,7 @@ class _AdminChangePasswordState extends State<AdminChangePassword> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomNavigationBarAdmin(
+    return CustomBackground(
       op: 0.1,
       ch: SingleChildScrollView(
         child: Column(

@@ -8,13 +8,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/admin_screens/admin_settings.dart';
+import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_navigation_bar_admin.dart';
 import 'package:wash_mesh/widgets/custom_text_field.dart';
 
 import '../providers/admin_provider/admin_auth_provider.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_logo.dart';
-import 'admin_home_screen.dart';
 
 class AdminProfile extends StatefulWidget {
   const AdminProfile({Key? key}) : super(key: key);
@@ -25,9 +25,9 @@ class AdminProfile extends StatefulWidget {
 
 class _AdminProfileState extends State<AdminProfile> {
   final formKey = GlobalKey<FormState>();
-  String? image;
   File? profileImg;
-  File? convertedImage;
+  dynamic convertedImage;
+  dynamic getImage;
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
   TextEditingController address = TextEditingController();
@@ -56,7 +56,7 @@ class _AdminProfileState extends State<AdminProfile> {
         firstName.text = firstN;
         lastName.text = lastN;
         address.text = add;
-        image = img;
+        getImage = img;
       });
     }
   }
@@ -84,7 +84,7 @@ class _AdminProfileState extends State<AdminProfile> {
         if (result != null) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => const AdminHomeScreen(),
+              builder: (context) => const CustomNavigationBarAdmin(),
             ),
           );
         } else {
@@ -116,7 +116,7 @@ class _AdminProfileState extends State<AdminProfile> {
       if (result != null) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => const AdminHomeScreen(),
+            builder: (context) => const CustomNavigationBarAdmin(),
           ),
         );
       } else {
@@ -132,15 +132,18 @@ class _AdminProfileState extends State<AdminProfile> {
   }
 
   profileImage() async {
-    ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(
+    final ImagePicker picker = ImagePicker();
+    final XFile? imageFile = await picker.pickImage(
       source: ImageSource.gallery,
-      maxWidth: 200,
+      maxWidth: 300,
     );
-    profileImg = File(image!.path);
+    if (imageFile == null) {
+      return;
+    }
+    profileImg = File(imageFile.path);
     final imageByte = profileImg!.readAsBytesSync();
     setState(() {
-      convertedImage = base64Encode(imageByte) as File?;
+      convertedImage = "data:image/png;base64,${base64Encode(imageByte)}";
     });
   }
 
@@ -152,7 +155,7 @@ class _AdminProfileState extends State<AdminProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomNavigationBarAdmin(
+    return CustomBackground(
       op: 0.1,
       ch: SingleChildScrollView(
         child: Center(
@@ -185,7 +188,7 @@ class _AdminProfileState extends State<AdminProfile> {
                               fit: BoxFit.cover,
                             )
                           : Image.network(
-                              '$image',
+                              '$getImage',
                               width: 102.w,
                               height: 108.h,
                               fit: BoxFit.cover,
