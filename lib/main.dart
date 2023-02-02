@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
 import 'package:wash_mesh/providers/user_provider/user_auth_provider.dart';
-import 'package:wash_mesh/widgets/custom_navigation_bar_admin.dart';
+import 'package:wash_mesh/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
               Theme.of(context).textTheme,
             ),
           ),
-          home: const CustomNavigationBarAdmin(),
+          home: const SplashScreen(),
         ),
       ),
     );

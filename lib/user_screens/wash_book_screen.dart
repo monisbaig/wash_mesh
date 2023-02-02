@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 import 'package:wash_mesh/widgets/custom_dropdownbutton.dart';
 
 import '../widgets/custom_logo.dart';
-import '../widgets/custom_navigation_bar.dart';
 
 class WashBookScreen extends StatefulWidget {
   const WashBookScreen({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class WashBookScreen extends StatefulWidget {
 class _WashBookScreenState extends State<WashBookScreen> {
   @override
   Widget build(BuildContext context) {
-    return CustomNavigationBar(
+    return CustomBackground(
       op: 0.1,
       ch: SafeArea(
         child: SingleChildScrollView(

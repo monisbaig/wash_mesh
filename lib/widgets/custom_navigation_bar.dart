@@ -3,25 +3,33 @@ import 'dart:ui';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wash_mesh/user_screens/booking_screen.dart';
+import 'package:wash_mesh/user_screens/user_booking_screen.dart';
 import 'package:wash_mesh/user_screens/user_home_screen.dart';
 import 'package:wash_mesh/user_screens/user_settings.dart';
 import 'package:wash_mesh/user_screens/wash_book_screen.dart';
+import 'package:wash_mesh/user_screens/wash_category_screen.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 
 class CustomNavigationBar extends StatefulWidget {
-  final Widget ch;
-  final double op;
-
-  const CustomNavigationBar({super.key, required this.ch, required this.op});
-
   @override
   State<CustomNavigationBar> createState() => _CustomNavigationBarState();
 }
 
 class _CustomNavigationBarState extends State<CustomNavigationBar> {
-  int _page = 0;
-  final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+  List pages = [
+    UserBookingScreen(),
+    const WashCategory(),
+    const UserHomeScreen(),
+    const UserHomeScreen(),
+    const UserSettings(),
+  ];
+
+  int currentIndex = 2;
+  void onTap(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+  }
 
   void _showCategory() {
     showDialog(
@@ -74,7 +82,6 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
     );
   }
 
-  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
@@ -83,38 +90,9 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         bottomNavigationBar: CurvedNavigationBar(
-          height: 70.h,
-          index: 2,
-          key: _bottomNavigationKey,
+          index: currentIndex,
           animationDuration: const Duration(milliseconds: 300),
-          onTap: (index) {
-            _page = index;
-            if (_page == 0) {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => BookingScreen(),
-                ),
-              );
-            }
-            if (_page == 1) {
-              return _showCategory();
-            }
-            if (_page == 2) {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const UserHomeScreen(),
-                ),
-              );
-            }
-            if (_page == 3) {}
-            if (_page == 4) {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const UserSettings(),
-                ),
-              );
-            }
-          },
+          onTap: onTap,
           items: [
             Icon(
               Icons.event_note_outlined,
@@ -138,22 +116,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             ),
           ],
         ),
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 25.h, horizontal: 11.w),
-            child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  opacity: widget.op,
-                  image: const AssetImage(
-                    'assets/images/app-icon.png',
-                  ),
-                ),
-              ),
-              child: widget.ch,
-            ),
-          ),
-        ),
+        body: pages[currentIndex],
       ),
     );
   }

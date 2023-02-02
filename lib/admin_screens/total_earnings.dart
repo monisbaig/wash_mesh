@@ -4,20 +4,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/custom_background.dart';
 import '../widgets/custom_logo.dart';
 
-class BookingScreen extends StatelessWidget {
-  BookingScreen({Key? key}) : super(key: key);
+class TotalEarningsScreen extends StatelessWidget {
+  TotalEarningsScreen({Key? key}) : super(key: key);
 
-  List items = [
-    'All',
-    'Pending',
-    'Accept',
-    'On Going',
-    'In Progress',
-    'Hold',
-    'Cancelled',
-    'Rejected',
-    'Failed',
-    'Completed',
+  final List items = [
+    '1: Completed Service : 10rs',
+    '2: Completed Service : 20rs',
+    '3: Completed Service : 30rs',
+    '4: Completed Service : 40rs',
+    '5: Completed Service : 50rs',
+    '6: Completed Service : 60rs',
   ];
 
   @override

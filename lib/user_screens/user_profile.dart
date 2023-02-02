@@ -7,11 +7,11 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/user_screens/user_home_screen.dart';
 import 'package:wash_mesh/user_screens/user_settings.dart';
+import 'package:wash_mesh/widgets/custom_background.dart';
 
 import '../providers/user_provider/user_auth_provider.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_logo.dart';
-import '../widgets/custom_navigation_bar.dart';
 import '../widgets/custom_text_field.dart';
 
 class UserProfile extends StatefulWidget {
@@ -105,7 +105,7 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomNavigationBar(
+    return CustomBackground(
       op: 0.1,
       ch: SingleChildScrollView(
         child: Center(

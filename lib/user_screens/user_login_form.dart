@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/user_screens/user_forget_password.dart';
-import 'package:wash_mesh/user_screens/user_home_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
+import 'package:wash_mesh/widgets/custom_navigation_bar.dart';
 import 'package:wash_mesh/widgets/custom_text_field.dart';
 
 import '../providers/user_provider/user_auth_provider.dart';
@@ -43,7 +43,7 @@ class _UserLoginFormState extends State<UserLoginForm> {
         if (result == 'Login Successfully') {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => const UserHomeScreen(),
+              builder: (context) => CustomNavigationBar(),
             ),
           );
         } else {

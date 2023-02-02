@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wash_mesh/user_screens/wash_category_screen.dart';
+import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
-import 'package:wash_mesh/widgets/custom_navigation_bar.dart';
 
 import 'mesh_category_screen.dart';
 
@@ -17,7 +17,7 @@ class UserHomeScreen extends StatefulWidget {
 class _UserHomeScreenState extends State<UserHomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return CustomNavigationBar(
+    return CustomBackground(
       ch: SafeArea(
         child: SingleChildScrollView(
           child: Column(

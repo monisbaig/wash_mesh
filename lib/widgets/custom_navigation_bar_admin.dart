@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wash_mesh/admin_screens/admin_home_screen.dart';
 import 'package:wash_mesh/admin_screens/admin_services.dart';
 import 'package:wash_mesh/admin_screens/admin_settings.dart';
-import 'package:wash_mesh/user_screens/booking_screen.dart';
+import 'package:wash_mesh/user_screens/user_booking_screen.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 
 class CustomNavigationBarAdmin extends StatefulWidget {
@@ -16,7 +16,7 @@ class CustomNavigationBarAdmin extends StatefulWidget {
 
 class _CustomNavigationBarAdminState extends State<CustomNavigationBarAdmin> {
   List pages = [
-    BookingScreen(),
+    UserBookingScreen(),
     const AdminServices(),
     const AdminHomeScreen(),
     const AdminSettings(),
