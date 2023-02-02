@@ -47,18 +47,14 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body);
       var firstN = json['data']['Vendor']['first_name'];
-      var availability =
-          json['data']['Vendor']['vendor_details']['availability'];
 
       setState(() {
         firstName = firstN;
-        availability = availability;
       });
     }
   }
 
   dynamic firstName;
-  dynamic availability;
 
   bool isOn = false;
 
@@ -212,21 +208,20 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                 borderRadius: BorderRadius.circular(14.r),
                               ),
                               child: ListView.builder(
-                                itemCount: 1,
+                                itemCount: locationData.items.length,
                                 itemBuilder: (context, index) => Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     Text(
                                       locationData.items.last.location!.address!
-                                          .substring(23),
+                                          .substring(45),
                                       style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14.sp,
+                                        fontSize: 12.sp,
                                         color: Colors.white,
                                       ),
                                     ),
-                                    SizedBox(width: 100.w),
                                     IconButton(
                                       onPressed: () {
                                         Navigator.of(context).push(

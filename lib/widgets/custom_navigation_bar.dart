@@ -11,6 +11,8 @@ import 'package:wash_mesh/user_screens/wash_category_screen.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 
 class CustomNavigationBar extends StatefulWidget {
+  const CustomNavigationBar({super.key});
+
   @override
   State<CustomNavigationBar> createState() => _CustomNavigationBarState();
 }
