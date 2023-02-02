@@ -19,7 +19,7 @@ class AdminLoginForm extends StatefulWidget {
 
 class _AdminLoginFormState extends State<AdminLoginForm> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController username = TextEditingController();
+  TextEditingController phoneNo = TextEditingController();
   TextEditingController password = TextEditingController();
 
   onSubmit() async {
@@ -28,10 +28,10 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
       final isValid = formKey.currentState!.validate();
       if (isValid) {
         final result = await adminData.loginAdmin(
-          input: username.text,
+          input: phoneNo.text,
           password: password.text,
         );
-        username.clear();
+        phoneNo.clear();
         password.clear();
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -88,11 +88,11 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
                   children: [
                     SizedBox(height: 8.h),
                     CustomTextField(
-                      hint: 'Username',
-                      controller: username,
+                      hint: 'PhoneNo',
+                      controller: phoneNo,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Please enter your username';
+                          return 'Please enter your phone number';
                         }
                         return null;
                       },

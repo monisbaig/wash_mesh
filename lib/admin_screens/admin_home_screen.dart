@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/widgets/custom_navigation_bar_admin.dart';
 
 import '../widgets/custom_colors.dart';
@@ -14,6 +18,45 @@ class AdminHomeScreen extends StatefulWidget {
 }
 
 class _AdminHomeScreenState extends State<AdminHomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    getAdminData();
+  }
+
+  getAdminData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    final url =
+        Uri.parse('https://washmesh.stackbuffers.com/api/user/vendor/profile');
+    var response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      var json = jsonDecode(response.body) as Map<String, dynamic>;
+      var firstN = json['data']['Vendor']['first_name'];
+
+      setState(() {
+        firstName = firstN;
+      });
+    }
+  }
+
+  String? firstName;
+
+  // Vendor? a;
+  //
+  // instance() async {
+  //   await Provider.of<AdminAuthProvider>(context, listen: false)
+  //       .getAdminProfile()
+  //       .then((value) => a = value);
+  // }
+
   @override
   Widget build(BuildContext context) {
     return CustomNavigationBarAdmin(
@@ -38,7 +81,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Hello, Ahmed',
+                        'Hello, $firstName',
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 26.sp,
@@ -197,6 +240,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                     child: Image.asset(
                       'assets/images/group.png',
                       fit: BoxFit.cover,
+                      height: 100.h,
                     ),
                   ),
                 ],

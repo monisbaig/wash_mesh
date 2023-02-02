@@ -34,7 +34,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
     try {
       final isValid = formKey.currentState!.validate();
       if (isValid) {
-        User u = User(
+        User user = User(
           firstName: firstName.text,
           lastName: lastName.text,
           email: email.text,
@@ -43,7 +43,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
           address: address.text,
           phone: phoneNo.text,
         );
-        userData.registerUser(u);
+        userData.registerUser(user);
 
         firstName.clear();
         lastName.clear();

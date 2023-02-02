@@ -1,7 +1,7 @@
 class AdminRegistrationModel {
-  int? status;
-  String? message;
-  Data? data;
+  dynamic status;
+  dynamic message;
+  dynamic data;
 
   AdminRegistrationModel({this.status, this.message, this.data});
 
@@ -44,17 +44,19 @@ class Data {
 }
 
 class Vendor {
-  int? id;
-  String? firstName;
-  String? lastName;
-  String? phone;
-  String? address;
-  String? email;
-  String? userName;
-  String? referralCode;
-  String? userType;
-  Null? image;
-  String? status;
+  dynamic id;
+  dynamic firstName;
+  dynamic lastName;
+  dynamic phone;
+  dynamic address;
+  dynamic email;
+  dynamic password;
+  dynamic confirmPassword;
+  dynamic userName;
+  dynamic referralCode;
+  dynamic userType;
+  dynamic image;
+  dynamic status;
   VendorDetails? vendorDetails;
 
   Vendor(
@@ -64,6 +66,8 @@ class Vendor {
       this.phone,
       this.address,
       this.email,
+      this.password,
+      this.confirmPassword,
       this.userName,
       this.referralCode,
       this.userType,
@@ -78,6 +82,8 @@ class Vendor {
     phone = json['phone'];
     address = json['address'];
     email = json['email'];
+    password = json['password'];
+    confirmPassword = json['confirm_password'];
     userName = json['user_name'];
     referralCode = json['referral_code'];
     userType = json['user_type'];
@@ -96,6 +102,8 @@ class Vendor {
     data['phone'] = phone;
     data['address'] = address;
     data['email'] = email;
+    data['password'] = password;
+    data['confirm_password'] = confirmPassword;
     data['user_name'] = userName;
     data['referral_code'] = referralCode;
     data['user_type'] = userType;
@@ -109,15 +117,15 @@ class Vendor {
 }
 
 class VendorDetails {
-  int? id;
-  String? userId;
-  String? cnic;
-  String? experience;
-  String? experienceCertImg;
-  String? cnicFrontImg;
-  String? cnicBackImg;
-  String? availability;
-  String? gender;
+  dynamic id;
+  dynamic userId;
+  dynamic cnic;
+  dynamic experience;
+  dynamic experienceCertImg;
+  dynamic cnicFrontImg;
+  dynamic cnicBackImg;
+  dynamic availability;
+  dynamic gender;
 
   VendorDetails(
       {this.id,

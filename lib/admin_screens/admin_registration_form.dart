@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:wash_mesh/admin_screens/admin_home_screen.dart';
 import 'package:wash_mesh/admin_screens/admin_login_form.dart';
+import 'package:wash_mesh/models/admin_models/admin_registration_model.dart';
 import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
@@ -28,9 +28,9 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
   File? expCert;
   File? cnicFront;
   File? cnicBack;
-  String? base64ImageExp;
-  String? base64ImageF;
-  String? base64ImageB;
+  dynamic base64ImageExp;
+  dynamic base64ImageF;
+  dynamic base64ImageB;
 
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
@@ -56,7 +56,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     expCert = File(imageFile.path);
     final imageByte = expCert!.readAsBytesSync();
     setState(() {
-      base64ImageExp = base64Encode(imageByte);
+      base64ImageExp = "data:image/png;base64,${base64Encode(imageByte)}";
     });
   }
 
@@ -72,7 +72,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     cnicFront = File(imageFile.path);
     final imageByte = cnicFront!.readAsBytesSync();
     setState(() {
-      base64ImageF = base64Encode(imageByte);
+      base64ImageF = "data:image/png;base64,${base64Encode(imageByte)}";
     });
   }
 
@@ -88,7 +88,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     cnicBack = File(imageFile.path);
     final imageByte = cnicBack!.readAsBytesSync();
     setState(() {
-      base64ImageB = base64Encode(imageByte);
+      base64ImageB = "data:image/png;base64,${base64Encode(imageByte)}";
     });
   }
 
@@ -97,22 +97,29 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     try {
       final isValid = formKey.currentState!.validate();
       if (isValid) {
-        final result = await adminData.registerAdmin(
+        VendorDetails vendorDetails = VendorDetails(
+          gender: gender.text,
+          experience: experience.text,
+          cnic: cnicNo.text,
+          experienceCertImg: base64ImageExp,
+          cnicFrontImg: base64ImageF,
+          cnicBackImg: base64ImageB,
+        );
+
+        Vendor vendor = Vendor(
           firstName: firstName.text,
           lastName: lastName.text,
           userName: userName.text,
-          phoneNo: phoneNo.text,
-          cnicNo: cnicNo.text,
+          phone: phoneNo.text,
+          address: address.text,
           password: password.text,
           confirmPassword: confirmPassword.text,
-          experience: experience.text,
-          code: code.text,
-          address: address.text,
-          gender: gender.text,
-          experienceCert: base64ImageExp,
-          cnicFront: base64ImageF,
-          cnicBack: base64ImageB,
+          referralCode: code.text,
+          vendorDetails: vendorDetails,
         );
+
+        await adminData.registerAdmin(vendor);
+
         firstName.clear();
         lastName.clear();
         userName.clear();
@@ -124,17 +131,21 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
         code.clear();
         address.clear();
         gender.clear();
+        base64ImageExp = '';
+        base64ImageF = '';
+        base64ImageB = '';
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('$result'),
+            content: Text('${adminData.registerAdmin(vendor)}'),
           ),
         );
 
-        if (result == 'Vendor Socialite Registered Successfully') {
+        if (adminData.registerAdmin(vendor) ==
+            'Vendor Socialite Registered Successfully') {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => const AdminHomeScreen(),
+              builder: (context) => const AdminLoginForm(),
             ),
           );
         } else {

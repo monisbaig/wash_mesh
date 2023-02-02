@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:wash_mesh/admin_screens/admin_home_screen.dart';
 import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
-import 'package:wash_mesh/splash_screen.dart';
+import 'package:wash_mesh/providers/user_provider/user_auth_provider.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 
 void main() async {
@@ -24,6 +25,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => AdminAuthProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => UserAuthProvider(),
+        ),
       ],
       child: ScreenUtilInit(
         designSize: const Size(393, 852),
@@ -37,7 +41,7 @@ class MyApp extends StatelessWidget {
           ),
           home: const CustomBackground(
             op: 1,
-            ch: SplashScreen(),
+            ch: AdminHomeScreen(),
           ),
         ),
       ),

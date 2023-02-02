@@ -5,72 +5,71 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../models/admin_models/admin_registration_model.dart';
+
 class AdminAuthProvider extends ChangeNotifier {
   static const baseURL = 'https://washmesh.stackbuffers.com/api';
 
 // Admin Authentication Code:
 
-  Future<String> registerAdmin({
-    var firstName,
-    var lastName,
-    var userName,
-    var phoneNo,
-    var cnicNo,
-    var password,
-    var confirmPassword,
-    var experience,
-    var code,
-    var address,
-    var gender,
-    var vendor,
-    var experienceCert,
-    var cnicFront,
-    var cnicBack,
-  }) async {
-    var jsonObject = {
-      'first_name': firstName,
-      'last_name': lastName,
-      'user_name': userName,
-      'phone': phoneNo,
-      'cnic': cnicNo,
-      'password': password,
-      'confirm_password': confirmPassword,
-      'experience': experience,
-      'referral_code': code,
-      'address': address,
-      'gender': gender,
-      'experience_cert_img': experienceCert,
-      'cnic_front_img': cnicFront,
-      'cnic_back_img': cnicBack,
-    };
-
-    var jsonString = jsonEncode(jsonObject);
-
-    var url = Uri.parse('$baseURL/user/vendor/register');
-
-    if (experienceCert == null && cnicFront == null && cnicBack == null) {
-      return '';
+  Future<Vendor> getAdminProfile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    final url = Uri.parse('$baseURL/user/vendor/profile');
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      print(response.body);
+      return jsonDecode(response.body);
     }
+    notifyListeners();
+    return jsonDecode(response.body);
+  }
+
+  Future<Vendor> registerAdmin(Vendor adminData) async {
+    final url = Uri.parse('$baseURL/user/vendor/register');
+
     final response = await http.post(
       url,
-      body: jsonString,
+      body: jsonEncode(<String, dynamic>{
+        'first_name': adminData.firstName,
+        'last_name': adminData.lastName,
+        'phone': adminData.phone,
+        'address': adminData.address,
+        'password': adminData.password,
+        'confirm_password': adminData.confirmPassword,
+        'user_name': adminData.userName,
+        'referral_code': adminData.referralCode,
+        'cnic': adminData.vendorDetails!.cnic,
+        'experience': adminData.vendorDetails!.experience,
+        'gender': adminData.vendorDetails!.gender,
+        'experience_cert_img': adminData.vendorDetails!.experienceCertImg,
+        'cnic_front_img': adminData.vendorDetails!.cnicFrontImg,
+        'cnic_back_img': adminData.vendorDetails!.cnicBackImg,
+      }),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
     );
-    if (response.statusCode == 200) {
-      if (jsonDecode(response.body)['message'] ==
-          'Vendor Socialite Registered Successfully') {
-        SharedPreferences pref = await SharedPreferences.getInstance();
-        pref.setString('Vendor', response.body);
-        pref.setString('token', jsonDecode(response.body)['data']['token']);
+    try {
+      if (response.statusCode == 200) {
+        print(Vendor.fromJson(jsonDecode(response.body)));
+        return Vendor.fromJson(jsonDecode(response.body));
       }
-      notifyListeners();
-      return jsonDecode(response.body)['message'];
-    } else {
-      return jsonDecode(response.body)['message'];
+    } catch (e) {
+      print(Vendor.fromJson(jsonDecode(response.body)));
+      rethrow;
     }
+    print(Vendor.fromJson(jsonDecode(response.body)));
+    notifyListeners();
+    return Vendor.fromJson(jsonDecode(response.body));
   }
 
   loginAdmin({
