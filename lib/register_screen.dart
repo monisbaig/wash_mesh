@@ -12,52 +12,55 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomBackground(
-      ch: Column(
-        children: [
-          SizedBox(height: 20.h),
-          const CustomLogo(),
-          SizedBox(height: 50.h),
-          Expanded(
-            child: Container(
-              alignment: Alignment.center,
-              child: Text(
-                'Register as a',
-                style: TextStyle(
-                  fontSize: 25.sp,
+      ch: Padding(
+        padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 12.w),
+        child: Column(
+          children: [
+            SizedBox(height: 20.h),
+            const CustomLogo(),
+            SizedBox(height: 50.h),
+            Expanded(
+              child: Container(
+                alignment: Alignment.center,
+                child: Text(
+                  'Register as a',
+                  style: TextStyle(
+                    fontSize: 25.sp,
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(height: 40.h),
-          CustomButton(
-            onTextPress: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const UserRegistrationForm(),
-                ),
-              );
-            },
-            buttonText: 'Customer',
-            v: 15.h,
-            h: 100.w,
-          ),
-          SizedBox(height: 30.h),
-          CustomButton(
-            onTextPress: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const AdminRegisterScreen(),
-                ),
-              );
-            },
-            buttonText: 'Service Provider',
-            v: 15.h,
-            h: 67.w,
-          ),
-          const Expanded(
-            child: SizedBox(),
-          ),
-        ],
+            SizedBox(height: 50.h),
+            CustomButton(
+              onTextPress: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const UserRegistrationForm(),
+                  ),
+                );
+              },
+              buttonText: 'Customer',
+              v: 15.h,
+              h: 100.w,
+            ),
+            SizedBox(height: 30.h),
+            CustomButton(
+              onTextPress: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const AdminRegisterScreen(),
+                  ),
+                );
+              },
+              buttonText: 'Service Provider',
+              v: 15.h,
+              h: 67.w,
+            ),
+            const Expanded(
+              child: SizedBox(),
+            ),
+          ],
+        ),
       ),
       op: 0.1,
     );

@@ -12,23 +12,26 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomBackground(
       op: 1,
-      ch: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const CustomLogo(),
-          CustomButton(
-            buttonText: 'Get Started',
-            onTextPress: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const RegisterScreen(),
-                ),
-              );
-            },
-            v: 15.h,
-            h: 90.w,
-          ),
-        ],
+      ch: Padding(
+        padding: EdgeInsets.symmetric(vertical: 45.h, horizontal: 12.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const CustomLogo(),
+            CustomButton(
+              buttonText: 'Get Started',
+              onTextPress: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const RegisterScreen(),
+                  ),
+                );
+              },
+              v: 15.h,
+              h: 90.w,
+            ),
+          ],
+        ),
       ),
     );
   }

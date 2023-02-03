@@ -10,7 +10,7 @@ class CustomButton extends StatelessWidget {
       required this.h,
       super.key});
 
-  final void Function() onTextPress;
+  final void Function()? onTextPress;
   final String buttonText;
   final double v;
   final double h;
