@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wash_mesh/models/admin_models/wash_category_model.dart';
 import 'package:wash_mesh/providers/admin_provider/place_model.dart';
 
 import '../../helpers/dp_helper.dart';
@@ -230,5 +231,20 @@ class AdminAuthProvider extends ChangeNotifier {
       'loc_lng': newPlace.location!.longitude,
       'address': newPlace.location!.address,
     });
+  }
+
+  Future<List<WashCategoryModel>> getInfo() async {
+    final url = Uri.parse('$baseURL/wash/categories');
+    final response = await http.get(url);
+    try {
+      if (response.statusCode == 200) {
+        List<dynamic> list = jsonDecode(response.body);
+        return list.map((e) => WashCategoryModel.fromJson(e)).toList();
+      } else {
+        return <WashCategoryModel>[];
+      }
+    } catch (e) {
+      return <WashCategoryModel>[];
+    }
   }
 }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:wash_mesh/admin_screens/admin_home_screen.dart';
 import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
 import 'package:wash_mesh/providers/user_provider/user_auth_provider.dart';
 import 'package:wash_mesh/splash_screen.dart';

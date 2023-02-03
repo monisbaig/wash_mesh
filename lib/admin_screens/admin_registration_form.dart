@@ -57,6 +57,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     final imageByte = expCert!.readAsBytesSync();
     setState(() {
       base64ImageExp = "data:image/png;base64,${base64Encode(imageByte)}";
+      print(base64ImageExp);
     });
   }
 
@@ -73,6 +74,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     final imageByte = cnicFront!.readAsBytesSync();
     setState(() {
       base64ImageF = "data:image/png;base64,${base64Encode(imageByte)}";
+      print(base64ImageF);
     });
   }
 
@@ -89,6 +91,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     final imageByte = cnicBack!.readAsBytesSync();
     setState(() {
       base64ImageB = "data:image/png;base64,${base64Encode(imageByte)}";
+      print(base64ImageB);
     });
   }
 
