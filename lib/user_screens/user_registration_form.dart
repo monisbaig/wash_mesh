@@ -53,25 +53,25 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
         confirmPassword.clear();
         address.clear();
 
-        ScaffoldMessenger.of(context as BuildContext).showSnackBar(
-          SnackBar(
-            content: Text('${userData.registerUser(user)}'),
-          ),
-        );
+        // ScaffoldMessenger.of(context as BuildContext ).showSnackBar(
+        //   SnackBar(
+        //     content: Text('$result'),
+        //   ),
+        // );
 
-        if (userData.registerUser(user) == 'Registered Successfully') {
-          Navigator.of(context as BuildContext).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const UserLoginForm(),
-            ),
-          );
-        } else {
-          Navigator.of(context as BuildContext).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const UserRegistrationForm(),
-            ),
-          );
-        }
+        // if (result == 'Registered Successfully') {
+        //   Navigator.of(context as BuildContext ).pushReplacement(
+        //     MaterialPageRoute(
+        //       builder: (context) => const UserLoginForm(),
+        //     ),
+        //   );
+        // } else {
+        //   Navigator.of(context  as BuildContext ).pushReplacement(
+        //     MaterialPageRoute(
+        //       builder: (context) => const UserRegistrationForm(),
+        //     ),
+        //   );
+        // }
       }
     } catch (e) {
       rethrow;
