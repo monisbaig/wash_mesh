@@ -122,17 +122,18 @@ class UserAuthProvider extends ChangeNotifier {
   }
 
 
-  Getcategories() async {
-    List<Categoriesmodel> list;
+  Future <List<Categoriesmodel>>Getcategories() async {
+    List<Categoriesmodel> list=[];
     final url =
     Uri.parse('$baseURL/wash/categories');
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      Iterable lst=jsonDecode(response.body);
-      list=lst.map((e) => Categoriesmodel.fromJson(e)).toList();
+      Map<String,dynamic> lst=jsonDecode(response.body);
+      list=Categoriesmodel.fromJson(lst) as List<Categoriesmodel>;
       return list;
     } else {
       print(response.body);
+      return list;
     }
     notifyListeners();
   }

@@ -14,7 +14,7 @@ class Categoriesmodel
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = id;
+    data['id'] = id;
     data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
@@ -28,15 +28,15 @@ class Data {
   dynamic id;
   dynamic name;
   dynamic image;
-  dynamic car_attribute;
+  dynamic cat_attribute;
 
-  Data({this.id, this.name,this.image,this.car_attribute});
+  Data({this.id, this.name,this.image,this.cat_attribute});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     image = json['image'];
-    car_attribute = json['car_attribute'] != null ? Car_attribute.fromJson(json['car_attribute']) : null;
+    cat_attribute = json['cat_attribute'] != null ? Cat_attribute.fromJson(json['cat_attribute']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -44,22 +44,22 @@ class Data {
     data['id'] = id;
       data['name']=name;
     data['image']=image  ;
-    if (car_attribute != null) {
-      data['car_attribute'] = this.car_attribute.toJson();
+    if (cat_attribute != null) {
+      data['car_attribute'] = this.cat_attribute.toJson();
     }
     return data;
   }
 }
 
-class Car_attribute {
+class Cat_attribute {
   dynamic id;
   dynamic attribute_id;
   dynamic category_id;
   dynamic attribute;
 
-  Car_attribute({this.id, this.attribute_id,this.category_id,this.attribute});
+  Cat_attribute({this.id, this.attribute_id,this.category_id,this.attribute});
 
-  Car_attribute.fromJson(Map<String, dynamic> json) {
+  Cat_attribute.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     attribute_id = json['attribute_id'];
     category_id = json['category_id'];
@@ -69,8 +69,8 @@ class Car_attribute {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['name']=attribute_id;
-    data['image']=category_id  ;
+    data['attribute_id']=attribute_id;
+    data['category_id']=category_id  ;
     if (attribute != null) {
       data['attribute'] = attribute!.toJson();
     }
@@ -92,7 +92,7 @@ class Attribute {
     id = json['id'];
     name = json['name'];
     type = json['type'];
-    attribute_value = json['attribute_value'] != null ? Attribute_value.fromJson(json['attribute_value']) : null;
+    attribute_value = json['attribute_value'] ;
   }
 
   Map<String, dynamic> toJson() {
