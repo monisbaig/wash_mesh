@@ -4,15 +4,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wash_mesh/models/customer_registration_model.dart';
+import 'package:wash_mesh/models/user_models/user_registration_model.dart';
 
 class AuthProvider extends ChangeNotifier {
   static const baseURL = 'https://washmesh.stackbuffers.com/api';
 
   // User Authentication Code:
 
-  Future<CustomerRegistrationModel> registerCustomer(
-      CustomerRegistrationModel data) async {
+  Future<UserRegistrationModel> registerCustomer(
+      UserRegistrationModel data) async {
     final url = Uri.parse('$baseURL/user/customer/register');
     final response = await http.post(
       url,
@@ -28,10 +28,10 @@ class AuthProvider extends ChangeNotifier {
         pref.setString('UserData', response.body);
         pref.setString('token', data.data!.token.toString());
 
-        return CustomerRegistrationModel.fromJson(jsonDecode(response.body));
+        return UserRegistrationModel.fromJson(jsonDecode(response.body));
       }
       notifyListeners();
-      return CustomerRegistrationModel.fromJson(jsonDecode(response.body));
+      return UserRegistrationModel.fromJson(jsonDecode(response.body));
     } catch (e) {
       rethrow;
     }

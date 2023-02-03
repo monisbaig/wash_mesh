@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wash_mesh/providers/auth_provider.dart';
 import 'package:wash_mesh/user_screens/wash_category_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
 
-import '../models/customer_registration_model.dart';
+import '../models/user_models/user_registration_model.dart';
 import 'mesh_category_screen.dart';
 
 class UserHomeScreen extends StatefulWidget {
@@ -26,15 +23,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // instance();
   }
-
-  // instance() async {
-  //   SharedPreferences pref = await SharedPreferences.getInstance();
-  //   token = pref.getString('token');
-  //   final userData = Provider.of<AuthProvider>(context, listen: false);
-  //   await userData.getuserdata(token).then((value) => user = value!);
-  // }
 
   @override
   Widget build(BuildContext context) {
