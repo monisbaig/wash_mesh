@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../models/user_models/Categories.dart';
 import '../../models/user_models/user_registration_model.dart';
 
 class UserAuthProvider extends ChangeNotifier {
@@ -119,4 +120,22 @@ class UserAuthProvider extends ChangeNotifier {
       return 'Registration Failed';
     }
   }
+
+
+  Getcategories() async {
+    List<Categoriesmodel> list;
+    final url =
+    Uri.parse('$baseURL/wash/categories');
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      Iterable lst=jsonDecode(response.body);
+      list=lst.map((e) => Categoriesmodel.fromJson(e)).toList();
+      return list;
+    } else {
+      print(response.body);
+    }
+    notifyListeners();
+  }
+
+
 }
