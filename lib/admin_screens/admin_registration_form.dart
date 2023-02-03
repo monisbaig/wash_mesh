@@ -57,7 +57,6 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     final imageByte = expCert!.readAsBytesSync();
     setState(() {
       base64ImageExp = "data:image/png;base64,${base64Encode(imageByte)}";
-      print(base64ImageExp);
     });
   }
 
@@ -74,7 +73,6 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     final imageByte = cnicFront!.readAsBytesSync();
     setState(() {
       base64ImageF = "data:image/png;base64,${base64Encode(imageByte)}";
-      print(base64ImageF);
     });
   }
 
@@ -91,7 +89,6 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     final imageByte = cnicBack!.readAsBytesSync();
     setState(() {
       base64ImageB = "data:image/png;base64,${base64Encode(imageByte)}";
-      print(base64ImageB);
     });
   }
 
@@ -138,26 +135,11 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
         base64ImageF = '';
         base64ImageB = '';
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${adminData.registerAdmin(vendor)}'),
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const AdminLoginForm(),
           ),
         );
-
-        if (adminData.registerAdmin(vendor) ==
-            'Vendor Socialite Registered Successfully') {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const AdminLoginForm(),
-            ),
-          );
-        } else {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const AdminRegisterScreen(),
-            ),
-          );
-        }
       }
     } catch (e) {
       rethrow;

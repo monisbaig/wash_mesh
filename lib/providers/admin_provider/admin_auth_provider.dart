@@ -63,14 +63,11 @@ class AdminAuthProvider extends ChangeNotifier {
     );
     try {
       if (response.statusCode == 200) {
-        print(Vendor.fromJson(jsonDecode(response.body)));
-        return Vendor.fromJson(jsonDecode(response.body));
+        print(jsonDecode(response.body));
       }
     } catch (e) {
-      print(Vendor.fromJson(jsonDecode(response.body)));
-      rethrow;
+      'error';
     }
-    print(Vendor.fromJson(jsonDecode(response.body)));
     notifyListeners();
     return Vendor.fromJson(jsonDecode(response.body));
   }
