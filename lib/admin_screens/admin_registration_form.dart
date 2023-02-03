@@ -135,26 +135,26 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
         base64ImageF = '';
         base64ImageB = '';
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${adminData.registerAdmin(vendor)}'),
-          ),
-        );
-
-        if (adminData.registerAdmin(vendor) ==
-            'Vendor Socialite Registered Successfully') {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const AdminLoginForm(),
-            ),
-          );
-        } else {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const AdminRegisterScreen(),
-            ),
-          );
-        }
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     content: Text('${adminData.registerAdmin(vendor)}'),
+        //   ),
+        // );
+        //
+        // if (adminData.registerAdmin(vendor) ==
+        //     'Vendor Socialite Registered Successfully') {
+        //   Navigator.of(context).pushReplacement(
+        //     MaterialPageRoute(
+        //       builder: (context) => const AdminLoginForm(),
+        //     ),
+        //   );
+        // } else {
+        //   Navigator.of(context).pushReplacement(
+        //     MaterialPageRoute(
+        //       builder: (context) => const AdminRegisterScreen(),
+        //     ),
+        //   );
+        // }
       }
     } catch (e) {
       rethrow;
@@ -166,421 +166,432 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     return CustomBackground(
       ch: SingleChildScrollView(
         child: Center(
-          child: Column(
-            children: [
-              SizedBox(height: 33.h),
-              const CustomLogo(),
-              SizedBox(height: 15.h),
-              Container(
-                alignment: Alignment.center,
-                child: Text(
-                  'Service Provider',
-                  style: TextStyle(
-                    fontSize: 25.sp,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 45.h, horizontal: 15.w),
+            child: Column(
+              children: [
+                const CustomLogo(),
+                SizedBox(height: 15.h),
+                Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Service Provider',
+                    style: TextStyle(
+                      fontSize: 25.sp,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 30.h),
-              Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    CustomTextField(
-                      hint: 'First Name',
-                      controller: firstName,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your first name';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomTextField(
-                      hint: 'Last Name',
-                      controller: lastName,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your last name';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomTextField(
-                      hint: 'User Name',
-                      controller: userName,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your user name';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomTextField(
-                      hint: 'Phone No.*',
-                      controller: phoneNo,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your phone name';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomTextField(
-                      hint: 'CNIC No.*',
-                      controller: cnicNo,
-                      validator: (value) {
-                        if (value!.isEmpty || value.length < 13) {
-                          return 'Please enter your cnic number';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomTextField(
-                      hint: 'Password',
-                      controller: password,
-                      validator: (value) {
-                        if (value!.isEmpty || value.length < 5) {
-                          return 'Please enter your password with at least 5 characters';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomTextField(
-                      hint: 'Confirm Password',
-                      controller: confirmPassword,
-                      validator: (value) {
-                        if (value!.isEmpty || value.length < 5) {
-                          return 'Please re-enter your password';
-                        } else if (password.text != confirmPassword.text) {
-                          return "password doesn't match";
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomTextField(
-                      hint: 'Experience in Years',
-                      controller: experience,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your address';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomTextField(
-                      hint: 'Referral Code',
-                      controller: code,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your address';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomTextField(
-                      hint: 'Address',
-                      controller: address,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your address';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomTextField(
-                      hint: 'Select your Gender: 1 for male, 2 for female',
-                      controller: gender,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your gender';
-                        }
-                        return null;
-                      },
-                    ),
-                    // Row(
-                    //   crossAxisAlignment: CrossAxisAlignment.start,
-                    //   children: [
-                    //     Container(
-                    //       padding: const EdgeInsets.all(12),
-                    //       width: 415.h,
-                    //       height: 70.h,
-                    //       decoration: BoxDecoration(
-                    //         color: Colors.white,
-                    //         borderRadius: BorderRadius.circular(20.r),
-                    //       ),
-                    //       child: DropdownButton(
-                    //         borderRadius: BorderRadius.circular(20.r),
-                    //         alignment: Alignment.center,
-                    //         hint: const Text('Gender'),
-                    //         icon: const Icon(
-                    //           Icons.arrow_drop_down,
-                    //           color: Colors.black,
-                    //         ),
-                    //         items: const [
-                    //           DropdownMenuItem(
-                    //             value: 'male',
-                    //             child: Text('Male'),
-                    //           ),
-                    //           DropdownMenuItem(
-                    //             value: 'female',
-                    //             child: Text('Female'),
-                    //           ),
-                    //         ],
-                    //         onChanged: (String? value) {},
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10.h),
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const AdminLoginForm(),
-                    ),
-                  );
-                },
-                child: Text(
-                  'Already have an account',
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                  ),
-                ),
-              ),
-              SizedBox(height: 25.h),
-              InkWell(
-                onTap: experienceCert,
-                child: Container(
-                  width: 350.w,
-                  height: 50.h,
-                  decoration: BoxDecoration(
-                    color: CustomColor().mainColor,
-                    borderRadius: BorderRadius.circular(14.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: CustomColor().shadowColor2,
-                        blurRadius: 6,
+                SizedBox(height: 30.h),
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      CustomTextField(
+                        hint: 'First Name',
+                        controller: firstName,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your first name';
+                          }
+                          return null;
+                        },
                       ),
+                      SizedBox(height: 10.h),
+                      CustomTextField(
+                        hint: 'Last Name',
+                        controller: lastName,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your last name';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10.h),
+                      CustomTextField(
+                        hint: 'User Name',
+                        controller: userName,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your user name';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10.h),
+                      CustomTextField(
+                        hint: 'Phone No.*',
+                        controller: phoneNo,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your phone name';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10.h),
+                      CustomTextField(
+                        hint: 'CNIC No.*',
+                        controller: cnicNo,
+                        validator: (value) {
+                          if (value!.isEmpty || value.length < 13) {
+                            return 'Please enter your cnic number';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10.h),
+                      CustomTextField(
+                        hint: 'Password',
+                        controller: password,
+                        validator: (value) {
+                          if (value!.isEmpty || value.length < 5) {
+                            return 'Please enter your password with at least 5 characters';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10.h),
+                      CustomTextField(
+                        hint: 'Confirm Password',
+                        controller: confirmPassword,
+                        validator: (value) {
+                          if (value!.isEmpty || value.length < 5) {
+                            return 'Please re-enter your password';
+                          } else if (password.text != confirmPassword.text) {
+                            return "password doesn't match";
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10.h),
+                      CustomTextField(
+                        hint: 'Experience in Years',
+                        controller: experience,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your address';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10.h),
+                      CustomTextField(
+                        hint: 'Referral Code',
+                        controller: code,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your address';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10.h),
+                      CustomTextField(
+                        hint: 'Address',
+                        controller: address,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your address';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10.h),
+                      CustomTextField(
+                        hint: '1 for male, 2 for female',
+                        controller: gender,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your gender';
+                          }
+                          return null;
+                        },
+                      ),
+                      // Row(
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [
+                      //     Container(
+                      //       padding: const EdgeInsets.all(12),
+                      //       width: 415.h,
+                      //       height: 70.h,
+                      //       decoration: BoxDecoration(
+                      //         color: Colors.white,
+                      //         borderRadius: BorderRadius.circular(20.r),
+                      //       ),
+                      //       child: DropdownButton(
+                      //         borderRadius: BorderRadius.circular(20.r),
+                      //         alignment: Alignment.center,
+                      //         hint: const Text('Gender'),
+                      //         icon: const Icon(
+                      //           Icons.arrow_drop_down,
+                      //           color: Colors.black,
+                      //         ),
+                      //         items: const [
+                      //           DropdownMenuItem(
+                      //             value: 'male',
+                      //             child: Text('Male'),
+                      //           ),
+                      //           DropdownMenuItem(
+                      //             value: 'female',
+                      //             child: Text('Female'),
+                      //           ),
+                      //         ],
+                      //         onChanged: (String? value) {},
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      const Text(
-                        'Experience Certificate',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
+                ),
+                SizedBox(height: 20.h),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const AdminLoginForm(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'Already have an account',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                InkWell(
+                  onTap: experienceCert,
+                  child: Container(
+                    width: 350.w,
+                    height: 50.h,
+                    decoration: BoxDecoration(
+                      color: CustomColor().mainColor,
+                      borderRadius: BorderRadius.circular(14.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: CustomColor().shadowColor2,
+                          blurRadius: 6,
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        const Text(
+                          'Experience Certificate',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(width: 5.w),
+                        const Icon(
+                          Icons.camera_alt_outlined,
                           color: Colors.white,
                         ),
-                      ),
-                      SizedBox(width: 5.w),
-                      const Icon(
-                        Icons.camera_alt_outlined,
-                        color: Colors.white,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 15.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: cnicFrontImage,
-                    child: Container(
-                      width: 168.w,
-                      height: 50.h,
-                      decoration: BoxDecoration(
-                        color: CustomColor().mainColor,
-                        borderRadius: BorderRadius.circular(14.r),
-                        boxShadow: [
-                          BoxShadow(
-                            color: CustomColor().shadowColor2,
-                            blurRadius: 6,
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          const Text(
-                            'CNIC Front',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
+                SizedBox(height: 15.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: cnicFrontImage,
+                      child: Container(
+                        width: 168.w,
+                        height: 50.h,
+                        decoration: BoxDecoration(
+                          color: CustomColor().mainColor,
+                          borderRadius: BorderRadius.circular(14.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: CustomColor().shadowColor2,
+                              blurRadius: 6,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            const Text(
+                              'CNIC Front',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(width: 5.w),
+                            const Icon(
+                              Icons.camera_alt_outlined,
                               color: Colors.white,
                             ),
-                          ),
-                          SizedBox(width: 5.w),
-                          const Icon(
-                            Icons.camera_alt_outlined,
-                            color: Colors.white,
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 15.w),
-                  InkWell(
-                    onTap: cnicBackImage,
-                    child: Container(
-                      width: 168.w,
-                      height: 50.h,
-                      decoration: BoxDecoration(
-                        color: CustomColor().mainColor,
-                        borderRadius: BorderRadius.circular(14.r),
-                        boxShadow: [
-                          BoxShadow(
-                            color: CustomColor().shadowColor2,
-                            blurRadius: 6,
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          const Text(
-                            'CNIC Back',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
+                    SizedBox(width: 15.w),
+                    InkWell(
+                      onTap: cnicBackImage,
+                      child: Container(
+                        width: 168.w,
+                        height: 50.h,
+                        decoration: BoxDecoration(
+                          color: CustomColor().mainColor,
+                          borderRadius: BorderRadius.circular(14.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: CustomColor().shadowColor2,
+                              blurRadius: 6,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            const Text(
+                              'CNIC Back',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(width: 5.w),
+                            const Icon(
+                              Icons.camera_alt_outlined,
                               color: Colors.white,
                             ),
-                          ),
-                          SizedBox(width: 5.w),
-                          const Icon(
-                            Icons.camera_alt_outlined,
-                            color: Colors.white,
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 35.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 80,
-                    height: 80,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1,
-                        color: Colors.grey,
+                  ],
+                ),
+                SizedBox(height: 35.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 80,
+                      height: 80,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                          color: Colors.grey,
+                        ),
                       ),
+                      child: expCert != null
+                          ? Image.file(
+                              expCert!,
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                            )
+                          : const Text(
+                              'No Image Taken',
+                              textAlign: TextAlign.center,
+                            ),
                     ),
-                    child: expCert != null
-                        ? Image.file(
-                            expCert!,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          )
-                        : const Text(
-                            'No Image Taken',
-                            textAlign: TextAlign.center,
-                          ),
-                  ),
-                  const SizedBox(width: 10),
-                  Container(
-                    width: 80,
-                    height: 80,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1,
-                        color: Colors.grey,
+                    const SizedBox(width: 10),
+                    Container(
+                      width: 80,
+                      height: 80,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                          color: Colors.grey,
+                        ),
                       ),
+                      child: cnicFront != null
+                          ? Image.file(
+                              cnicFront!,
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                            )
+                          : const Text(
+                              'No Image Taken',
+                              textAlign: TextAlign.center,
+                            ),
                     ),
-                    child: cnicFront != null
-                        ? Image.file(
-                            cnicFront!,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          )
-                        : const Text(
-                            'No Image Taken',
-                            textAlign: TextAlign.center,
-                          ),
-                  ),
-                  const SizedBox(width: 10),
-                  Container(
-                    width: 80,
-                    height: 80,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1,
-                        color: Colors.grey,
+                    const SizedBox(width: 10),
+                    Container(
+                      width: 80,
+                      height: 80,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                          color: Colors.grey,
+                        ),
                       ),
+                      child: cnicBack != null
+                          ? Image.file(
+                              cnicBack!,
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                            )
+                          : const Text(
+                              'No Image Taken',
+                              textAlign: TextAlign.center,
+                            ),
                     ),
-                    child: cnicBack != null
-                        ? Image.file(
-                            cnicBack!,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          )
-                        : const Text(
-                            'No Image Taken',
-                            textAlign: TextAlign.center,
-                          ),
-                  ),
-                  const SizedBox(width: 10),
-                ],
-              ),
-              SizedBox(height: 35.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('assets/images/google-logo.png', height: 40.h),
-                  SizedBox(width: 16.w),
-                  Image.asset('assets/images/facebook-logo.png', height: 40.h),
-                ],
-              ),
-              SizedBox(height: 30.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Checkbox(
-                    value: isChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isChecked = value;
-                      });
-                    },
-                  ),
+                    const SizedBox(width: 10),
+                  ],
+                ),
+                SizedBox(height: 35.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/images/google-logo.png', height: 40.h),
+                    SizedBox(width: 16.w),
+                    Image.asset('assets/images/facebook-logo.png',
+                        height: 40.h),
+                  ],
+                ),
+                SizedBox(height: 15.h),
+                if (isChecked == false)
                   Text(
-                    'Terms and conditions',
+                    'Select Terms and conditions',
                     style: TextStyle(
-                      fontSize: 18.sp,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue,
+                      color: Colors.red.shade500,
                     ),
                   ),
-                ],
-              ),
-              CustomButton(
-                onTextPress: onRegister,
-                buttonText: 'SIGN IN',
-                v: 15.h,
-                h: 110.w,
-              ),
-              SizedBox(height: 33.h),
-            ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Checkbox(
+                      value: isChecked,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          isChecked = value;
+                        });
+                      },
+                    ),
+                    Text(
+                      'Terms and conditions',
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+                CustomButton(
+                  onTextPress: isChecked == true ? onRegister : null,
+                  buttonText: 'SIGN IN',
+                  v: 15.h,
+                  h: 110.w,
+                ),
+              ],
+            ),
           ),
         ),
       ),

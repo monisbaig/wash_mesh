@@ -20,12 +20,12 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hint,
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.r),
+          borderRadius: BorderRadius.circular(32.r),
           borderSide: const BorderSide(color: Colors.white),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.white),
-          borderRadius: BorderRadius.circular(20.r),
+          borderRadius: BorderRadius.circular(32.r),
         ),
         fillColor: Colors.white,
         filled: true,

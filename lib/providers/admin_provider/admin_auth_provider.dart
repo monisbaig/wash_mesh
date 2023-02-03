@@ -116,6 +116,26 @@ class AdminAuthProvider extends ChangeNotifier {
     }
   }
 
+  recreateAdminPassword({var newPassword}) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+    var url = Uri.parse('$baseURL/user/update/password?password=$newPassword');
+    var response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    notifyListeners();
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['message'];
+    } else {
+      return 'Registration Failed';
+    }
+  }
+
   updateAdminData(
       {var firstName, var lastName, var address, String? image}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
