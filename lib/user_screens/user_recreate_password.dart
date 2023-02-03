@@ -42,43 +42,45 @@ class _UserRecreatePasswordState extends State<UserRecreatePassword> {
     return CustomBackground(
       op: 0.1,
       ch: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 33.h),
-            const CustomLogo(),
-            SizedBox(height: 15.h),
-            Container(
-              alignment: Alignment.center,
-              child: Text(
-                'Re-Create Password',
-                style: TextStyle(
-                  fontSize: 30.sp,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 45.h, horizontal: 12.w),
+          child: Column(
+            children: [
+              SizedBox(height: 33.h),
+              const CustomLogo(),
+              SizedBox(height: 15.h),
+              Container(
+                alignment: Alignment.center,
+                child: Text(
+                  'Re-Create Password',
+                  style: TextStyle(
+                    fontSize: 30.sp,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 100.h),
-            Form(
-              key: formKey,
-              child: CustomTextField(
-                hint: 'Enter your new Password',
-                controller: newPassword,
-                validator: (value) {
-                  if (value!.isEmpty || value.length < 5) {
-                    return 'Please enter your password with at least 5 characters';
-                  }
-                  return null;
-                },
+              SizedBox(height: 100.h),
+              Form(
+                key: formKey,
+                child: CustomTextField(
+                  hint: 'Enter your new Password',
+                  controller: newPassword,
+                  validator: (value) {
+                    if (value!.isEmpty || value.length < 5) {
+                      return 'Please enter your password with at least 5 characters';
+                    }
+                    return null;
+                  },
+                ),
               ),
-            ),
-            SizedBox(height: 250.h),
-            CustomButton(
-              onTextPress: onPassChange,
-              buttonText: 'Okay',
-              v: 15.h,
-              h: 110.w,
-            ),
-            SizedBox(height: 33.h),
-          ],
+              SizedBox(height: 250.h),
+              CustomButton(
+                onTextPress: onPassChange,
+                buttonText: 'Okay',
+                v: 15.h,
+                h: 110.w,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -135,26 +135,26 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
         base64ImageF = '';
         base64ImageB = '';
 
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(
-        //     content: Text('${adminData.registerAdmin(vendor)}'),
-        //   ),
-        // );
-        //
-        // if (adminData.registerAdmin(vendor) ==
-        //     'Vendor Socialite Registered Successfully') {
-        //   Navigator.of(context).pushReplacement(
-        //     MaterialPageRoute(
-        //       builder: (context) => const AdminLoginForm(),
-        //     ),
-        //   );
-        // } else {
-        //   Navigator.of(context).pushReplacement(
-        //     MaterialPageRoute(
-        //       builder: (context) => const AdminRegisterScreen(),
-        //     ),
-        //   );
-        // }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${adminData.registerAdmin(vendor)}'),
+          ),
+        );
+
+        if (adminData.registerAdmin(vendor) ==
+            'Vendor Socialite Registered Successfully') {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const AdminLoginForm(),
+            ),
+          );
+        } else {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const AdminRegisterScreen(),
+            ),
+          );
+        }
       }
     } catch (e) {
       rethrow;

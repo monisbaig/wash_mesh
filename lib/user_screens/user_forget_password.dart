@@ -48,93 +48,95 @@ class _UserForgetPasswordState extends State<UserForgetPassword> {
       op: 0.1,
       ch: SingleChildScrollView(
         child: Center(
-          child: Column(
-            children: [
-              const CustomLogo(),
-              SizedBox(height: 15.h),
-              Container(
-                alignment: Alignment.center,
-                child: Text(
-                  'Forget Password',
-                  style: TextStyle(
-                    fontSize: 25.sp,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 45.h, horizontal: 12.w),
+            child: Column(
+              children: [
+                const CustomLogo(),
+                SizedBox(height: 15.h),
+                Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Forget Password',
+                    style: TextStyle(
+                      fontSize: 25.sp,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 20.h),
-              Image.asset('assets/images/pngegg.png'),
-              SizedBox(height: 30.h),
-              Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: TextFormField(
-                            controller: phoneCode,
-                            keyboardType: TextInputType.phone,
-                            decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20.r),
-                                borderSide:
-                                    const BorderSide(color: Colors.white),
+                SizedBox(height: 20.h),
+                Image.asset('assets/images/pngegg.png'),
+                SizedBox(height: 30.h),
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: TextFormField(
+                              controller: phoneCode,
+                              keyboardType: TextInputType.phone,
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  borderSide:
+                                      const BorderSide(color: Colors.white),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(20.r),
+                                ),
+                                fillColor: Colors.white,
+                                filled: true,
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.white),
-                                borderRadius: BorderRadius.circular(20.r),
-                              ),
-                              fillColor: Colors.white,
-                              filled: true,
                             ),
                           ),
-                        ),
-                        SizedBox(width: 5.w),
-                        Expanded(
-                          flex: 5,
-                          child: TextFormField(
-                            controller: viaPhone,
-                            keyboardType: TextInputType.phone,
-                            decoration: InputDecoration(
-                              hintText: '3331234567',
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20.r),
-                                borderSide:
-                                    const BorderSide(color: Colors.white),
+                          SizedBox(width: 5.w),
+                          Expanded(
+                            flex: 5,
+                            child: TextFormField(
+                              controller: viaPhone,
+                              keyboardType: TextInputType.phone,
+                              decoration: InputDecoration(
+                                hintText: '3331234567',
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  borderSide:
+                                      const BorderSide(color: Colors.white),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(20.r),
+                                ),
+                                fillColor: Colors.white,
+                                filled: true,
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.white),
-                                borderRadius: BorderRadius.circular(20.r),
-                              ),
-                              fillColor: Colors.white,
-                              filled: true,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter your phone number';
+                                }
+                                return null;
+                              },
                             ),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter your phone number';
-                              }
-                              return null;
-                            },
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10.h),
-                  ],
+                        ],
+                      ),
+                      SizedBox(height: 10.h),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 227.h),
-              CustomButton(
-                onTextPress: otpCode,
-                buttonText: 'OK',
-                v: 15.h,
-                h: 140.w,
-              ),
-              SizedBox(height: 20.h),
-            ],
+                SizedBox(height: 227.h),
+                CustomButton(
+                  onTextPress: otpCode,
+                  buttonText: 'OK',
+                  v: 15.h,
+                  h: 140.w,
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -64,51 +64,53 @@ class _OtpScreenState extends State<OtpScreen> {
     return CustomBackground(
       op: 0.1,
       ch: Center(
-        child: Column(
-          children: [
-            const CustomLogo(),
-            SizedBox(height: 15.h),
-            Container(
-              alignment: Alignment.center,
-              child: Text(
-                'O.T.P',
-                style: TextStyle(
-                  fontSize: 25.sp,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 45.h, horizontal: 12.w),
+          child: Column(
+            children: [
+              const CustomLogo(),
+              SizedBox(height: 15.h),
+              Container(
+                alignment: Alignment.center,
+                child: Text(
+                  'O.T.P',
+                  style: TextStyle(
+                    fontSize: 25.sp,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 15.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Pinput(
-                  focusedPinTheme: focusedPinTheme,
-                  submittedPinTheme: submittedPinTheme,
-                  pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
-                  length: 6,
-                  showCursor: true,
-                  onChanged: (value) {
-                    smsCode = value;
-                  },
-                )
-              ],
-            ),
-            SizedBox(height: 25.h),
-            Text(
-              'Resend Within 45s',
-              style: TextStyle(
-                fontSize: 17.sp,
+              SizedBox(height: 15.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Pinput(
+                    focusedPinTheme: focusedPinTheme,
+                    submittedPinTheme: submittedPinTheme,
+                    pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+                    length: 6,
+                    showCursor: true,
+                    onChanged: (value) {
+                      smsCode = value;
+                    },
+                  )
+                ],
               ),
-            ),
-            Expanded(child: SizedBox(height: 40.h)),
-            CustomButton(
-              onTextPress: otpVerify,
-              buttonText: 'VERIFY',
-              v: 15.h,
-              h: 120.w,
-            ),
-            SizedBox(height: 20.h),
-          ],
+              SizedBox(height: 25.h),
+              Text(
+                'Resend Within 45s',
+                style: TextStyle(
+                  fontSize: 17.sp,
+                ),
+              ),
+              Expanded(child: SizedBox(height: 40.h)),
+              CustomButton(
+                onTextPress: otpVerify,
+                buttonText: 'VERIFY',
+                v: 15.h,
+                h: 120.w,
+              ),
+            ],
+          ),
         ),
       ),
     );

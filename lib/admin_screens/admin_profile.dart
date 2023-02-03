@@ -159,100 +159,101 @@ class _AdminProfileState extends State<AdminProfile> {
       op: 0.1,
       ch: SingleChildScrollView(
         child: Center(
-          child: Column(
-            children: [
-              SizedBox(height: 33.h),
-              const CustomLogo(),
-              SizedBox(height: 15.h),
-              Container(
-                alignment: Alignment.center,
-                child: Text(
-                  'Vendor Profile',
-                  style: TextStyle(
-                    fontSize: 30.sp,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 45.h, horizontal: 12.w),
+            child: Column(
+              children: [
+                const CustomLogo(),
+                SizedBox(height: 15.h),
+                Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Vendor Profile',
+                    style: TextStyle(
+                      fontSize: 30.sp,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 10.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: profileImage,
-                    child: ClipOval(
-                      child: profileImg != null
-                          ? Image.file(
-                              profileImg!,
-                              width: 102.w,
-                              height: 108.h,
-                              fit: BoxFit.cover,
-                            )
-                          : Image.network(
-                              '$getImage',
-                              width: 102.w,
-                              height: 108.h,
-                              fit: BoxFit.cover,
-                            ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 30.h),
-              Form(
-                key: formKey,
-                child: Column(
+                SizedBox(height: 10.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CustomTextField(
-                      hint: 'First Name',
-                      controller: firstName,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your first name';
-                        }
-                        return null;
-                      },
+                    InkWell(
+                      onTap: profileImage,
+                      child: ClipOval(
+                        child: profileImg != null
+                            ? Image.file(
+                                profileImg!,
+                                width: 102.w,
+                                height: 108.h,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                '$getImage',
+                                width: 102.w,
+                                height: 108.h,
+                                fit: BoxFit.cover,
+                              ),
+                      ),
                     ),
-                    SizedBox(height: 10.h),
-                    CustomTextField(
-                      hint: 'Last Name',
-                      controller: lastName,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your last name';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomTextField(
-                      hint: 'Address',
-                      controller: address,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your address';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10.h),
                   ],
                 ),
-              ),
-              SizedBox(height: 50.h),
-              CustomButton(
-                onTextPress: onUpdateAdmin,
-                buttonText: 'Save Changes',
-                v: 15.h,
-                h: 90.w,
-              ),
-              CustomButton(
-                onTextPress: onUpdateImage,
-                buttonText: 'Image',
-                v: 15.h,
-                h: 90.w,
-              ),
-              SizedBox(height: 33.h),
-            ],
+                SizedBox(height: 30.h),
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      CustomTextField(
+                        hint: 'First Name',
+                        controller: firstName,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your first name';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10.h),
+                      CustomTextField(
+                        hint: 'Last Name',
+                        controller: lastName,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your last name';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10.h),
+                      CustomTextField(
+                        hint: 'Address',
+                        controller: address,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your address';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10.h),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 50.h),
+                CustomButton(
+                  onTextPress: onUpdateAdmin,
+                  buttonText: 'Save Changes',
+                  v: 15.h,
+                  h: 90.w,
+                ),
+                CustomButton(
+                  onTextPress: onUpdateImage,
+                  buttonText: 'Image',
+                  v: 15.h,
+                  h: 90.w,
+                ),
+              ],
+            ),
           ),
         ),
       ),

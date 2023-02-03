@@ -1,14 +1,10 @@
-import 'dart:ui';
-
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wash_mesh/user_screens/user_booking_screen.dart';
 import 'package:wash_mesh/user_screens/user_home_screen.dart';
 import 'package:wash_mesh/user_screens/user_settings.dart';
-import 'package:wash_mesh/user_screens/wash_book_screen.dart';
-import 'package:wash_mesh/user_screens/wash_category_screen.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
+import 'package:wash_mesh/widgets/wash_mesh_dialog.dart';
 
 class CustomNavigationBar extends StatefulWidget {
   const CustomNavigationBar({super.key});
@@ -20,7 +16,7 @@ class CustomNavigationBar extends StatefulWidget {
 class _CustomNavigationBarState extends State<CustomNavigationBar> {
   List pages = [
     UserBookingScreen(),
-    const WashCategory(),
+    const WashMeshDialog(),
     const UserHomeScreen(),
     const UserHomeScreen(),
     const UserSettings(),
@@ -33,57 +29,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
     });
   }
 
-  void _showCategory() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Colors.transparent,
-        content: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Column(
-            children: [
-              Text(
-                'Categories',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30.sp,
-                ),
-              ),
-              SizedBox(height: 280.h),
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const WashBookScreen(),
-                        ),
-                      );
-                    },
-                    child: Image.asset(
-                      'assets/images/wash.png',
-                      width: 130.w,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Image.asset(
-                      'assets/images/mesh.png',
-                      width: 130.w,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
+  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
