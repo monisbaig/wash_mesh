@@ -29,6 +29,8 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
   TextEditingController confirmPassword = TextEditingController();
   TextEditingController address = TextEditingController();
 
+  dynamic result;
+
   onRegister() async {
     final userData = Provider.of<UserAuthProvider>(context, listen: false);
     try {
@@ -53,25 +55,25 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
         confirmPassword.clear();
         address.clear();
 
-        // ScaffoldMessenger.of(context as BuildContext ).showSnackBar(
-        //   SnackBar(
-        //     content: Text('$result'),
-        //   ),
-        // );
+        ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+          SnackBar(
+            content: Text('$result'),
+          ),
+        );
 
-        // if (result == 'Registered Successfully') {
-        //   Navigator.of(context as BuildContext ).pushReplacement(
-        //     MaterialPageRoute(
-        //       builder: (context) => const UserLoginForm(),
-        //     ),
-        //   );
-        // } else {
-        //   Navigator.of(context  as BuildContext ).pushReplacement(
-        //     MaterialPageRoute(
-        //       builder: (context) => const UserRegistrationForm(),
-        //     ),
-        //   );
-        // }
+        if (result == 'Registered Successfully') {
+          Navigator.of(context as BuildContext).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const UserLoginForm(),
+            ),
+          );
+        } else {
+          Navigator.of(context as BuildContext).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const UserRegistrationForm(),
+            ),
+          );
+        }
       }
     } catch (e) {
       rethrow;
