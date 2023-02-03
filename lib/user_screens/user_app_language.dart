@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wash_mesh/widgets/custom_background.dart';
 
 import '../widgets/custom_logo.dart';
-import '../widgets/custom_navigation_bar.dart';
 
 class UserAppLanguage extends StatelessWidget {
   const UserAppLanguage({Key? key}) : super(key: key);
@@ -10,7 +10,7 @@ class UserAppLanguage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool? isChecked = false;
-    return CustomNavigationBar(
+    return CustomBackground(
       op: 0.1,
       ch: Column(
         children: [

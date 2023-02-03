@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/admin_screens/admin_login_form.dart';
 import 'package:wash_mesh/admin_screens/admin_profile.dart';
+import 'package:wash_mesh/widgets/custom_background.dart';
 
 import '../widgets/custom_colors.dart';
 import '../widgets/custom_logo.dart';
-import '../widgets/custom_navigation_bar_admin.dart';
 import 'admin_app_language.dart';
 import 'admin_change_password.dart';
 
@@ -15,7 +15,7 @@ class AdminSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomNavigationBarAdmin(
+    return CustomBackground(
       op: 0.1,
       ch: SingleChildScrollView(
         child: Column(

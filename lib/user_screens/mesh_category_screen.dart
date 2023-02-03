@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wash_mesh/widgets/custom_background.dart';
 
 import '../widgets/custom_logo.dart';
-import '../widgets/custom_navigation_bar.dart';
 
 class MeshCategory extends StatefulWidget {
   const MeshCategory({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class MeshCategory extends StatefulWidget {
 class _MeshCategoryState extends State<MeshCategory> {
   @override
   Widget build(BuildContext context) {
-    return CustomNavigationBar(
+    return CustomBackground(
       op: 0.1,
       ch: SafeArea(
         child: SingleChildScrollView(

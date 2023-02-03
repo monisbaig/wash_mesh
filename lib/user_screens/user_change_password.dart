@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_text_field.dart';
 
 import '../providers/user_provider/user_auth_provider.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_logo.dart';
-import '../widgets/custom_navigation_bar.dart';
 
 class UserChangePassword extends StatefulWidget {
   const UserChangePassword({Key? key}) : super(key: key);
@@ -39,7 +39,7 @@ class _UserChangePasswordState extends State<UserChangePassword> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomNavigationBar(
+    return CustomBackground(
       op: 0.1,
       ch: SingleChildScrollView(
         child: Column(

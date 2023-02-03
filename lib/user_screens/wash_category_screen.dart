@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
-import 'package:wash_mesh/widgets/custom_navigation_bar.dart';
 
 class WashCategory extends StatefulWidget {
   const WashCategory({Key? key}) : super(key: key);
@@ -13,7 +13,7 @@ class WashCategory extends StatefulWidget {
 class _WashCategoryState extends State<WashCategory> {
   @override
   Widget build(BuildContext context) {
-    return CustomNavigationBar(
+    return CustomBackground(
       op: 0.1,
       ch: SafeArea(
         child: SingleChildScrollView(

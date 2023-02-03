@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:wash_mesh/admin_screens/admin_home_screen.dart';
 import 'package:wash_mesh/user_screens/user_forget_password.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
+import 'package:wash_mesh/widgets/custom_navigation_bar_admin.dart';
 import 'package:wash_mesh/widgets/custom_text_field.dart';
 
 import '../providers/admin_provider/admin_auth_provider.dart';
@@ -43,7 +43,7 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
         if (result == 'Vendor Login Successfully!') {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => const AdminHomeScreen(),
+              builder: (context) => const CustomNavigationBarAdmin(),
             ),
           );
         } else {

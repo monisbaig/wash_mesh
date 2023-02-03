@@ -1,10 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wash_mesh/providers/admin_provider/place_model.dart';
 
+import '../../helpers/dp_helper.dart';
+import '../../helpers/location_helper.dart';
 import '../../models/admin_models/admin_registration_model.dart';
 
 class AdminAuthProvider extends ChangeNotifier {
@@ -141,7 +143,7 @@ class AdminAuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateAdminImage({File? image}) async {
+  updateAdminImage({dynamic image}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString('token');
     var jsonObject = {
@@ -163,5 +165,50 @@ class AdminAuthProvider extends ChangeNotifier {
       return jsonDecode(response.body)['message'];
     }
     notifyListeners();
+  }
+
+  List<PlaceModel> _items = [];
+
+  List<PlaceModel> get items {
+    return [..._items];
+  }
+
+  Future<void> fetchAndSetPlaces() async {
+    final dataList = await DBHelper.getData('user_places');
+    _items = dataList
+        .map((item) => PlaceModel(
+              id: item['id'],
+              location: PlaceLocation(
+                latitude: item['loc_lat'],
+                longitude: item['loc_lng'],
+                address: item['address'],
+              ),
+            ))
+        .toList();
+    notifyListeners();
+  }
+
+  Future<void> addPlace(
+    PlaceLocation pickedLocation,
+  ) async {
+    final address = await LocationHelper.getPlaceAddress(
+        pickedLocation.latitude!, pickedLocation.longitude!);
+    final updateLocation = PlaceLocation(
+      latitude: pickedLocation.latitude,
+      longitude: pickedLocation.longitude,
+      address: address,
+    );
+    final newPlace = PlaceModel(
+      id: DateTime.now().toString(),
+      location: updateLocation,
+    );
+    _items.add(newPlace);
+    notifyListeners();
+    DBHelper.insert('user_places', {
+      'id': newPlace.id,
+      'loc_lat': newPlace.location!.latitude,
+      'loc_lng': newPlace.location!.longitude,
+      'address': newPlace.location!.address,
+    });
   }
 }

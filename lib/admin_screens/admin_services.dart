@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 import 'package:wash_mesh/widgets/custom_multiselect.dart';
-import 'package:wash_mesh/widgets/custom_navigation_bar_admin.dart';
 
 import '../widgets/custom_logo.dart';
 
@@ -72,7 +72,7 @@ class _AdminServicesState extends State<AdminServices> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomNavigationBarAdmin(
+    return CustomBackground(
       op: 0.1,
       ch: SafeArea(
         child: SingleChildScrollView(

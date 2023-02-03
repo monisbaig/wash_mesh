@@ -5,17 +5,17 @@ import 'package:wash_mesh/user_screens/user_app_language.dart';
 import 'package:wash_mesh/user_screens/user_change_password.dart';
 import 'package:wash_mesh/user_screens/user_login_form.dart';
 import 'package:wash_mesh/user_screens/user_profile.dart';
+import 'package:wash_mesh/widgets/custom_background.dart';
 
 import '../widgets/custom_colors.dart';
 import '../widgets/custom_logo.dart';
-import '../widgets/custom_navigation_bar.dart';
 
 class UserSettings extends StatelessWidget {
   const UserSettings({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return CustomNavigationBar(
+    return CustomBackground(
       op: 0.1,
       ch: SingleChildScrollView(
         child: Column(

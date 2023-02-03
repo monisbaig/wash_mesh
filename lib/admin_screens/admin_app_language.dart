@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wash_mesh/widgets/custom_background.dart';
 
 import '../widgets/custom_logo.dart';
-import '../widgets/custom_navigation_bar_admin.dart';
 
 class AdminAppLanguage extends StatelessWidget {
   const AdminAppLanguage({Key? key}) : super(key: key);
@@ -10,8 +10,7 @@ class AdminAppLanguage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool? isChecked = false;
-    return CustomNavigationBarAdmin(
-      op: 0.1,
+    return CustomBackground(
       ch: Column(
         children: [
           SizedBox(height: 33.h),
@@ -74,6 +73,7 @@ class AdminAppLanguage extends StatelessWidget {
           ),
         ],
       ),
+      op: 0.1,
     );
   }
 }

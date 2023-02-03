@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/providers/auth_provider.dart';
 import 'package:wash_mesh/user_screens/wash_category_screen.dart';
+import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
-import 'package:wash_mesh/widgets/custom_navigation_bar.dart';
 
 import '../models/customer_registration_model.dart';
 import 'mesh_category_screen.dart';
@@ -38,7 +38,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomNavigationBar(
+    return CustomBackground(
       ch: SafeArea(
         child: SingleChildScrollView(
           child: Column(
