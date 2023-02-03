@@ -202,50 +202,52 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                             ),
                             SizedBox(height: 8.h),
                             Consumer<AdminAuthProvider>(
-                                builder: (context, locationData, _) {
-                              return Container(
-                                width: double.infinity,
-                                height: 54.h,
-                                decoration: BoxDecoration(
-                                  color: CustomColor().mainColor,
-                                  borderRadius: BorderRadius.circular(14.r),
-                                ),
-                                child: ListView.builder(
-                                  itemCount: locationData.items.length,
-                                  itemBuilder: (context, index) => Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Text(
-                                        locationData
-                                            .items.last.location!.address!
-                                            .substring(45),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 12.sp,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      IconButton(
-                                        onPressed: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const AddPlaceScreen(),
-                                            ),
-                                          );
-                                        },
-                                        icon: Icon(
-                                          Icons.my_location,
-                                          size: 28.sp,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
+                              builder: (context, locationData, _) {
+                                return Container(
+                                  width: double.infinity,
+                                  height: 54.h,
+                                  decoration: BoxDecoration(
+                                    color: CustomColor().mainColor,
+                                    borderRadius: BorderRadius.circular(14.r),
                                   ),
-                                ),
-                              );
-                            }),
+                                  child: ListView.builder(
+                                    itemCount: locationData.items.length,
+                                    itemBuilder: (context, index) => Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          locationData
+                                              .items.last.location!.address!
+                                              .substring(20),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 12.sp,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const AddPlaceScreen(),
+                                              ),
+                                            );
+                                          },
+                                          icon: Icon(
+                                            Icons.my_location,
+                                            size: 28.sp,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                             SizedBox(height: 8.h),
                             Row(
                               children: [
