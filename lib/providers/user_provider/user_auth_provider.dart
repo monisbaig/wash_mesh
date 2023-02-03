@@ -122,15 +122,23 @@ class UserAuthProvider extends ChangeNotifier {
   }
 
 
-  Future <List<Categoriesmodel>>Getcategories() async {
-    List<Categoriesmodel> list=[];
+  Future <List<WashCategoryModel>>Getcategories() async {
+    List<WashCategoryModel> list=[];
     final url =
     Uri.parse('$baseURL/wash/categories');
     final response = await http.get(url);
     if (response.statusCode == 200) {
+
+
+
       Map<String,dynamic> lst=jsonDecode(response.body);
-      list=Categoriesmodel.fromJson(lst) as List<Categoriesmodel>;
-      return list;
+
+      List<WashCategoryModel> list=[];
+      dynamic da=WashCategoryModel.fromJson(jsonDecode(response.body));
+      // print(da.data![0].name);
+
+
+      return da;
     } else {
       print(response.body);
       return list;

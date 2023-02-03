@@ -1,76 +1,87 @@
-class Categoriesmodel
-{
-  dynamic id;
+class WashCategoryModel {
+  dynamic status;
   dynamic message;
-  dynamic data;
+  List<Data>? data;
 
-  Categoriesmodel({this.id,this.message,this.data});
+  WashCategoryModel({this.status, this.message, this.data});
 
-  Categoriesmodel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+  WashCategoryModel.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    if (json['data'] != null) {
+      data = <Data>[];
+      json['data'].forEach((v) {
+        data!.add(Data.fromJson(v));
+
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
+    data['status'] = status;
     data['message'] = message;
     if (this.data != null) {
-      data['data'] = this.data!.toJson();
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
     return data;
   }
-
 }
 
 class Data {
   dynamic id;
   dynamic name;
   dynamic image;
-  dynamic cat_attribute;
+  List<CatAttribute>? catAttribute;
 
-  Data({this.id, this.name,this.image,this.cat_attribute});
+  Data({this.id, this.name, this.image, this.catAttribute});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     image = json['image'];
-    cat_attribute = json['cat_attribute'] != null ? Cat_attribute.fromJson(json['cat_attribute']) : null;
+    if (json['cat_attribute'] != null) {
+      catAttribute = <CatAttribute>[];
+      json['cat_attribute'].forEach((v) {
+        catAttribute!.add(CatAttribute.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-      data['name']=name;
-    data['image']=image  ;
-    if (cat_attribute != null) {
-      data['car_attribute'] = this.cat_attribute.toJson();
+    data['name'] = name;
+    data['image'] = image;
+    if (catAttribute != null) {
+      data['cat_attribute'] = catAttribute!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Cat_attribute {
+class CatAttribute {
   dynamic id;
-  dynamic attribute_id;
-  dynamic category_id;
-  dynamic attribute;
+  dynamic attributeId;
+  dynamic categoryId;
+  Attribute? attribute;
 
-  Cat_attribute({this.id, this.attribute_id,this.category_id,this.attribute});
+  CatAttribute({this.id, this.attributeId, this.categoryId, this.attribute});
 
-  Cat_attribute.fromJson(Map<String, dynamic> json) {
+  CatAttribute.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    attribute_id = json['attribute_id'];
-    category_id = json['category_id'];
-    attribute = json['attribute'] != null ? Attribute.fromJson(json['attribute']) : null;
+    attributeId = json['attribute_id'];
+    categoryId = json['category_id'];
+    attribute = json['attribute'] != null
+        ? Attribute.fromJson(json['attribute'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['attribute_id']=attribute_id;
-    data['category_id']=category_id  ;
+    data['attribute_id'] = attributeId;
+    data['category_id'] = categoryId;
     if (attribute != null) {
       data['attribute'] = attribute!.toJson();
     }
@@ -78,58 +89,59 @@ class Cat_attribute {
   }
 }
 
-
-
 class Attribute {
   dynamic id;
   dynamic name;
   dynamic type;
-  dynamic attribute_value;
+  List<AttributeValue>? attributeValue;
 
-  Attribute({this.id, this.name,this.type,this.attribute_value});
+  Attribute({this.id, this.name, this.type, this.attributeValue});
 
   Attribute.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     type = json['type'];
-    attribute_value = json['attribute_value'] ;
+    if (json['attribute_value'] != null) {
+      attributeValue = <AttributeValue>[];
+      json['attribute_value'].forEach((v) {
+        attributeValue!.add(AttributeValue.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['name']=name;
-    data['type']=type  ;
-    if (attribute_value != null) {
-      data['attribute_value'] = attribute_value!.toJson();
+    data['name'] = name;
+    data['type'] = type;
+    if (attributeValue != null) {
+      data['attribute_value'] = attributeValue!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Attribute_value {
+class AttributeValue {
   dynamic id;
+  dynamic attributeId;
   dynamic name;
-  dynamic attribute_id;
   dynamic order;
 
-  Attribute_value({this.id, this.name,this.attribute_id,this.order});
+  AttributeValue({this.id, this.attributeId, this.name, this.order});
 
-  Attribute_value.fromJson(Map<String, dynamic> json) {
+  AttributeValue.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    attributeId = json['attribute_id'];
     name = json['name'];
     order = json['order'];
-    attribute_id = json['attribute_id'] ;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['name']=name;
-    data['attribute_id']=attribute_id  ;
-    data['attribute_id'] = attribute_id;
+    data['attribute_id'] = attributeId;
+    data['name'] = name;
+    data['order'] = order;
     return data;
   }
 }
-
-

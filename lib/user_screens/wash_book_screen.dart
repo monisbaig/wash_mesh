@@ -18,7 +18,7 @@ class WashBookScreen extends StatefulWidget {
 }
 
 class _WashBookScreenState extends State<WashBookScreen> {
-  List<Categoriesmodel> catlst=[];
+  List<WashCategoryModel> catlst=[];
 
   @override
   void initState() {
