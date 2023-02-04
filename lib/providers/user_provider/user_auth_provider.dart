@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/models/user_models/Meshusermodel.dart';
+import 'package:wash_mesh/models/user_models/Place.dart';
 
 import '../../models/user_models/Categories.dart';
 import '../../models/user_models/user_registration_model.dart';
@@ -194,6 +195,7 @@ class UserAuthProvider extends ChangeNotifier {
 
 
 
+
   static Future <WashCategoryModel>getwashcategories() async {
     List<WashCategoryModel> list=[];
     final url =
@@ -213,6 +215,33 @@ class UserAuthProvider extends ChangeNotifier {
     }
 
   }
+
+
+
+
+  Future<placemodel> PlaceBooking(placemodel p) async {
+    final url = Uri.parse('$baseURL/user/order/place');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(p.toJson()),
+    );
+    try {
+      if (response.statusCode == 200) {
+        print(User.fromJson(jsonDecode(response.body)));
+        return placemodel.fromJson(jsonDecode(response.body));
+      }
+      notifyListeners();
+      return placemodel.fromJson(jsonDecode(response.body));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
 
 
 }
