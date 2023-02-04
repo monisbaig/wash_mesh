@@ -32,11 +32,11 @@ class WashMeshDialog extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>  WashBookScreen(),
-                        ),
-                      );
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) =>  WashBookScreen(),
+                      //   ),
+                      // );
                     },
                     child: Image.asset(
                       'assets/images/wash.png',

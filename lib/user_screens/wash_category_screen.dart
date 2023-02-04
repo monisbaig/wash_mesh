@@ -71,7 +71,7 @@ class _WashCategoryState extends State<WashCategory> {
                           return InkWell(
                             onTap: ()
                             {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WashBookScreen( ),));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WashBookScreen(snapshot.data!.data!.elementAt(index).catAttribute!.elementAt(index).id,snapshot.data!.data!.elementAt(index).catAttribute!.elementAt(index).attribute!.id!,snapshot.data!.data!.elementAt(index).catAttribute!.elementAt(index).attribute!.attributeValue!.elementAt(index).id)));
                             },
                             child: Column(
                               children: [

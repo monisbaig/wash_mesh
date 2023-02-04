@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+
+import 'package:wash_mesh/models/user_models/Place.dart';
 import 'package:wash_mesh/models/user_models/Categories.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
@@ -12,13 +14,15 @@ import '../widgets/custom_logo.dart';
 
 class WashBookScreen extends StatefulWidget {
   static late int type_id;
-  static late  Attribute attribute;
+  static late int att_id;
+  static late int att_val;
 
-  // WashBookScreen(int id, Attribute a)
-  // {
-  //   type_id=id;
-  //   attribute=a;
-  // }
+  WashBookScreen(int id, int a,int v)
+  {
+    type_id=id;
+    att_id=a;
+    att_val=v;
+  }
 
   @override
   State<WashBookScreen> createState() => _WashBookScreenState();
@@ -26,7 +30,7 @@ class WashBookScreen extends StatefulWidget {
 
 class _WashBookScreenState extends State<WashBookScreen> {
 
-
+  TextEditingController desp = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -133,6 +137,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                         borderRadius: BorderRadius.circular(15.r),
                       ),
                       child: TextField(
+                        controller: desp,
                         decoration: InputDecoration(
                           hintText: 'Description (Optional)',
                           hintStyle: TextStyle(
@@ -168,7 +173,14 @@ class _WashBookScreenState extends State<WashBookScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         CustomButton(
-                          onTextPress: () {},
+                          onTextPress: () {
+                            OrderAttribute ot=OrderAttribute(attributeId: WashBookScreen.att_id,attributeValue: WashBookScreen.att_val);
+                           List<OrderAttribute> lstot=[];
+                           lstot.add(ot);
+                            placemodel p= placemodel(amount: 300,description: desp.text,orderAttribute: lstot,typeId: WashBookScreen.type_id);
+
+
+                          },
                           buttonText: 'Book Now',
                           v: 11,
                           h: 15,
