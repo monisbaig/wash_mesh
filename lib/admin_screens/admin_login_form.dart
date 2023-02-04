@@ -9,7 +9,6 @@ import 'package:wash_mesh/widgets/custom_text_field.dart';
 
 import '../providers/admin_provider/admin_auth_provider.dart';
 import '../widgets/custom_navigation_bar_admin.dart';
-import 'admin_home_screen.dart';
 
 class AdminLoginForm extends StatefulWidget {
   const AdminLoginForm({Key? key}) : super(key: key);
@@ -140,12 +139,14 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
-                      onTap: () {
-                        Provider.of<AdminAuthProvider>(context, listen: false)
+                      onTap: () async {
+                        await Provider.of<AdminAuthProvider>(context,
+                                listen: false)
                             .signInWithGoogle();
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => const AdminHomeScreen(),
+                            builder: (context) =>
+                                const CustomNavigationBarAdmin(),
                           ),
                         );
                       },

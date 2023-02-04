@@ -54,7 +54,7 @@ class RegisterScreen extends StatelessWidget {
               },
               buttonText: 'Service Provider',
               v: 15.h,
-              h: 67.w,
+              h: 64.w,
             ),
             const Expanded(
               child: SizedBox(),

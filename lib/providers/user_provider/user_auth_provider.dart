@@ -122,15 +122,12 @@ class UserAuthProvider extends ChangeNotifier {
     }
   }
 
-
- static Future <Meshusermodel>Getmeshcategories() async {
-    List<Meshusermodel> list=[];
-    final url =
-    Uri.parse('$baseURL/mesh/categories');
+  static Future<Meshusermodel> Getmeshcategories() async {
+    List<Meshusermodel> list = [];
+    final url = Uri.parse('$baseURL/mesh/categories');
     final response = await http.get(url);
     if (response.statusCode == 200) {
-
-      Map<String,dynamic> lst=jsonDecode(response.body);
+      Map<String, dynamic> lst = jsonDecode(response.body);
 
       // List<WashCategoryModel> list=[];
       // list.add();
@@ -139,69 +136,58 @@ class UserAuthProvider extends ChangeNotifier {
     } else {
       return Meshusermodel();
     }
-
   }
 
-  static Future <List<String>>getmeshnames() async {
-    List<Meshusermodel> list=[];
-    List<String> str=[];
-    final url =
-    Uri.parse('$baseURL/mesh/categories');
+  static Future<List<String>> getmeshnames() async {
+    List<Meshusermodel> list = [];
+    List<String> str = [];
+    final url = Uri.parse('$baseURL/mesh/categories');
     final response = await http.get(url);
     if (response.statusCode == 200) {
-
-      Map<String,dynamic> lst=jsonDecode(response.body);
+      Map<String, dynamic> lst = jsonDecode(response.body);
 
       // List<WashCategoryModel> list=[];
       // list.add();
       // print(da.data![0].name);
-      List<String> str=[];
-      var dt=Meshusermodel.fromJson(jsonDecode(response.body));
-      List.generate(dt.data!.length, (index) => str.add(dt.data!.elementAt(index).name!));
+      List<String> str = [];
+      var dt = Meshusermodel.fromJson(jsonDecode(response.body));
+      List.generate(
+          dt.data!.length, (index) => str.add(dt.data!.elementAt(index).name!));
 
       return str;
     } else {
       return str;
     }
-
   }
 
-
-
-  static Future <List<String>>getwashnames() async {
-    List<WashCategoryModel> list=[];
-    List<String> str=[];
-    final url =
-    Uri.parse('$baseURL/wash/categories');
+  static Future<List<String>> getwashnames() async {
+    List<WashCategoryModel> list = [];
+    List<String> str = [];
+    final url = Uri.parse('$baseURL/wash/categories');
     final response = await http.get(url);
     if (response.statusCode == 200) {
-
-      Map<String,dynamic> lst=jsonDecode(response.body);
+      Map<String, dynamic> lst = jsonDecode(response.body);
 
       // List<WashCategoryModel> list=[];
       // list.add();
       // print(da.data![0].name);
-      List<String> str=[];
-      var dt=WashCategoryModel.fromJson(jsonDecode(response.body));
-      List.generate(dt.data!.length, (index) => str.add(dt.data!.elementAt(index).name!));
+      List<String> str = [];
+      var dt = WashCategoryModel.fromJson(jsonDecode(response.body));
+      List.generate(
+          dt.data!.length, (index) => str.add(dt.data!.elementAt(index).name!));
 
       return str;
     } else {
       return str;
     }
-
   }
 
-
-
-  static Future <WashCategoryModel>getwashcategories() async {
-    List<WashCategoryModel> list=[];
-    final url =
-    Uri.parse('$baseURL/wash/categories');
+  static Future<WashCategoryModel> getwashcategories() async {
+    List<WashCategoryModel> list = [];
+    final url = Uri.parse('$baseURL/wash/categories');
     final response = await http.get(url);
     if (response.statusCode == 200) {
-
-      Map<String,dynamic> lst=jsonDecode(response.body);
+      Map<String, dynamic> lst = jsonDecode(response.body);
 
       // List<WashCategoryModel> list=[];
       // list.add();
@@ -211,8 +197,5 @@ class UserAuthProvider extends ChangeNotifier {
       print(response.body);
       return WashCategoryModel();
     }
-
   }
-
-
 }

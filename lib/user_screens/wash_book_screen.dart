@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
-
 import 'package:wash_mesh/models/user_models/Place.dart';
-import 'package:wash_mesh/models/user_models/Categories.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 import 'package:wash_mesh/widgets/custom_dropdownbutton.dart';
 
-import '../providers/user_provider/user_auth_provider.dart';
 import '../widgets/custom_logo.dart';
 
 class WashBookScreen extends StatefulWidget {
@@ -17,11 +13,10 @@ class WashBookScreen extends StatefulWidget {
   static late int att_id;
   static late int att_val;
 
-  WashBookScreen(int id, int a,int v)
-  {
-    type_id=id;
-    att_id=a;
-    att_val=v;
+  WashBookScreen(int id, int a, int v) {
+    type_id = id;
+    att_id = a;
+    att_val = v;
   }
 
   @override
@@ -29,7 +24,6 @@ class WashBookScreen extends StatefulWidget {
 }
 
 class _WashBookScreenState extends State<WashBookScreen> {
-
   TextEditingController desp = TextEditingController();
 
   @override
@@ -174,12 +168,16 @@ class _WashBookScreenState extends State<WashBookScreen> {
                       children: [
                         CustomButton(
                           onTextPress: () {
-                            OrderAttribute ot=OrderAttribute(attributeId: WashBookScreen.att_id,attributeValue: WashBookScreen.att_val);
-                           List<OrderAttribute> lstot=[];
-                           lstot.add(ot);
-                            placemodel p= placemodel(amount: 300,description: desp.text,orderAttribute: lstot,typeId: WashBookScreen.type_id);
-
-
+                            OrderAttribute ot = OrderAttribute(
+                                attributeId: WashBookScreen.att_id,
+                                attributeValue: WashBookScreen.att_val);
+                            List<OrderAttribute> lstot = [];
+                            lstot.add(ot);
+                            placemodel p = placemodel(
+                                amount: 300,
+                                description: desp.text,
+                                orderAttribute: lstot,
+                                typeId: WashBookScreen.type_id);
                           },
                           buttonText: 'Book Now',
                           v: 11,

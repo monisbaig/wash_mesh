@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:wash_mesh/user_screens/user_home_screen.dart';
 import 'package:wash_mesh/user_screens/user_login_form.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
@@ -11,6 +10,7 @@ import 'package:wash_mesh/widgets/custom_text_field.dart';
 import '../models/user_models/user_registration_model.dart';
 import '../providers/admin_provider/admin_auth_provider.dart';
 import '../providers/user_provider/user_auth_provider.dart';
+import '../widgets/custom_navigation_bar.dart';
 
 class UserRegistrationForm extends StatefulWidget {
   const UserRegistrationForm({Key? key}) : super(key: key);
@@ -206,12 +206,13 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
-                      onTap: () {
-                        Provider.of<AdminAuthProvider>(context, listen: false)
+                      onTap: () async {
+                        await Provider.of<AdminAuthProvider>(context,
+                                listen: false)
                             .signInWithGoogle();
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => const UserHomeScreen(),
+                            builder: (context) => const CustomNavigationBar(),
                           ),
                         );
                       },

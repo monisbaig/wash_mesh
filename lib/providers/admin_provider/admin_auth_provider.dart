@@ -256,7 +256,12 @@ class AdminAuthProvider extends ChangeNotifier {
       idToken: gAuth.idToken,
     );
 
-    print(credential);
     return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  signOut() async {
+    final GoogleSignInAccount? gUser = await GoogleSignIn().signOut();
+    await FirebaseAuth.instance.signOut();
+    return gUser;
   }
 }

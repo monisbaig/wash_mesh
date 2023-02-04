@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/user_screens/user_forget_password.dart';
-import 'package:wash_mesh/user_screens/user_home_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
@@ -141,12 +140,13 @@ class _UserLoginFormState extends State<UserLoginForm> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
-                      onTap: () {
-                        Provider.of<AdminAuthProvider>(context, listen: false)
+                      onTap: () async {
+                        await Provider.of<AdminAuthProvider>(context,
+                                listen: false)
                             .signInWithGoogle();
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => const UserHomeScreen(),
+                            builder: (context) => const CustomNavigationBar(),
                           ),
                         );
                       },

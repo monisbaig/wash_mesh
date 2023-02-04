@@ -211,20 +211,21 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                     borderRadius: BorderRadius.circular(14.r),
                                   ),
                                   child: ListView.builder(
-                                    itemCount: locationData.items.length,
+                                    itemCount: 1,
                                     itemBuilder: (context, index) => Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          locationData
-                                              .items.last.location!.address!
-                                              .substring(20),
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 12.sp,
-                                            color: Colors.white,
+                                        Flexible(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              locationData.items.last.location!
+                                                  .address!,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 12.sp,
+                                                color: Colors.white,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                         IconButton(
@@ -247,6 +248,45 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                   ),
                                 );
                               },
+                            ),
+                            SizedBox(height: 8.h),
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const AddPlaceScreen(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                height: 50.h,
+                                decoration: BoxDecoration(
+                                  color: CustomColor().mainColor,
+                                  borderRadius: BorderRadius.circular(14.r),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(
+                                      'Get Location',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 20.sp,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    SizedBox(width: 60.w),
+                                    Icon(
+                                      Icons.save,
+                                      size: 28.sp,
+                                      color: Colors.white,
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                             SizedBox(height: 8.h),
                             Row(
