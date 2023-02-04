@@ -14,6 +14,7 @@ import 'package:wash_mesh/widgets/custom_logo.dart';
 
 import '../widgets/custom_colors.dart';
 import '../widgets/custom_text_field.dart';
+import 'admin_home_screen.dart';
 
 class AdminRegisterScreen extends StatefulWidget {
   const AdminRegisterScreen({Key? key}) : super(key: key);
@@ -528,14 +529,26 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                     const SizedBox(width: 10),
                   ],
                 ),
-                SizedBox(height: 35.h),
+                SizedBox(height: 20.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('assets/images/google-logo.png', height: 40.h),
-                    SizedBox(width: 16.w),
-                    Image.asset('assets/images/facebook-logo.png',
-                        height: 40.h),
+                    InkWell(
+                      onTap: () {
+                        Provider.of<AdminAuthProvider>(context, listen: false)
+                            .signInWithGoogle();
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const AdminHomeScreen(),
+                          ),
+                        );
+                      },
+                      child: Image.asset('assets/images/google-logo.png',
+                          height: 40.h),
+                    ),
+                    // SizedBox(width: 16.w),
+                    // Image.asset('assets/images/facebook-logo.png',
+                    //     height: 40.h),
                   ],
                 ),
                 SizedBox(height: 15.h),
