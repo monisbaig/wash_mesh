@@ -5,6 +5,8 @@ import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 import 'package:wash_mesh/widgets/custom_multiselect.dart';
 
+import '../models/user_models/Meshusermodel.dart';
+import '../providers/user_provider/user_auth_provider.dart';
 import '../widgets/custom_logo.dart';
 
 class AdminServices extends StatefulWidget {
@@ -18,20 +20,13 @@ class _AdminServicesState extends State<AdminServices> {
   List<String> _selectedWashItems = [];
   List<String> _selectedMeshItems = [];
 
-  void _showWashCategory() async {
-    final List<String> washItems = [
-      'Car Wash',
-      'Car Detailing',
-      'House Wash',
-      'Upholstery Cleaning',
-      'Water Tank Cleaning',
-      'Laundry',
-    ];
+  void _showWashCategory(snapshot) async {
+
 
     final List<String>? results = await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return CustomMultiSelect(items: washItems);
+        return CustomMultiSelect(items: snapshot);
       },
     );
 
@@ -42,24 +37,13 @@ class _AdminServicesState extends State<AdminServices> {
     }
   }
 
-  void _showMeshCategory() async {
-    final List<String> meshItems = [
-      'Electrician',
-      'Plumber',
-      'Carpenter',
-      'Painter',
-      'Mechanic',
-      'Labor',
-      'AC Expert',
-      'House Maid',
-      'Beauty & Healthcare',
-      'Gardner',
-    ];
+   _showMeshCategory( snapshot) async {
+
 
     final List<String>? results = await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return CustomMultiSelect(items: meshItems);
+        return CustomMultiSelect(items: snapshot);
       },
     );
 
@@ -69,6 +53,9 @@ class _AdminServicesState extends State<AdminServices> {
       });
     }
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +97,7 @@ class _AdminServicesState extends State<AdminServices> {
                     Wrap(
                       alignment: WrapAlignment.start,
                       spacing: 5,
-                      children: _selectedWashItems
+                      children: _selectedMeshItems
                           .map(
                             (e) => Chip(
                               backgroundColor: Colors.white,
@@ -125,7 +112,18 @@ class _AdminServicesState extends State<AdminServices> {
                     ),
                     SizedBox(height: 10.h),
                     CustomButton(
-                      onTextPress: _showWashCategory,
+                        onTextPress:() async {
+          // FutureBuilder<Meshusermodel>(
+          //   future: UserAuthProvider.Getmeshcategories(),
+          //   builder: (context, snapshot) {
+          //     return _showMeshCategory(snapshot.data!);
+          //   },
+          // );
+          List<String> str=[];
+          await UserAuthProvider.getwashnames().then((value) => str=value);
+          return _showMeshCategory(str.toList());
+
+          },
                       buttonText: 'Select Wash Service',
                       v: 15.h,
                       h: 20.w,
@@ -148,7 +146,7 @@ class _AdminServicesState extends State<AdminServices> {
                     Wrap(
                       alignment: WrapAlignment.start,
                       spacing: 5,
-                      children: _selectedMeshItems
+                      children: _selectedWashItems
                           .map(
                             (e) => Chip(
                               backgroundColor: Colors.white,
@@ -163,7 +161,19 @@ class _AdminServicesState extends State<AdminServices> {
                     ),
                     SizedBox(height: 10.h),
                     CustomButton(
-                      onTextPress: _showMeshCategory,
+                      onTextPress:() async {
+                        // FutureBuilder<Meshusermodel>(
+                        //   future: UserAuthProvider.Getmeshcategories(),
+                        //   builder: (context, snapshot) {
+                        //     return _showMeshCategory(snapshot.data!);
+                        //   },
+                        // );
+                        List<String> str=[];
+                        await UserAuthProvider.getmeshnames().then((value) => str=value);
+                        return _showWashCategory(str.toList());
+                       print(str.toString());
+                      },
+
                       buttonText: 'Select Mesh Service',
                       v: 15.h,
                       h: 20.w,

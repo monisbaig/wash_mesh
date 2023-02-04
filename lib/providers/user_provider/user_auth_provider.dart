@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wash_mesh/models/user_models/Meshusermodel.dart';
 
 import '../../models/user_models/Categories.dart';
 import '../../models/user_models/user_registration_model.dart';
@@ -122,28 +123,95 @@ class UserAuthProvider extends ChangeNotifier {
   }
 
 
-  Future <List<WashCategoryModel>>Getcategories() async {
+ static Future <Meshusermodel>Getmeshcategories() async {
+    List<Meshusermodel> list=[];
+    final url =
+    Uri.parse('$baseURL/mesh/categories');
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+
+      Map<String,dynamic> lst=jsonDecode(response.body);
+
+      // List<WashCategoryModel> list=[];
+      // list.add();
+      // print(da.data![0].name);
+      return Meshusermodel.fromJson(jsonDecode(response.body));
+    } else {
+      return Meshusermodel();
+    }
+
+  }
+
+  static Future <List<String>>getmeshnames() async {
+    List<Meshusermodel> list=[];
+    List<String> str=[];
+    final url =
+    Uri.parse('$baseURL/mesh/categories');
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+
+      Map<String,dynamic> lst=jsonDecode(response.body);
+
+      // List<WashCategoryModel> list=[];
+      // list.add();
+      // print(da.data![0].name);
+      List<String> str=[];
+      var dt=Meshusermodel.fromJson(jsonDecode(response.body));
+      List.generate(dt.data!.length, (index) => str.add(dt.data!.elementAt(index).name!));
+
+      return str;
+    } else {
+      return str;
+    }
+
+  }
+
+
+
+  static Future <List<String>>getwashnames() async {
+    List<WashCategoryModel> list=[];
+    List<String> str=[];
+    final url =
+    Uri.parse('$baseURL/wash/categories');
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+
+      Map<String,dynamic> lst=jsonDecode(response.body);
+
+      // List<WashCategoryModel> list=[];
+      // list.add();
+      // print(da.data![0].name);
+      List<String> str=[];
+      var dt=WashCategoryModel.fromJson(jsonDecode(response.body));
+      List.generate(dt.data!.length, (index) => str.add(dt.data!.elementAt(index).name!));
+
+      return str;
+    } else {
+      return str;
+    }
+
+  }
+
+
+
+  static Future <WashCategoryModel>getwashcategories() async {
     List<WashCategoryModel> list=[];
     final url =
     Uri.parse('$baseURL/wash/categories');
     final response = await http.get(url);
     if (response.statusCode == 200) {
 
-
-
       Map<String,dynamic> lst=jsonDecode(response.body);
 
-      List<WashCategoryModel> list=[];
-      dynamic da=WashCategoryModel.fromJson(jsonDecode(response.body));
+      // List<WashCategoryModel> list=[];
+      // list.add();
       // print(da.data![0].name);
-
-
-      return da;
+      return WashCategoryModel.fromJson(jsonDecode(response.body));
     } else {
       print(response.body);
-      return list;
+      return WashCategoryModel();
     }
-    notifyListeners();
+
   }
 
 

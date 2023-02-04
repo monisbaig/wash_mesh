@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wash_mesh/models/user_models/Meshusermodel.dart';
+import 'package:wash_mesh/providers/user_provider/user_auth_provider.dart';
+import 'package:wash_mesh/user_screens/wash_book_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 
 import '../widgets/custom_logo.dart';
@@ -18,7 +21,10 @@ class _MeshCategoryState extends State<MeshCategory> {
       op: 0.1,
       ch: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
+          child: FutureBuilder<Meshusermodel>(
+              future:UserAuthProvider.Getmeshcategories() ,
+        builder:(context,snapshot) {
+          return Padding(
             padding: EdgeInsets.symmetric(vertical: 45.h, horizontal: 12.w),
             child: Column(
               children: [
@@ -37,22 +43,28 @@ class _MeshCategoryState extends State<MeshCategory> {
                   height: 420.h,
                   child: GridView.builder(
                     gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
+                    const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
                     ),
-                    itemCount: 9,
+                    itemCount: snapshot.data!.data!.length,
                     itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          Image.asset(
-                            'assets/images/mechanic.png',
-                            fit: BoxFit.cover,
-                          ),
-                          SizedBox(height: 10.h),
-                          const Text('Mechanic'),
-                        ],
+                      return InkWell(
+                        onTap: ()
+                        {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => WashBookScreen( ),));
+                        },
+                        child: Column(
+                          children: [
+                            Image.network(
+                              snapshot.data!.data!.elementAt(index).image!,
+                              fit: BoxFit.cover,
+                            ),
+                            SizedBox(height: 10.h),
+                             Text(snapshot.data!.data!.elementAt(index).name!,),
+                          ],
+                        ),
                       );
                     },
                   ),
@@ -72,42 +84,32 @@ class _MeshCategoryState extends State<MeshCategory> {
                 SizedBox(height: 8.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        Image.asset(
-                          'assets/images/mechanic.png',
-                          fit: BoxFit.cover,
-                        ),
-                        SizedBox(height: 10.h),
-                        const Text('Ahmed'),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Image.asset(
-                          'assets/images/mechanic.png',
-                          fit: BoxFit.cover,
-                        ),
-                        SizedBox(height: 10.h),
-                        const Text('Ali'),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Image.asset(
-                          'assets/images/mechanic.png',
-                          fit: BoxFit.cover,
-                        ),
-                        SizedBox(height: 10.h),
-                        const Text('Husnain'),
-                      ],
-                    ),
-                  ],
+                  children: List.generate(3, (index) =>
+                    InkWell(
+                      onTap: ()
+                      {
+
+                      },
+                      child: Column(
+                        children: [
+                          Image.network(
+                          snapshot.data!.data!.elementAt(index).image!,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(height: 10.h),
+                           Text(snapshot.data!.data!.elementAt(index).name!,)
+                        ],
+                      ),
+                    )
+
+)
+
                 ),
               ],
             ),
-          ),
+          );
+        }
+          )
         ),
       ),
     );

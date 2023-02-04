@@ -11,30 +11,21 @@ import '../providers/user_provider/user_auth_provider.dart';
 import '../widgets/custom_logo.dart';
 
 class WashBookScreen extends StatefulWidget {
-  const WashBookScreen({Key? key}) : super(key: key);
+  static late int type_id;
+  static late  Attribute attribute;
+
+  // WashBookScreen(int id, Attribute a)
+  // {
+  //   type_id=id;
+  //   attribute=a;
+  // }
 
   @override
   State<WashBookScreen> createState() => _WashBookScreenState();
 }
 
 class _WashBookScreenState extends State<WashBookScreen> {
-  List<WashCategoryModel> catlst=[];
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    instance();
-  }
-
-
-  instance() async
-
-  {
-    final userData = Provider.of<UserAuthProvider>(context, listen: false);
-    await userData.Getcategories().then((value) => catlst=value);
-    print(catlst);
-  }
 
 
   @override

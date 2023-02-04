@@ -34,7 +34,7 @@ class WashMeshDialog extends StatelessWidget {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const WashBookScreen(),
+                          builder: (context) =>  WashBookScreen(),
                         ),
                       );
                     },
