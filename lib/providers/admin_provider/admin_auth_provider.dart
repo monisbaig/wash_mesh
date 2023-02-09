@@ -68,9 +68,10 @@ class AdminAuthProvider extends ChangeNotifier {
         print(jsonDecode(response.body));
       }
     } catch (e) {
-      'error';
+      print(jsonDecode(response.body));
     }
     notifyListeners();
+    print(jsonDecode(response.body));
     return Vendor.fromJson(jsonDecode(response.body));
   }
 

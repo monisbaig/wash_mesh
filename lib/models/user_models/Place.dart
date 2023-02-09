@@ -8,11 +8,11 @@ class placemodel {
 
   placemodel(
       {this.typeId,
-        this.amount,
-        this.serviceAt,
-        this.description,
-        this.orderAttribute,
-        this.picture});
+      this.amount,
+      this.serviceAt,
+      this.description,
+      this.orderAttribute,
+      this.picture});
 
   placemodel.fromJson(Map<String, dynamic> json) {
     typeId = json['type_id'];
@@ -22,23 +22,22 @@ class placemodel {
     if (json['order_attribute'] != null) {
       orderAttribute = <OrderAttribute>[];
       json['order_attribute'].forEach((v) {
-        orderAttribute!.add(new OrderAttribute.fromJson(v));
+        orderAttribute!.add(OrderAttribute.fromJson(v));
       });
     }
     picture = json['picture'].cast<String>();
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type_id'] = this.typeId;
-    data['amount'] = this.amount;
-    data['service_at'] = this.serviceAt;
-    data['description'] = this.description;
-    if (this.orderAttribute != null) {
-      data['order_attribute'] =
-          this.orderAttribute!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['type_id'] = typeId;
+    data['amount'] = amount;
+    data['service_at'] = serviceAt;
+    data['description'] = description;
+    if (orderAttribute != null) {
+      data['order_attribute'] = orderAttribute!.map((v) => v.toJson()).toList();
     }
-    data['picture'] = this.picture;
+    data['picture'] = picture;
     return data;
   }
 }
@@ -55,9 +54,9 @@ class OrderAttribute {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['attribute_id'] = this.attributeId;
-    data['attribute_value'] = this.attributeValue;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['attribute_id'] = attributeId;
+    data['attribute_value'] = attributeValue;
     return data;
   }
 }

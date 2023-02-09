@@ -42,45 +42,41 @@ class _AdminRecreatePasswordState extends State<AdminRecreatePassword> {
   Widget build(BuildContext context) {
     return CustomBackground(
       op: 0.1,
-      ch: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 45.h, horizontal: 12.w),
-          child: Column(
-            children: [
-              const CustomLogo(),
-              SizedBox(height: 15.h),
-              Container(
-                alignment: Alignment.center,
-                child: Text(
-                  'Re-Create Password',
-                  style: TextStyle(
-                    fontSize: 30.sp,
-                  ),
+      ch: Padding(
+        padding: EdgeInsets.symmetric(vertical: 45.h, horizontal: 12.w),
+        child: Column(
+          children: [
+            const CustomLogo(),
+            SizedBox(height: 15.h),
+            Container(
+              alignment: Alignment.center,
+              child: Text(
+                'Re-Create Password',
+                style: TextStyle(
+                  fontSize: 30.sp,
                 ),
               ),
-              SizedBox(height: 100.h),
-              Form(
-                key: formKey,
-                child: CustomTextField(
-                  hint: 'Enter your new Password',
-                  controller: newPassword,
-                  validator: (value) {
-                    if (value!.isEmpty || value.length < 5) {
-                      return 'Please enter your password with at least 5 characters';
-                    }
-                    return null;
-                  },
-                ),
+            ),
+            SizedBox(height: 100.h),
+            Form(
+              key: formKey,
+              child: CustomTextField(
+                hint: 'Enter your new Password',
+                controller: newPassword,
+                validator: (value) {
+                  if (value!.isEmpty || value.length < 5) {
+                    return 'Please enter your password with at least 5 characters';
+                  }
+                  return null;
+                },
               ),
-              SizedBox(height: 250.h),
-              CustomButton(
-                onTextPress: onPassChange,
-                buttonText: 'Okay',
-                v: 15.h,
-                h: 110.w,
-              ),
-            ],
-          ),
+            ),
+            Expanded(child: Container()),
+            CustomButton(
+              onTextPress: onPassChange,
+              buttonText: 'Okay',
+            ),
+          ],
         ),
       ),
     );

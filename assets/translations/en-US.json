@@ -7,6 +7,8 @@
     "lastName": "Last Name",
     "userName": "User Name",
     "phoneNo": "Phone No",
+    "emailPhone": "Email / Phone No",
+    "email": "Email",
     "cnicNo": "CNIC No",
     "password": "Password",
     "confirmPassword": "Confirm Password",
@@ -35,6 +37,9 @@
     "today": "Today's",
     "editProfile": "Edit Profile",
     "language": "App Language",
-    "changePassword": "App Language",
-    "about": "About"
+    "changePassword": "Change Password",
+    "about": "About",
+    "category": "Categories",
+    "used": "Frequently Used",
+    "newPassword": "Enter your new Password"
 }

@@ -13,8 +13,8 @@ class AdminAppLanguage extends StatefulWidget {
 }
 
 class _AdminAppLanguageState extends State<AdminAppLanguage> {
-  bool? isEnglish = false;
-  bool? isUrdu = false;
+  // bool? isEnglish = false;
+  // bool? isUrdu = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,35 +24,35 @@ class _AdminAppLanguageState extends State<AdminAppLanguage> {
         child: Column(
           children: [
             const CustomLogo(),
-            SizedBox(height: 15.h),
+            SizedBox(height: 20.h),
             Container(
               alignment: Alignment.center,
               child: Text(
-                'firstName'.tr(),
+                'language'.tr(),
                 style: TextStyle(
                   fontSize: 30.sp,
                 ),
               ),
             ),
-            SizedBox(height: 25.h),
+            SizedBox(height: 50.h),
             InkWell(
               onTap: () {
                 context.setLocale(const Locale('en', 'US'));
               },
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Checkbox(
-                    value: isEnglish,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isEnglish = value;
-                      });
-                    },
-                  ),
-                  SizedBox(width: 10.w),
+                  // Checkbox(
+                  //   value: isEnglish,
+                  //   onChanged: (bool? value) {
+                  //     setState(() {
+                  //       isEnglish = value;
+                  //     });
+                  //   },
+                  // ),
+                  // SizedBox(width: 10.w),
                   Text(
-                    'English',
+                    'Select English',
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
@@ -61,6 +61,7 @@ class _AdminAppLanguageState extends State<AdminAppLanguage> {
                 ],
               ),
             ),
+            SizedBox(height: 15.h),
             Padding(
               padding: const EdgeInsets.only(left: 15),
               child: SizedBox(
@@ -68,24 +69,25 @@ class _AdminAppLanguageState extends State<AdminAppLanguage> {
                 child: Divider(height: 10.h, thickness: 2),
               ),
             ),
+            SizedBox(height: 15.h),
             InkWell(
               onTap: () {
                 context.setLocale(const Locale('ur', 'PAK'));
               },
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Checkbox(
-                    value: isUrdu,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isUrdu = value;
-                      });
-                    },
-                  ),
-                  SizedBox(width: 26.w),
+                  // Checkbox(
+                  //   value: isUrdu,
+                  //   onChanged: (bool? value) {
+                  //     setState(() {
+                  //       isUrdu = value;
+                  //     });
+                  //   },
+                  // ),
+                  // SizedBox(width: 26.w),
                   Text(
-                    'Urdu',
+                    'Select Urdu',
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,

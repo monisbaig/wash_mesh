@@ -7,6 +7,8 @@
     "lastName": "آخری نام",
     "userName": "صارف نام",
     "phoneNo": "فون نمبر",
+    "emailPhone": "ای میل / فون نمبر",
+    "email": "ای میل",
     "cnicNo": "CNIC نمبر",
     "password": "پاس ورڈ",
     "confirmPassword": "پاس ورڈ کی تصدیق کریں",
@@ -17,8 +19,8 @@
     "female": "عورت",
     "alreadyAccount": "پہلے سے ہی ایک اکاؤنٹ ہے",
     "experienceCert": "تجربہ سرٹیفکیٹ",
-    "cnicFront": "شناختی کارڈ سامنے",
-    "cnicBack": "شناختی کارڈ پیچھے",
+    "cnicFront": "شناختی کارڈ Front",
+    "cnicBack": "شناختی کارڈ Back",
     "welcome": "خوش آمدید",
     "commission": "میرا کمیشن :RS 5",
     "location": "آپ کی جگہ",
@@ -36,5 +38,8 @@
     "editProfile": "پروفائل میں ترمیم کریں",
     "language": "ایپ کی زبان",
     "changePassword": "پاس ورڈ تبدیل کریں",
-    "about": "ہمارے بارے میں"
+    "about": "ہمارے بارے میں",
+    "category": "اقسام",
+    "used": "اکثر استعمال کیا جاتا ہے",
+    "newPassword": "اپنا نیا پاس ورڈ درج کریں۔"
 }

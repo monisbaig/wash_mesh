@@ -32,6 +32,11 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
   dynamic base64ImageExp;
   dynamic base64ImageF;
   dynamic base64ImageB;
+  dynamic selectedGender;
+  List gender = [
+    'Male',
+    'Female',
+  ];
 
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
@@ -43,7 +48,6 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
   TextEditingController experience = TextEditingController();
   TextEditingController code = TextEditingController();
   TextEditingController address = TextEditingController();
-  TextEditingController gender = TextEditingController();
 
   experienceCert() async {
     final ImagePicker picker = ImagePicker();
@@ -55,10 +59,11 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     if (imageFile == null) {
       return;
     }
-    cnicBack = File(imageFile.path);
+    expCert = File(imageFile.path);
     final imageByte = expCert!.readAsBytesSync();
     setState(() {
       base64ImageExp = "data:image/png;base64,${base64Encode(imageByte)}";
+      Navigator.of(context).pop();
     });
   }
 
@@ -72,10 +77,11 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     if (imageFile == null) {
       return;
     }
-    cnicBack = File(imageFile.path);
+    expCert = File(imageFile.path);
     final imageByte = expCert!.readAsBytesSync();
     setState(() {
       base64ImageExp = "data:image/png;base64,${base64Encode(imageByte)}";
+      Navigator.of(context).pop();
     });
   }
 
@@ -89,10 +95,11 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     if (imageFile == null) {
       return;
     }
-    cnicBack = File(imageFile.path);
+    cnicFront = File(imageFile.path);
     final imageByte = cnicFront!.readAsBytesSync();
     setState(() {
       base64ImageF = "data:image/png;base64,${base64Encode(imageByte)}";
+      Navigator.of(context).pop();
     });
   }
 
@@ -106,10 +113,11 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     if (imageFile == null) {
       return;
     }
-    cnicBack = File(imageFile.path);
+    cnicFront = File(imageFile.path);
     final imageByte = cnicFront!.readAsBytesSync();
     setState(() {
       base64ImageF = "data:image/png;base64,${base64Encode(imageByte)}";
+      Navigator.of(context).pop();
     });
   }
 
@@ -126,6 +134,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     final imageByte = cnicBack!.readAsBytesSync();
     setState(() {
       base64ImageB = "data:image/png;base64,${base64Encode(imageByte)}";
+      Navigator.of(context).pop();
     });
   }
 
@@ -142,6 +151,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     final imageByte = cnicBack!.readAsBytesSync();
     setState(() {
       base64ImageB = "data:image/png;base64,${base64Encode(imageByte)}";
+      Navigator.of(context).pop();
     });
   }
 
@@ -151,7 +161,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
       final isValid = formKey.currentState!.validate();
       if (isValid) {
         VendorDetails vendorDetails = VendorDetails(
-          gender: gender.text,
+          gender: gender.indexOf(selectedGender).toString(),
           experience: experience.text,
           cnic: cnicNo.text,
           experienceCertImg: base64ImageExp,
@@ -213,7 +223,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                 Container(
                   alignment: Alignment.center,
                   child: Text(
-                    'serviceProvider'.tr(),
+                    'Registration Form',
                     style: TextStyle(
                       fontSize: 25.sp,
                     ),
@@ -356,19 +366,54 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                         },
                       ),
                       SizedBox(height: 10.h),
-                      CustomTextField(
-                        hint: '1 for male, 2 for female',
-                        controller: gender,
-                        suffixIcon: const Icon(
-                          Icons.star,
-                          size: 20,
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(32.r),
                         ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your gender';
-                          }
-                          return null;
-                        },
+                        child: DropdownButtonFormField<String>(
+                          value: selectedGender,
+                          hint: const Text(
+                            'Gender',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Please select your gender';
+                            }
+                            return null;
+                          },
+                          items: gender
+                              .map((e) => DropdownMenuItem<String>(
+                                    value: e,
+                                    child: Text(e),
+                                  ))
+                              .toList(),
+                          borderRadius: BorderRadius.circular(32.r),
+                          onChanged: (String? value) {
+                            selectedGender = value!;
+                          },
+                          decoration: InputDecoration(
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(32.r),
+                              borderSide: const BorderSide(color: Colors.white),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(32.r),
+                              borderSide: const BorderSide(color: Colors.white),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(32.r),
+                              borderSide: const BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(32.r),
+                            ),
+                            fillColor: Colors.white,
+                            filled: true,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -658,9 +703,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                 ),
                 CustomButton(
                   onTextPress: isChecked == true ? onRegister : null,
-                  buttonText: 'signUp'.tr(),
-                  v: 15.h,
-                  h: 110.w,
+                  buttonText: 'SIGN UP',
                 ),
               ],
             ),

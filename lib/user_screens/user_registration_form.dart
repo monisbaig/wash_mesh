@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,11 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
   TextEditingController address = TextEditingController();
+  dynamic selectedGender;
+  List gender = [
+    'Male',
+    'Female',
+  ];
 
   onRegister() async {
     final userData = Provider.of<UserAuthProvider>(context, listen: false);
@@ -107,7 +113,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                   child: Column(
                     children: [
                       CustomTextField(
-                        hint: 'First Name',
+                        hint: 'firstName'.tr(),
                         suffixIcon: const Icon(
                           Icons.star,
                           size: 20,
@@ -122,7 +128,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'Last Name',
+                        hint: 'lastName'.tr(),
                         suffixIcon: const Icon(
                           Icons.star,
                           size: 20,
@@ -137,7 +143,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'Email',
+                        hint: 'email'.tr(),
                         suffixIcon: const Icon(
                           Icons.star,
                           size: 20,
@@ -152,12 +158,12 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'Phone No',
+                        hint: 'phoneNo'.tr(),
                         controller: phoneNo,
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'Password',
+                        hint: 'password'.tr(),
                         suffixIcon: const Icon(
                           Icons.star,
                           size: 20,
@@ -172,7 +178,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'Confirm Password',
+                        hint: 'confirmPassword'.tr(),
                         suffixIcon: const Icon(
                           Icons.star,
                           size: 20,
@@ -189,7 +195,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'Address',
+                        hint: 'address'.tr(),
                         suffixIcon: const Icon(
                           Icons.star,
                           size: 20,
@@ -201,6 +207,56 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                           }
                           return null;
                         },
+                      ),
+                      SizedBox(height: 10.h),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(32.r),
+                        ),
+                        child: DropdownButtonFormField<String>(
+                          value: selectedGender,
+                          hint: const Text(
+                            'Gender',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Please select your gender';
+                            }
+                            return null;
+                          },
+                          items: gender
+                              .map((e) => DropdownMenuItem<String>(
+                                    value: e,
+                                    child: Text(e),
+                                  ))
+                              .toList(),
+                          borderRadius: BorderRadius.circular(32.r),
+                          onChanged: (String? value) {
+                            selectedGender = value!;
+                          },
+                          decoration: InputDecoration(
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(32.r),
+                              borderSide: const BorderSide(color: Colors.white),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(32.r),
+                              borderSide: const BorderSide(color: Colors.white),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(32.r),
+                              borderSide: const BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(32.r),
+                            ),
+                            fillColor: Colors.white,
+                            filled: true,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -215,7 +271,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                     );
                   },
                   child: Text(
-                    'Already have an account',
+                    'alreadyAccount'.tr(),
                     style: TextStyle(fontSize: 20.sp),
                   ),
                 ),
@@ -276,8 +332,6 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                 CustomButton(
                   onTextPress: isChecked == true ? onRegister : null,
                   buttonText: 'SIGN UP',
-                  v: 15.h,
-                  h: 110.w,
                 ),
               ],
             ),

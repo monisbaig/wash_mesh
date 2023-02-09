@@ -117,8 +117,6 @@ class _AdminServicesState extends State<AdminServices> {
                         return _showMeshCategory(str.toList());
                       },
                       buttonText: 'Select Wash Service',
-                      v: 15.h,
-                      h: 20.w,
                     ),
                   ],
                 ),
@@ -167,8 +165,6 @@ class _AdminServicesState extends State<AdminServices> {
                         print(str.toString());
                       },
                       buttonText: 'Select Mesh Service',
-                      v: 15.h,
-                      h: 20.w,
                     ),
                   ],
                 ),

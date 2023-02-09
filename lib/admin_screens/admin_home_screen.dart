@@ -81,7 +81,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                             const CustomLogo(),
                             SizedBox(height: 8.h),
                             Text(
-                              'dashboard'.tr(),
+                              'Dashboard',
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 25.sp,
@@ -160,6 +160,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                     ),
                                     SizedBox(width: 100.w),
                                     Switch(
+                                      activeColor: Colors.white,
                                       value: isOn,
                                       onChanged: (value) {
                                         setState(() {
