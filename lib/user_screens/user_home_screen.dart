@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wash_mesh/user_screens/wash_category_screen.dart';
@@ -43,14 +44,14 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Hello, Ahmed',
+                          '${'hello'.tr()}, Ahmed',
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 26.sp,
                           ),
                         ),
                         Text(
-                          'Welcome back!',
+                          'welcome'.tr(),
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 18.sp,
@@ -107,7 +108,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          'Location',
+                          'location'.tr(),
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 20.sp,
@@ -128,7 +129,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                 Row(
                   children: [
                     Text(
-                      'Categories',
+                      'category'.tr(),
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 30.sp,
@@ -174,7 +175,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                 Row(
                   children: [
                     Text(
-                      'Frequently Used',
+                      'used'.tr(),
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 30.sp,

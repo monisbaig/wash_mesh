@@ -102,12 +102,10 @@ class _OtpScreenState extends State<OtpScreen> {
                   fontSize: 17.sp,
                 ),
               ),
-              Expanded(child: SizedBox(height: 40.h)),
+              Expanded(child: Container()),
               CustomButton(
                 onTextPress: otpVerify,
                 buttonText: 'VERIFY',
-                v: 15.h,
-                h: 120.w,
               ),
             ],
           ),

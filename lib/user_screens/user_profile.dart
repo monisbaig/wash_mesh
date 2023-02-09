@@ -179,8 +179,6 @@ class _UserProfileState extends State<UserProfile> {
                 CustomButton(
                   onTextPress: onUpdateUser,
                   buttonText: 'Save Changes',
-                  v: 15.h,
-                  h: 90.w,
                 ),
               ],
             ),

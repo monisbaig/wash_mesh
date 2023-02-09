@@ -302,14 +302,10 @@ class _WashBookScreenState extends State<WashBookScreen> {
                                 .placewashorder(p);
                           },
                           buttonText: 'Book Now',
-                          v: 11,
-                          h: 15,
                         ),
                         CustomButton(
                           onTextPress: () {},
                           buttonText: 'Book Later',
-                          v: 11,
-                          h: 15,
                         ),
                       ],
                     ),

@@ -41,8 +41,6 @@ class RegisterScreen extends StatelessWidget {
                 );
               },
               buttonText: 'customer'.tr(),
-              v: 15.h,
-              h: 100.w,
             ),
             SizedBox(height: 30.h),
             CustomButton(
@@ -54,8 +52,6 @@ class RegisterScreen extends StatelessWidget {
                 );
               },
               buttonText: 'serviceProvider'.tr(),
-              v: 15.h,
-              h: 64.w,
             ),
             const Expanded(
               child: SizedBox(),

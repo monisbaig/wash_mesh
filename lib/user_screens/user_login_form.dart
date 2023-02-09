@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -65,134 +66,130 @@ class _UserLoginFormState extends State<UserLoginForm> {
   Widget build(BuildContext context) {
     return CustomBackground(
       op: 0.1,
-      ch: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 45.h, horizontal: 15.w),
-            child: Column(
-              children: [
-                const CustomLogo(),
-                SizedBox(height: 15.h),
-                Container(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Log In',
-                    style: TextStyle(
-                      fontSize: 25.sp,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20.h),
-                Image.asset('assets/images/pngegg.png'),
-                SizedBox(height: 30.h),
-                Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 8.h),
-                      CustomTextField(
-                        hint: 'Email / Phone No',
-                        controller: emailPhone,
-                        validator: (value) {
-                          if (value!.isEmpty || !value.contains('@')) {
-                            return 'Please enter your email address';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 8.h),
-                      CustomTextField(
-                        hint: 'Password',
-                        controller: password,
-                        validator: (value) {
-                          if (value!.isEmpty || value.length < 5) {
-                            return 'Please enter your password with at least 5 characters';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 8.h),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 5.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const UserRegistrationForm(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Signup Now',
-                        style: TextStyle(
-                          fontSize: 15.sp,
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const UserForgetPassword(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Forget Password',
-                        style: TextStyle(
-                          fontSize: 15.sp,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () async {
-                        await Provider.of<AdminAuthProvider>(context,
-                                listen: false)
-                            .signInWithGoogle();
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => const CustomNavigationBar(),
-                          ),
-                        );
-                      },
-                      child: Image.asset('assets/images/google-logo.png',
-                          height: 40.h),
-                    ),
-                    // SizedBox(width: 16.w),
-                    // InkWell(
-                    //   onTap: () {},
-                    //   child: Image.asset('assets/images/facebook-logo.png',
-                    //       height: 40.h),
-                    // ),
-                  ],
-                ),
-                SizedBox(height: 20.h),
-                Text(
-                  'Continue with',
+      ch: Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 45.h, horizontal: 15.w),
+          child: Column(
+            children: [
+              const CustomLogo(),
+              SizedBox(height: 15.h),
+              Container(
+                alignment: Alignment.center,
+                child: Text(
+                  'Log In',
                   style: TextStyle(
-                    fontSize: 20.sp,
+                    fontSize: 25.sp,
                   ),
                 ),
-                SizedBox(height: 40.h),
-                CustomButton(
-                  onTextPress: onSubmit,
-                  buttonText: 'LOG IN',
-                  v: 15.h,
-                  h: 120.w,
+              ),
+              SizedBox(height: 20.h),
+              Image.asset('assets/images/pngegg.png'),
+              SizedBox(height: 30.h),
+              Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    SizedBox(height: 8.h),
+                    CustomTextField(
+                      hint: 'emailPhone'.tr(),
+                      controller: emailPhone,
+                      validator: (value) {
+                        if (value!.isEmpty || !value.contains('@')) {
+                          return 'Please enter your email address';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 8.h),
+                    CustomTextField(
+                      hint: 'password'.tr(),
+                      controller: password,
+                      validator: (value) {
+                        if (value!.isEmpty || value.length < 5) {
+                          return 'Please enter your password with at least 5 characters';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 8.h),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              SizedBox(height: 5.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const UserRegistrationForm(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Signup Now',
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const UserForgetPassword(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Forget Password',
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      await Provider.of<AdminAuthProvider>(context,
+                              listen: false)
+                          .signInWithGoogle();
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => const CustomNavigationBar(),
+                        ),
+                      );
+                    },
+                    child: Image.asset('assets/images/google-logo.png',
+                        height: 40.h),
+                  ),
+                  // SizedBox(width: 16.w),
+                  // InkWell(
+                  //   onTap: () {},
+                  //   child: Image.asset('assets/images/facebook-logo.png',
+                  //       height: 40.h),
+                  // ),
+                ],
+              ),
+              SizedBox(height: 20.h),
+              Text(
+                'Continue with',
+                style: TextStyle(
+                  fontSize: 20.sp,
+                ),
+              ),
+              Expanded(child: Container()),
+              CustomButton(
+                onTextPress: onSubmit,
+                buttonText: 'LOG IN',
+              ),
+            ],
           ),
         ),
       ),

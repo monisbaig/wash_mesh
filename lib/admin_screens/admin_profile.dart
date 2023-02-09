@@ -243,15 +243,11 @@ class _AdminProfileState extends State<AdminProfile> {
                 CustomButton(
                   onTextPress: onUpdateAdmin,
                   buttonText: 'Save Changes',
-                  v: 15.h,
-                  h: 90.w,
                 ),
                 SizedBox(height: 20.h),
                 CustomButton(
                   onTextPress: onUpdateImage,
                   buttonText: 'Save Image',
-                  v: 15.h,
-                  h: 105.w,
                 ),
               ],
             ),

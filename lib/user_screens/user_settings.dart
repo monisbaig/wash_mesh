@@ -1,10 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wash_mesh/register_screen.dart';
 import 'package:wash_mesh/user_screens/user_app_language.dart';
 import 'package:wash_mesh/user_screens/user_change_password.dart';
-import 'package:wash_mesh/user_screens/user_login_form.dart';
 import 'package:wash_mesh/user_screens/user_profile.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 
@@ -12,9 +13,14 @@ import '../providers/admin_provider/admin_auth_provider.dart';
 import '../widgets/custom_colors.dart';
 import '../widgets/custom_logo.dart';
 
-class UserSettings extends StatelessWidget {
+class UserSettings extends StatefulWidget {
   const UserSettings({super.key});
 
+  @override
+  State<UserSettings> createState() => _UserSettingsState();
+}
+
+class _UserSettingsState extends State<UserSettings> {
   @override
   Widget build(BuildContext context) {
     return CustomBackground(
@@ -72,7 +78,7 @@ class UserSettings extends StatelessWidget {
                           color: Colors.white,
                         ),
                         Text(
-                          'Edit Profile',
+                          'editProfile'.tr(),
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 22.sp,
@@ -116,7 +122,7 @@ class UserSettings extends StatelessWidget {
                           color: Colors.white,
                         ),
                         Text(
-                          'App Language',
+                          'language'.tr(),
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 22.sp,
@@ -160,7 +166,7 @@ class UserSettings extends StatelessWidget {
                           color: Colors.white,
                         ),
                         Text(
-                          'Change Password',
+                          'changePassword'.tr(),
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 22.sp,
@@ -198,7 +204,7 @@ class UserSettings extends StatelessWidget {
                           color: Colors.white,
                         ),
                         Text(
-                          'About',
+                          'about'.tr(),
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 22.sp,
@@ -220,10 +226,11 @@ class UserSettings extends StatelessWidget {
                 onTap: () async {
                   await Provider.of<AdminAuthProvider>(context, listen: false)
                       .signOut();
-                  Navigator.of(context).pushReplacement(
+                  Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
-                      builder: (context) => const UserLoginForm(),
+                      builder: (context) => const RegisterScreen(),
                     ),
+                    (route) => false,
                   );
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
