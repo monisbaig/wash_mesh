@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:wash_mesh/models/user_models/Categories.dart';
+import 'package:wash_mesh/user_screens/wash_book_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
 
+import '../models/user_models/Categories.dart' as um;
 import '../providers/user_provider/user_auth_provider.dart';
 
 class WashCategory extends StatefulWidget {
@@ -15,7 +16,7 @@ class WashCategory extends StatefulWidget {
 }
 
 class _WashCategoryState extends State<WashCategory> {
-  List<WashCategoryModel> catlst = [];
+  List<um.WashCategoryModel> catlst = [];
 
   @override
   void initState() {
@@ -30,13 +31,14 @@ class _WashCategoryState extends State<WashCategory> {
     userData = Provider.of<UserAuthProvider>(context, listen: false);
   }
 
+  final List<um.WashCategoryModel> _data = [];
   @override
   Widget build(BuildContext context) {
     return CustomBackground(
       op: 0.1,
       ch: SafeArea(
         child: SingleChildScrollView(
-          child: FutureBuilder<WashCategoryModel>(
+          child: FutureBuilder<um.WashCategoryModel>(
               future: UserAuthProvider.getwashcategories(),
               builder: (context, snapshot) {
                 return snapshot.connectionState == ConnectionState.waiting
@@ -74,52 +76,18 @@ class _WashCategoryState extends State<WashCategory> {
                                 itemCount: snapshot.data!.data!.length,
                                 itemBuilder: (context, index) {
                                   return InkWell(
-                                    onTap: () {
-                                      print(snapshot.data!.data!
-                                          .elementAt(index)
-                                          .catAttribute!
-                                          .elementAt(index)
-                                          .id);
-                                      print(snapshot.data!.data!
-                                          .elementAt(index)
-                                          .catAttribute!
-                                          .elementAt(index)
-                                          .attribute!
-                                          .id);
-                                      print(snapshot.data!.data!
-                                          .elementAt(index)
-                                          .catAttribute!
-                                          .elementAt(index)
-                                          .attribute!
-                                          .attributeValue!
-                                          .elementAt(index)
-                                          .id);
-
-                                      // Navigator.of(context).push(
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) => WashBookScreen(
-                                      //       snapshot.data!.data!
-                                      //           .elementAt(index)
-                                      //           .catAttribute!
-                                      //           .elementAt(index)
-                                      //           .id,
-                                      //       snapshot.data!.data!
-                                      //           .elementAt(index)
-                                      //           .catAttribute!
-                                      //           .elementAt(index)
-                                      //           .attribute!
-                                      //           .id!,
-                                      //       snapshot.data!.data!
-                                      //           .elementAt(index)
-                                      //           .catAttribute!
-                                      //           .elementAt(index)
-                                      //           .attribute!
-                                      //           .attributeValue!
-                                      //           .elementAt(index)
-                                      //           .id,
-                                      //     ),
-                                      //   ),
-                                      // );
+                                    onTap: () async {
+                                      // .attribute!
+                                      // .attributeValue!
+                                      // .elementAt(index)
+                                      // .id);
+                                      List<um.Data> data = snapshot.data!.data!;
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              WashBookScreen(data),
+                                        ),
+                                      );
                                     },
                                     child: Column(
                                       children: [
