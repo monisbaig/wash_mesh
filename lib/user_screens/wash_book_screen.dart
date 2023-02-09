@@ -5,18 +5,15 @@ import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 import 'package:wash_mesh/widgets/custom_dropdownbutton.dart';
-
+import '../../models/user_models/Categories.dart' as um;
 import '../widgets/custom_logo.dart';
 
 class WashBookScreen extends StatefulWidget {
-  static late int type_id;
-  static late int att_id;
-  static late int att_val;
+  static late List<um.Data> data;
 
-  WashBookScreen(int id, int a, int v) {
-    type_id = id;
-    att_id = a;
-    att_val = v;
+  WashBookScreen(List<um.Data> d) {
+    data = d;
+    print(data);
   }
 
   @override
@@ -25,6 +22,48 @@ class WashBookScreen extends StatefulWidget {
 
 class _WashBookScreenState extends State<WashBookScreen> {
   TextEditingController desp = TextEditingController();
+  List<String> _catname = [];
+  List<String> _carname = [];
+  String? catname;
+  String? carname;
+  int _catid = 0;
+  int _att_id = 0;
+  int _att_val = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    for (int i = 0; i < WashBookScreen.data.length; i++) {
+      _catname.add(WashBookScreen.data[i].name);
+      for (int j = 0;
+          j < WashBookScreen.data.elementAt(i).catAttribute!.length;
+          j++) {
+        for (int k = 0;
+            k <
+                WashBookScreen.data
+                    .elementAt(i)
+                    .catAttribute!
+                    .elementAt(j)
+                    .attribute!
+                    .attributeValue!
+                    .length;
+            k++) {
+          _carname.add(WashBookScreen.data
+              .elementAt(i)
+              .catAttribute!
+              .elementAt(j)
+              .attribute!
+              .attributeValue!
+              .elementAt(k)
+              .name);
+        }
+      }
+      setState(() {});
+    }
+
+    catname = _catname.first;
+    carname = _carname.first;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,18 +87,52 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   ],
                 ),
                 SizedBox(height: 10.h),
-                CustomDropdownButton(
-                  heading: 'Select your desired category',
-                  selectColor: CustomColor().mainColor,
-                  textColor: Colors.white,
-                  dropDownText: 'Car Wash',
+                DropdownButton<String>(
+                  value: catname,
+                  icon: const Icon(Icons.arrow_downward),
+                  elevation: 16,
+                  style: const TextStyle(color: Colors.deepPurple),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.deepPurpleAccent,
+                  ),
+                  onChanged: (String? value) {
+                    // This is called when the user selects an item.
+                    setState(() {
+                      _catid = _catname.indexOf(value!);
+                      catname = value;
+                    });
+                  },
+                  items: _catname.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
                 ),
                 SizedBox(height: 20.h),
-                const CustomDropdownButton(
-                  heading: 'Type of Car*',
-                  selectColor: Colors.white,
-                  textColor: Colors.black,
-                  dropDownText: 'Truck',
+                DropdownButton<String>(
+                  value: carname,
+                  icon: const Icon(Icons.arrow_downward),
+                  elevation: 16,
+                  style: const TextStyle(color: Colors.deepPurple),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.deepPurpleAccent,
+                  ),
+                  onChanged: (String? value) {
+                    // This is called when the user selects an item.
+                    setState(() {
+                      _catid = _catname.indexOf(value!);
+                      carname = value;
+                    });
+                  },
+                  items: _catname.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
                 ),
                 SizedBox(height: 20.h),
                 Row(
@@ -167,20 +240,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         CustomButton(
-                          onTextPress: () {
-                            OrderAttribute ot = OrderAttribute(
-                              attributeId: WashBookScreen.att_id,
-                              attributeValue: WashBookScreen.att_val,
-                            );
-                            List<OrderAttribute> lstot = [];
-                            lstot.add(ot);
-                            placemodel p = placemodel(
-                              amount: 300,
-                              description: desp.text,
-                              orderAttribute: lstot,
-                              typeId: WashBookScreen.type_id,
-                            );
-                          },
+                          onTextPress: () {},
                           buttonText: 'Book Now',
                           v: 11,
                           h: 15,

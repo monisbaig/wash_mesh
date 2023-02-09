@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/models/user_models/Meshusermodel.dart';
 import 'package:wash_mesh/models/user_models/Place.dart';
-
+import '../../models/user_models/Categories.dart' as um;
 import '../../models/user_models/Categories.dart';
 import '../../models/user_models/user_registration_model.dart';
 
@@ -183,8 +183,7 @@ class UserAuthProvider extends ChangeNotifier {
     }
   }
 
-  static Future<WashCategoryModel> getwashcategories() async {
-    List<WashCategoryModel> list = [];
+  static Future<um.WashCategoryModel> getwashcategories() async {
     final url = Uri.parse('$baseURL/wash/categories');
     final response = await http.get(url);
     if (response.statusCode == 200) {
@@ -193,10 +192,10 @@ class UserAuthProvider extends ChangeNotifier {
       // List<WashCategoryModel> list=[];
       // list.add();
       // print(da.data![0].name);
-      return WashCategoryModel.fromJson(jsonDecode(response.body));
+      return um.WashCategoryModel?.fromJson(jsonDecode(response.body));
     } else {
       print(response.body);
-      return WashCategoryModel();
+      return um.WashCategoryModel();
     }
   }
 }

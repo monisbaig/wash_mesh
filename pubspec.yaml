@@ -52,6 +52,7 @@ dependencies:
   firebase_auth: ^4.2.5
   google_sign_in: ^5.4.4
   easy_localization: ^3.0.1
+  expandable: ^5.0.1
 
 dev_dependencies:
   flutter_test:
