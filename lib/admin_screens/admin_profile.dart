@@ -168,7 +168,7 @@ class _AdminProfileState extends State<AdminProfile> {
                 Container(
                   alignment: Alignment.center,
                   child: Text(
-                    'Vendor Profile',
+                    'Profile',
                     style: TextStyle(
                       fontSize: 30.sp,
                     ),

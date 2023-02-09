@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wash_mesh/register_screen.dart';
@@ -19,7 +20,7 @@ class SplashScreen extends StatelessWidget {
           children: [
             const CustomLogo(),
             CustomButton(
-              buttonText: 'Get Started',
+              buttonText: 'getStarted'.tr(),
               onTextPress: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(

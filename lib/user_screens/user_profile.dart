@@ -118,7 +118,7 @@ class _UserProfileState extends State<UserProfile> {
                 Container(
                   alignment: Alignment.center,
                   child: Text(
-                    'User Profile',
+                    'Profile',
                     style: TextStyle(
                       fontSize: 30.sp,
                     ),

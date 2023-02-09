@@ -108,6 +108,10 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                     children: [
                       CustomTextField(
                         hint: 'First Name',
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         controller: firstName,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -119,6 +123,10 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'Last Name',
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         controller: lastName,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -129,7 +137,11 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'Email*',
+                        hint: 'Email',
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         controller: email,
                         validator: (value) {
                           if (value!.isEmpty || !value.contains('@')) {
@@ -140,18 +152,16 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'Phone No.*',
+                        hint: 'Phone No',
                         controller: phoneNo,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your phone number';
-                          }
-                          return null;
-                        },
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'Password',
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         controller: password,
                         validator: (value) {
                           if (value!.isEmpty || value.length < 5) {
@@ -163,6 +173,10 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'Confirm Password',
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         controller: confirmPassword,
                         validator: (value) {
                           if (value!.isEmpty || value.length < 5) {
@@ -176,6 +190,10 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'Address',
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         controller: address,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -246,7 +264,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       },
                     ),
                     Text(
-                      'Terms and conditions',
+                      'Terms and conditions*',
                       style: TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
@@ -257,7 +275,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                 ),
                 CustomButton(
                   onTextPress: isChecked == true ? onRegister : null,
-                  buttonText: 'SIGN IN',
+                  buttonText: 'SIGN UP',
                   v: 15.h,
                   h: 110.w,
                 ),

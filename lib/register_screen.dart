@@ -1,7 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wash_mesh/admin_screens/admin_registration_form.dart';
-import 'package:wash_mesh/user_screens/user_registration_form.dart';
+import 'package:wash_mesh/admin_screens/admin_login_form.dart';
+import 'package:wash_mesh/user_screens/user_login_form.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
@@ -23,11 +24,11 @@ class RegisterScreen extends StatelessWidget {
               child: Container(
                 alignment: Alignment.center,
                 child: Text(
-                  'Register as a',
+                  'register',
                   style: TextStyle(
                     fontSize: 25.sp,
                   ),
-                ),
+                ).tr(),
               ),
             ),
             SizedBox(height: 50.h),
@@ -35,11 +36,11 @@ class RegisterScreen extends StatelessWidget {
               onTextPress: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const UserRegistrationForm(),
+                    builder: (context) => const UserLoginForm(),
                   ),
                 );
               },
-              buttonText: 'Customer',
+              buttonText: 'customer'.tr(),
               v: 15.h,
               h: 100.w,
             ),
@@ -48,11 +49,11 @@ class RegisterScreen extends StatelessWidget {
               onTextPress: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const AdminRegisterScreen(),
+                    builder: (context) => const AdminLoginForm(),
                   ),
                 );
               },
-              buttonText: 'Service Provider',
+              buttonText: 'serviceProvider'.tr(),
               v: 15.h,
               h: 64.w,
             ),

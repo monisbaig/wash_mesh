@@ -5,12 +5,14 @@ class CustomTextField extends StatelessWidget {
   final String hint;
   final TextEditingController controller;
   final FormFieldValidator<String>? validator;
+  final Widget? suffixIcon;
 
   const CustomTextField({
     super.key,
     required this.hint,
     required this.controller,
-    required this.validator,
+    this.validator,
+    this.suffixIcon,
   });
 
   @override
@@ -18,7 +20,16 @@ class CustomTextField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
+        suffixIcon: suffixIcon,
         hintText: hint,
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(32.r),
+          borderSide: const BorderSide(color: Colors.white),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(32.r),
+          borderSide: const BorderSide(color: Colors.white),
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32.r),
           borderSide: const BorderSide(color: Colors.white),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
@@ -80,7 +81,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                             const CustomLogo(),
                             SizedBox(height: 8.h),
                             Text(
-                              'Dashboard',
+                              'dashboard'.tr(),
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 25.sp,
@@ -94,14 +95,14 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Hello, $firstName',
+                                      '${'hello'.tr()}, $firstName',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 26.sp,
                                       ),
                                     ),
                                     Text(
-                                      'Welcome back!',
+                                      'welcome'.tr(),
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 18.sp,
@@ -148,7 +149,9 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     Text(
-                                      isOn ? 'Available' : 'Not Available',
+                                      isOn
+                                          ? 'available'.tr()
+                                          : 'notAvailable'.tr(),
                                       style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 20.sp,
@@ -183,7 +186,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     Text(
-                                      'My Commission : Rs 5',
+                                      'commission'.tr(),
                                       style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 20.sp,
@@ -271,7 +274,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     Text(
-                                      'Get Location',
+                                      'location'.tr(),
                                       style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 20.sp,
@@ -292,7 +295,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                             Row(
                               children: [
                                 Text(
-                                  'Edit Services',
+                                  'editService'.tr(),
                                   style: TextStyle(
                                     fontWeight: FontWeight.w400,
                                     fontSize: 30.sp,
@@ -325,7 +328,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                             Row(
                               children: [
                                 Text(
-                                  'Quick Tabs',
+                                  'quickTab'.tr(),
                                   style: TextStyle(
                                     fontWeight: FontWeight.w400,
                                     fontSize: 30.sp,
@@ -364,13 +367,13 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                       ),
                                       SizedBox(height: 10.h),
                                       Text(
-                                        'Total',
+                                        'total'.tr(),
                                         style: TextStyle(
                                           color: CustomColor().mainColor,
                                         ),
                                       ),
                                       Text(
-                                        'Earnings',
+                                        'earning'.tr(),
                                         style: TextStyle(
                                           color: CustomColor().mainColor,
                                         ),
@@ -405,7 +408,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                       ),
                                       SizedBox(height: 10.h),
                                       Text(
-                                        'Total',
+                                        'total'.tr(),
                                         style: TextStyle(
                                           color: CustomColor().mainColor,
                                         ),

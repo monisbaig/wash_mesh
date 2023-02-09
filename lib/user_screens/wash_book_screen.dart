@@ -169,15 +169,17 @@ class _WashBookScreenState extends State<WashBookScreen> {
                         CustomButton(
                           onTextPress: () {
                             OrderAttribute ot = OrderAttribute(
-                                attributeId: WashBookScreen.att_id,
-                                attributeValue: WashBookScreen.att_val);
+                              attributeId: WashBookScreen.att_id,
+                              attributeValue: WashBookScreen.att_val,
+                            );
                             List<OrderAttribute> lstot = [];
                             lstot.add(ot);
                             placemodel p = placemodel(
-                                amount: 300,
-                                description: desp.text,
-                                orderAttribute: lstot,
-                                typeId: WashBookScreen.type_id);
+                              amount: 300,
+                              description: desp.text,
+                              orderAttribute: lstot,
+                              typeId: WashBookScreen.type_id,
+                            );
                           },
                           buttonText: 'Book Now',
                           v: 11,

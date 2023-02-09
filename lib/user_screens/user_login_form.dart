@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/user_screens/user_forget_password.dart';
+import 'package:wash_mesh/user_screens/user_registration_form.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
@@ -116,8 +117,23 @@ class _UserLoginFormState extends State<UserLoginForm> {
                 ),
                 SizedBox(height: 5.h),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const UserRegistrationForm(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Signup Now',
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                    ),
                     InkWell(
                       onTap: () {
                         Navigator.of(context).push(
@@ -129,7 +145,7 @@ class _UserLoginFormState extends State<UserLoginForm> {
                       child: Text(
                         'Forget Password',
                         style: TextStyle(
-                          fontSize: 20.sp,
+                          fontSize: 15.sp,
                         ),
                       ),
                     ),

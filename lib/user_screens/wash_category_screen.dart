@@ -39,131 +39,139 @@ class _WashCategoryState extends State<WashCategory> {
           child: FutureBuilder<WashCategoryModel>(
               future: UserAuthProvider.getwashcategories(),
               builder: (context, snapshot) {
-                return Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 45.h, horizontal: 12.w),
-                  child: Column(
-                    children: [
-                      const CustomLogo(),
-                      SizedBox(height: 10.h),
-                      Row(
-                        children: [
-                          Image.asset(
-                            'assets/images/wash.png',
-                            fit: BoxFit.cover,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10.h),
-                      SizedBox(
-                        height: 420.h,
-                        child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10,
-                          ),
-                          itemCount: snapshot.data!.data!.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                print(snapshot.data!.data!
-                                    .elementAt(index)
-                                    .catAttribute!
-                                    .elementAt(index)
-                                    .id);
-                                print(snapshot.data!.data!
-                                    .elementAt(index)
-                                    .catAttribute!
-                                    .elementAt(index)
-                                    .attribute!
-                                    .id);
-                                print(snapshot.data!.data!
-                                    .elementAt(index)
-                                    .catAttribute!
-                                    .elementAt(index)
-                                    .attribute!
-                                    .attributeValue!
-                                    .elementAt(index)
-                                    .id);
-
-                                // Navigator.of(context).push(
-                                //   MaterialPageRoute(
-                                //     builder: (context) => WashBookScreen(
-                                //       snapshot.data!.data!
-                                //           .elementAt(index)
-                                //           .catAttribute!
-                                //           .elementAt(index)
-                                //           .id,
-                                //       snapshot.data!.data!
-                                //           .elementAt(index)
-                                //           .catAttribute!
-                                //           .elementAt(index)
-                                //           .attribute!
-                                //           .id!,
-                                //       snapshot.data!.data!
-                                //           .elementAt(index)
-                                //           .catAttribute!
-                                //           .elementAt(index)
-                                //           .attribute!
-                                //           .attributeValue!
-                                //           .elementAt(index)
-                                //           .id,
-                                //     ),
-                                //   ),
-                                // );
-                              },
-                              child: Column(
-                                children: [
-                                  // Image.network(
-                                  //   snapshot.data!.data!.elementAt(index).image,
-                                  //   fit: BoxFit.cover,
-                                  // ),
-                                  SizedBox(height: 10.h),
-                                  Text(
-                                      "${snapshot.data!.data!.elementAt(index).name}"),
-                                ],
-                              ),
-                            );
-                          },
+                return snapshot.connectionState == ConnectionState.waiting
+                    ? const Padding(
+                        padding: EdgeInsets.only(top: 320),
+                        child: Center(
+                          child: CircularProgressIndicator(),
                         ),
-                      ),
-                      SizedBox(height: 10.h),
-                      Row(
-                        children: [
-                          Text(
-                            'Featured',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 30.sp,
+                      )
+                    : Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 45.h, horizontal: 12.w),
+                        child: Column(
+                          children: [
+                            const CustomLogo(),
+                            SizedBox(height: 10.h),
+                            Row(
+                              children: [
+                                Image.asset(
+                                  'assets/images/wash.png',
+                                  fit: BoxFit.cover,
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 8.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: List.generate(
-                            3,
-                            (index) => Column(
-                                  children: [
-                                    Image.network(
-                                      snapshot.data!.data!
+                            SizedBox(height: 10.h),
+                            SizedBox(
+                              height: 420.h,
+                              child: GridView.builder(
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10,
+                                ),
+                                itemCount: snapshot.data!.data!.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      print(snapshot.data!.data!
                                           .elementAt(index)
-                                          .image,
-                                      fit: BoxFit.cover,
+                                          .catAttribute!
+                                          .elementAt(index)
+                                          .id);
+                                      print(snapshot.data!.data!
+                                          .elementAt(index)
+                                          .catAttribute!
+                                          .elementAt(index)
+                                          .attribute!
+                                          .id);
+                                      print(snapshot.data!.data!
+                                          .elementAt(index)
+                                          .catAttribute!
+                                          .elementAt(index)
+                                          .attribute!
+                                          .attributeValue!
+                                          .elementAt(index)
+                                          .id);
+
+                                      // Navigator.of(context).push(
+                                      //   MaterialPageRoute(
+                                      //     builder: (context) => WashBookScreen(
+                                      //       snapshot.data!.data!
+                                      //           .elementAt(index)
+                                      //           .catAttribute!
+                                      //           .elementAt(index)
+                                      //           .id,
+                                      //       snapshot.data!.data!
+                                      //           .elementAt(index)
+                                      //           .catAttribute!
+                                      //           .elementAt(index)
+                                      //           .attribute!
+                                      //           .id!,
+                                      //       snapshot.data!.data!
+                                      //           .elementAt(index)
+                                      //           .catAttribute!
+                                      //           .elementAt(index)
+                                      //           .attribute!
+                                      //           .attributeValue!
+                                      //           .elementAt(index)
+                                      //           .id,
+                                      //     ),
+                                      //   ),
+                                      // );
+                                    },
+                                    child: Column(
+                                      children: [
+                                        // Image.network(
+                                        //   snapshot.data!.data!.elementAt(index).image,
+                                        //   fit: BoxFit.cover,
+                                        // ),
+                                        SizedBox(height: 10.h),
+                                        Text(
+                                          "${snapshot.data!.data!.elementAt(index).name}",
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(height: 10.h),
-                                    Text(snapshot.data!.data!
-                                        .elementAt(index)
-                                        .name),
-                                  ],
-                                )),
-                      ),
-                    ],
-                  ),
-                );
+                                  );
+                                },
+                              ),
+                            ),
+                            SizedBox(height: 10.h),
+                            Row(
+                              children: [
+                                Text(
+                                  'Featured',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 30.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 8.h),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: List.generate(
+                                  3,
+                                  (index) => Column(
+                                        children: [
+                                          // Image.network(
+                                          //   snapshot.data!.data!
+                                          //       .elementAt(index)
+                                          //       .image,
+                                          //   fit: BoxFit.cover,
+                                          // ),
+                                          SizedBox(height: 10.h),
+                                          Text(snapshot.data!.data!
+                                              .elementAt(index)
+                                              .name),
+                                        ],
+                                      )),
+                            ),
+                          ],
+                        ),
+                      );
               }),
         ),
       ),
