@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:wash_mesh/models/user_models/Place.dart';
+import 'package:wash_mesh/providers/user_provider/user_auth_provider.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
@@ -24,6 +26,9 @@ class _WashBookScreenState extends State<WashBookScreen> {
   TextEditingController desp = TextEditingController();
   List<String> _catname = [];
   List<String> _carname = [];
+  List<int> _carnameid = [];
+  List<int> _catnameid = [];
+  List<int> _attval = [];
   String? catname;
   String? carname;
   int _catid = 0;
@@ -35,11 +40,12 @@ class _WashBookScreenState extends State<WashBookScreen> {
     super.initState();
     for (int i = 0; i < WashBookScreen.data.length; i++) {
       _catname.add(WashBookScreen.data[i].name);
+      _catnameid.add(WashBookScreen.data[i].id);
       for (int j = 0;
           j < WashBookScreen.data.elementAt(i).catAttribute!.length;
           j++) {
         for (int k = 0;
-            k <
+            k <=
                 WashBookScreen.data
                     .elementAt(i)
                     .catAttribute!
@@ -48,14 +54,40 @@ class _WashBookScreenState extends State<WashBookScreen> {
                     .attributeValue!
                     .length;
             k++) {
-          _carname.add(WashBookScreen.data
-              .elementAt(i)
-              .catAttribute!
-              .elementAt(j)
-              .attribute!
-              .attributeValue!
-              .elementAt(k)
-              .name);
+          if (k ==
+              WashBookScreen.data
+                  .elementAt(i)
+                  .catAttribute!
+                  .elementAt(j)
+                  .attribute!
+                  .attributeValue!
+                  .length) {
+          } else {
+            _carnameid.add(WashBookScreen.data
+                .elementAt(i)
+                .catAttribute!
+                .elementAt(j)
+                .attribute!
+                .attributeValue!
+                .elementAt(k)
+                .id);
+            _carname.add(WashBookScreen.data
+                .elementAt(i)
+                .catAttribute!
+                .elementAt(j)
+                .attribute!
+                .attributeValue!
+                .elementAt(k)
+                .name);
+            _attval.add(int.parse(WashBookScreen.data
+                .elementAt(i)
+                .catAttribute!
+                .elementAt(j)
+                .attribute!
+                .attributeValue!
+                .elementAt(k)
+                .attributeId));
+          }
         }
       }
       setState(() {});
@@ -100,6 +132,10 @@ class _WashBookScreenState extends State<WashBookScreen> {
                     // This is called when the user selects an item.
                     setState(() {
                       _catid = _catname.indexOf(value!);
+                      _catid = WashBookScreen.data.elementAt(_catid).id;
+
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text("$_catid")));
                       catname = value;
                     });
                   },
@@ -123,11 +159,18 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   onChanged: (String? value) {
                     // This is called when the user selects an item.
                     setState(() {
-                      _catid = _catname.indexOf(value!);
+                      _att_val = _carname.indexOf(value!);
+                      _att_id = _attval.elementAt(_att_val);
+                      _att_val = _carnameid.elementAt(_att_val);
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text("$_att_id")));
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text("$_att_val")));
+
                       carname = value;
                     });
                   },
-                  items: _catname.map<DropdownMenuItem<String>>((String value) {
+                  items: _carname.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -240,7 +283,24 @@ class _WashBookScreenState extends State<WashBookScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         CustomButton(
-                          onTextPress: () {},
+                          onTextPress: () {
+                            List<OrderAttribute> lst = [];
+                            OrderAttribute oa = OrderAttribute(
+                                attributeId: _att_id, attributeValue: _att_val);
+                            lst.add(oa);
+                            String dt = DateTime.now().toString();
+                            List<String> lstdt = dt.split(':');
+                            dt = lstdt[0] + ":" + lstdt[1];
+                            placemodel p = placemodel(
+                                amount: '300',
+                                description: desp.text.toString(),
+                                orderAttribute: lst,
+                                serviceAt: dt,
+                                category_id: _catid);
+
+                            Provider.of<UserAuthProvider>(context)
+                                .placewashorder(p);
+                          },
                           buttonText: 'Book Now',
                           v: 11,
                           h: 15,

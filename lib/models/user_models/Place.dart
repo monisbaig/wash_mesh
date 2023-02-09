@@ -1,5 +1,5 @@
 class placemodel {
-  dynamic typeId;
+  dynamic category_id;
   dynamic amount;
   dynamic serviceAt;
   dynamic description;
@@ -7,15 +7,15 @@ class placemodel {
   List<String>? picture;
 
   placemodel(
-      {this.typeId,
-        this.amount,
-        this.serviceAt,
-        this.description,
-        this.orderAttribute,
-        this.picture});
+      {this.category_id,
+      this.amount,
+      this.serviceAt,
+      this.description,
+      this.orderAttribute,
+      this.picture});
 
   placemodel.fromJson(Map<String, dynamic> json) {
-    typeId = json['type_id'];
+    category_id = json['category_id'];
     amount = json['amount'];
     serviceAt = json['service_at'];
     description = json['description'];
@@ -30,7 +30,7 @@ class placemodel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type_id'] = this.typeId;
+    data['category_id'] = this.category_id;
     data['amount'] = this.amount;
     data['service_at'] = this.serviceAt;
     data['description'] = this.description;

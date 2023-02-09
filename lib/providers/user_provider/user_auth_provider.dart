@@ -198,4 +198,25 @@ class UserAuthProvider extends ChangeNotifier {
       return um.WashCategoryModel();
     }
   }
+
+  placewashorder(placemodel p) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+    var jsonObject = jsonEncode(p);
+
+    var url = Uri.parse('$baseURL/user/order/place');
+    var response = await http.post(
+      url,
+      body: jsonObject,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['message'];
+    }
+    notifyListeners();
+  }
 }
