@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -72,7 +73,7 @@ class AdminSettings extends StatelessWidget {
                           color: Colors.white,
                         ),
                         Text(
-                          'Edit Profile',
+                          'editProfile'.tr(),
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 22.sp,
@@ -116,7 +117,7 @@ class AdminSettings extends StatelessWidget {
                           color: Colors.white,
                         ),
                         Text(
-                          'App Language',
+                          'appLanguage'.tr(),
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 22.sp,
@@ -160,7 +161,7 @@ class AdminSettings extends StatelessWidget {
                           color: Colors.white,
                         ),
                         Text(
-                          'Change Password',
+                          'changePassword'.tr(),
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 22.sp,
@@ -198,7 +199,7 @@ class AdminSettings extends StatelessWidget {
                           color: Colors.white,
                         ),
                         Text(
-                          'About',
+                          'about'.tr(),
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 22.sp,

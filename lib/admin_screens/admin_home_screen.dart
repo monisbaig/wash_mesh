@@ -414,7 +414,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                         ),
                                       ),
                                       Text(
-                                        'Bookings',
+                                        'booking'.tr(),
                                         style: TextStyle(
                                           color: CustomColor().mainColor,
                                         ),
@@ -449,13 +449,13 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                       ),
                                       SizedBox(height: 10.h),
                                       Text(
-                                        'Upcoming',
+                                        'upcoming'.tr(),
                                         style: TextStyle(
                                           color: CustomColor().mainColor,
                                         ),
                                       ),
                                       Text(
-                                        'Services',
+                                        'service'.tr(),
                                         style: TextStyle(
                                           color: CustomColor().mainColor,
                                         ),
@@ -490,13 +490,13 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                       ),
                                       SizedBox(height: 10.h),
                                       Text(
-                                        "Today's",
+                                        "today".tr(),
                                         style: TextStyle(
                                           color: CustomColor().mainColor,
                                         ),
                                       ),
                                       Text(
-                                        'Services',
+                                        'service'.tr(),
                                         style: TextStyle(
                                           color: CustomColor().mainColor,
                                         ),

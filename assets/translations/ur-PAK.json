@@ -19,9 +19,6 @@
     "experienceCert": "تجربہ سرٹیفکیٹ",
     "cnicFront": "شناختی کارڈ سامنے",
     "cnicBack": "شناختی کارڈ پیچھے",
-    "signUp": "سائن اپ کریں",
-    "logIn": "لاگ ان کریں",
-    "dashboard": "ڈیش بورڈ",
     "welcome": "خوش آمدید",
     "commission": "میرا کمیشن :RS 5",
     "location": "آپ کی جگہ",
@@ -32,5 +29,12 @@
     "hello": "ہیلو",
     "total": "کل",
     "earning": "کمائی",
-    "booking": "بکنگ"
+    "booking": "بکنگ",
+    "upcoming": "آنے والا",
+    "service": "خدمات",
+    "today": "آج کی",
+    "editProfile": "پروفائل میں ترمیم کریں",
+    "language": "ایپ کی زبان",
+    "changePassword": "پاس ورڈ تبدیل کریں",
+    "about": "ہمارے بارے میں"
 }
