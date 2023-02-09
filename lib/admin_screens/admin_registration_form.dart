@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,7 +15,6 @@ import 'package:wash_mesh/widgets/custom_logo.dart';
 
 import '../widgets/custom_colors.dart';
 import '../widgets/custom_text_field.dart';
-import 'admin_home_screen.dart';
 
 class AdminRegisterScreen extends StatefulWidget {
   const AdminRegisterScreen({Key? key}) : super(key: key);
@@ -51,10 +51,28 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
       source: ImageSource.gallery,
       maxWidth: 300,
     );
+
     if (imageFile == null) {
       return;
     }
-    expCert = File(imageFile.path);
+    cnicBack = File(imageFile.path);
+    final imageByte = expCert!.readAsBytesSync();
+    setState(() {
+      base64ImageExp = "data:image/png;base64,${base64Encode(imageByte)}";
+    });
+  }
+
+  experienceCertCamera() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? imageFile = await picker.pickImage(
+      source: ImageSource.camera,
+      maxWidth: 300,
+    );
+
+    if (imageFile == null) {
+      return;
+    }
+    cnicBack = File(imageFile.path);
     final imageByte = expCert!.readAsBytesSync();
     setState(() {
       base64ImageExp = "data:image/png;base64,${base64Encode(imageByte)}";
@@ -67,10 +85,28 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
       source: ImageSource.gallery,
       maxWidth: 300,
     );
+
     if (imageFile == null) {
       return;
     }
-    cnicFront = File(imageFile.path);
+    cnicBack = File(imageFile.path);
+    final imageByte = cnicFront!.readAsBytesSync();
+    setState(() {
+      base64ImageF = "data:image/png;base64,${base64Encode(imageByte)}";
+    });
+  }
+
+  cnicFrontImageCamera() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? imageFile = await picker.pickImage(
+      source: ImageSource.camera,
+      maxWidth: 300,
+    );
+
+    if (imageFile == null) {
+      return;
+    }
+    cnicBack = File(imageFile.path);
     final imageByte = cnicFront!.readAsBytesSync();
     setState(() {
       base64ImageF = "data:image/png;base64,${base64Encode(imageByte)}";
@@ -81,6 +117,22 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     final ImagePicker picker = ImagePicker();
     final XFile? imageFile = await picker.pickImage(
       source: ImageSource.gallery,
+      maxWidth: 300,
+    );
+    if (imageFile == null) {
+      return;
+    }
+    cnicBack = File(imageFile.path);
+    final imageByte = cnicBack!.readAsBytesSync();
+    setState(() {
+      base64ImageB = "data:image/png;base64,${base64Encode(imageByte)}";
+    });
+  }
+
+  cnicBackImageCamera() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? imageFile = await picker.pickImage(
+      source: ImageSource.camera,
       maxWidth: 300,
     );
     if (imageFile == null) {
@@ -161,7 +213,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                 Container(
                   alignment: Alignment.center,
                   child: Text(
-                    'Service Provider',
+                    'serviceProvider'.tr(),
                     style: TextStyle(
                       fontSize: 25.sp,
                     ),
@@ -173,7 +225,11 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                   child: Column(
                     children: [
                       CustomTextField(
-                        hint: 'First Name',
+                        hint: 'firstName'.tr(),
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         controller: firstName,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -184,7 +240,11 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'Last Name',
+                        hint: 'lastName'.tr(),
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         controller: lastName,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -195,7 +255,11 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'User Name',
+                        hint: 'userName'.tr(),
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         controller: userName,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -206,19 +270,27 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'Phone No.*',
+                        hint: 'phoneNo'.tr(),
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         controller: phoneNo,
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'Please enter your phone name';
+                            return 'Please enter your valid number starting from 92';
                           }
                           return null;
                         },
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'CNIC No.*',
+                        hint: 'cnicNo'.tr(),
                         controller: cnicNo,
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         validator: (value) {
                           if (value!.isEmpty || value.length < 13) {
                             return 'Please enter your cnic number';
@@ -228,8 +300,12 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'Password',
+                        hint: 'password'.tr(),
                         controller: password,
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         validator: (value) {
                           if (value!.isEmpty || value.length < 5) {
                             return 'Please enter your password with at least 5 characters';
@@ -239,8 +315,12 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'Confirm Password',
+                        hint: 'confirmPassword'.tr(),
                         controller: confirmPassword,
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         validator: (value) {
                           if (value!.isEmpty || value.length < 5) {
                             return 'Please re-enter your password';
@@ -252,30 +332,22 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'Experience in Years',
+                        hint: 'experience'.tr(),
                         controller: experience,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your address';
-                          }
-                          return null;
-                        },
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'Referral Code',
+                        hint: 'referralCode'.tr(),
                         controller: code,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your address';
-                          }
-                          return null;
-                        },
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'Address',
+                        hint: 'address'.tr(),
                         controller: address,
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Please enter your address';
@@ -287,6 +359,10 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                       CustomTextField(
                         hint: '1 for male, 2 for female',
                         controller: gender,
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Please enter your gender';
@@ -294,40 +370,6 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                           return null;
                         },
                       ),
-                      // Row(
-                      //   crossAxisAlignment: CrossAxisAlignment.start,
-                      //   children: [
-                      //     Container(
-                      //       padding: const EdgeInsets.all(12),
-                      //       width: 415.h,
-                      //       height: 70.h,
-                      //       decoration: BoxDecoration(
-                      //         color: Colors.white,
-                      //         borderRadius: BorderRadius.circular(20.r),
-                      //       ),
-                      //       child: DropdownButton(
-                      //         borderRadius: BorderRadius.circular(20.r),
-                      //         alignment: Alignment.center,
-                      //         hint: const Text('Gender'),
-                      //         icon: const Icon(
-                      //           Icons.arrow_drop_down,
-                      //           color: Colors.black,
-                      //         ),
-                      //         items: const [
-                      //           DropdownMenuItem(
-                      //             value: 'male',
-                      //             child: Text('Male'),
-                      //           ),
-                      //           DropdownMenuItem(
-                      //             value: 'female',
-                      //             child: Text('Female'),
-                      //           ),
-                      //         ],
-                      //         onChanged: (String? value) {},
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
                     ],
                   ),
                 ),
@@ -341,7 +383,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                     );
                   },
                   child: Text(
-                    'Already have an account',
+                    'alreadyAccount'.tr(),
                     style: TextStyle(
                       fontSize: 20.sp,
                     ),
@@ -349,7 +391,25 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                 ),
                 SizedBox(height: 20.h),
                 InkWell(
-                  onTap: experienceCert,
+                  onTap: () => showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Choose an Option:'),
+                        actionsAlignment: MainAxisAlignment.center,
+                        actions: [
+                          ElevatedButton(
+                            onPressed: experienceCert,
+                            child: const Text('Gallery'),
+                          ),
+                          ElevatedButton(
+                            onPressed: experienceCertCamera,
+                            child: const Text('Camera'),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
                   child: Container(
                     width: 350.w,
                     height: 50.h,
@@ -366,9 +426,9 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        const Text(
-                          'Experience Certificate',
-                          style: TextStyle(
+                        Text(
+                          'experienceCert'.tr(),
+                          style: const TextStyle(
                             fontWeight: FontWeight.w700,
                             color: Colors.white,
                           ),
@@ -387,7 +447,25 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
-                      onTap: cnicFrontImage,
+                      onTap: () => showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            actionsAlignment: MainAxisAlignment.center,
+                            title: const Text('Choose an Option:'),
+                            actions: [
+                              ElevatedButton(
+                                onPressed: cnicFrontImage,
+                                child: const Text('Gallery'),
+                              ),
+                              ElevatedButton(
+                                onPressed: cnicFrontImageCamera,
+                                child: const Text('Camera'),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                       child: Container(
                         width: 168.w,
                         height: 50.h,
@@ -404,9 +482,9 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            const Text(
-                              'CNIC Front',
-                              style: TextStyle(
+                            Text(
+                              'cnicFront'.tr(),
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white,
                               ),
@@ -422,7 +500,25 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                     ),
                     SizedBox(width: 15.w),
                     InkWell(
-                      onTap: cnicBackImage,
+                      onTap: () => showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            actionsAlignment: MainAxisAlignment.center,
+                            title: const Text('Choose an Option:'),
+                            actions: [
+                              ElevatedButton(
+                                onPressed: cnicBackImage,
+                                child: const Text('Gallery'),
+                              ),
+                              ElevatedButton(
+                                onPressed: cnicBackImageCamera,
+                                child: const Text('Camera'),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                       child: Container(
                         width: 168.w,
                         height: 50.h,
@@ -439,9 +535,9 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            const Text(
-                              'CNIC Back',
-                              style: TextStyle(
+                            Text(
+                              'cnicBack'.tr(),
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white,
                               ),
@@ -530,28 +626,6 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                   ],
                 ),
                 SizedBox(height: 20.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Provider.of<AdminAuthProvider>(context, listen: false)
-                            .signInWithGoogle();
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => const AdminHomeScreen(),
-                          ),
-                        );
-                      },
-                      child: Image.asset('assets/images/google-logo.png',
-                          height: 40.h),
-                    ),
-                    // SizedBox(width: 16.w),
-                    // Image.asset('assets/images/facebook-logo.png',
-                    //     height: 40.h),
-                  ],
-                ),
-                SizedBox(height: 15.h),
                 if (isChecked == false)
                   Text(
                     'Select Terms and conditions',
@@ -573,7 +647,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                       },
                     ),
                     Text(
-                      'Terms and conditions',
+                      'Terms and conditions*',
                       style: TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
@@ -584,7 +658,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                 ),
                 CustomButton(
                   onTextPress: isChecked == true ? onRegister : null,
-                  buttonText: 'SIGN IN',
+                  buttonText: 'signUp'.tr(),
                   v: 15.h,
                   h: 110.w,
                 ),

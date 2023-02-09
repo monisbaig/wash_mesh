@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:wash_mesh/user_screens/user_home_screen.dart';
 import 'package:wash_mesh/user_screens/user_login_form.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
@@ -11,6 +10,7 @@ import 'package:wash_mesh/widgets/custom_text_field.dart';
 import '../models/user_models/user_registration_model.dart';
 import '../providers/admin_provider/admin_auth_provider.dart';
 import '../providers/user_provider/user_auth_provider.dart';
+import '../widgets/custom_navigation_bar.dart';
 
 class UserRegistrationForm extends StatefulWidget {
   const UserRegistrationForm({Key? key}) : super(key: key);
@@ -108,6 +108,10 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                     children: [
                       CustomTextField(
                         hint: 'First Name',
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         controller: firstName,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -119,6 +123,10 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'Last Name',
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         controller: lastName,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -129,7 +137,11 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'Email*',
+                        hint: 'Email',
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         controller: email,
                         validator: (value) {
                           if (value!.isEmpty || !value.contains('@')) {
@@ -140,18 +152,16 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        hint: 'Phone No.*',
+                        hint: 'Phone No',
                         controller: phoneNo,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your phone number';
-                          }
-                          return null;
-                        },
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'Password',
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         controller: password,
                         validator: (value) {
                           if (value!.isEmpty || value.length < 5) {
@@ -163,6 +173,10 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'Confirm Password',
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         controller: confirmPassword,
                         validator: (value) {
                           if (value!.isEmpty || value.length < 5) {
@@ -176,6 +190,10 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'Address',
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         controller: address,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -206,12 +224,13 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
-                      onTap: () {
-                        Provider.of<AdminAuthProvider>(context, listen: false)
+                      onTap: () async {
+                        await Provider.of<AdminAuthProvider>(context,
+                                listen: false)
                             .signInWithGoogle();
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => const UserHomeScreen(),
+                            builder: (context) => const CustomNavigationBar(),
                           ),
                         );
                       },
@@ -245,7 +264,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       },
                     ),
                     Text(
-                      'Terms and conditions',
+                      'Terms and conditions*',
                       style: TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
@@ -256,7 +275,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                 ),
                 CustomButton(
                   onTextPress: isChecked == true ? onRegister : null,
-                  buttonText: 'SIGN IN',
+                  buttonText: 'SIGN UP',
                   v: 15.h,
                   h: 110.w,
                 ),

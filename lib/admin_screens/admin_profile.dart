@@ -168,7 +168,7 @@ class _AdminProfileState extends State<AdminProfile> {
                 Container(
                   alignment: Alignment.center,
                   child: Text(
-                    'Vendor Profile',
+                    'Profile',
                     style: TextStyle(
                       fontSize: 30.sp,
                     ),
@@ -184,14 +184,14 @@ class _AdminProfileState extends State<AdminProfile> {
                         child: profileImg != null
                             ? Image.file(
                                 profileImg!,
-                                width: 102.w,
-                                height: 108.h,
+                                width: 105.w,
+                                height: 100.h,
                                 fit: BoxFit.cover,
                               )
                             : Image.network(
                                 '$getImage',
-                                width: 102.w,
-                                height: 108.h,
+                                width: 105.w,
+                                height: 100.h,
                                 fit: BoxFit.cover,
                               ),
                       ),
@@ -246,11 +246,12 @@ class _AdminProfileState extends State<AdminProfile> {
                   v: 15.h,
                   h: 90.w,
                 ),
+                SizedBox(height: 20.h),
                 CustomButton(
                   onTextPress: onUpdateImage,
-                  buttonText: 'Image',
+                  buttonText: 'Save Image',
                   v: 15.h,
-                  h: 90.w,
+                  h: 105.w,
                 ),
               ],
             ),
