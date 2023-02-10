@@ -68,94 +68,96 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
       ch: Center(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 45.h, horizontal: 15.w),
-          child: Column(
-            children: [
-              const CustomLogo(),
-              SizedBox(height: 15.h),
-              Container(
-                alignment: Alignment.center,
-                child: Text(
-                  'Log In',
-                  style: TextStyle(
-                    fontSize: 25.sp,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const CustomLogo(),
+                SizedBox(height: 15.h),
+                Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Log In',
+                    style: TextStyle(
+                      fontSize: 25.sp,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 20.h),
-              Image.asset('assets/images/pngegg.png'),
-              SizedBox(height: 30.h),
-              Form(
-                key: formKey,
-                child: Column(
+                SizedBox(height: 20.h),
+                Image.asset('assets/images/pngegg.png'),
+                SizedBox(height: 30.h),
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 8.h),
+                      CustomTextField(
+                        hint: 'phoneNo'.tr(),
+                        controller: phoneNo,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your phone number';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 8.h),
+                      CustomTextField(
+                        hint: 'password'.tr(),
+                        controller: password,
+                        validator: (value) {
+                          if (value!.isEmpty || value.length < 5) {
+                            return 'Please enter your password with at least 5 characters';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 8.h),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 5.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    SizedBox(height: 8.h),
-                    CustomTextField(
-                      hint: 'phoneNo'.tr(),
-                      controller: phoneNo,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your phone number';
-                        }
-                        return null;
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const AdminRegisterScreen(),
+                          ),
+                        );
                       },
+                      child: Text(
+                        'Signup Now',
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 8.h),
-                    CustomTextField(
-                      hint: 'password'.tr(),
-                      controller: password,
-                      validator: (value) {
-                        if (value!.isEmpty || value.length < 5) {
-                          return 'Please enter your password with at least 5 characters';
-                        }
-                        return null;
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const AdminForgetPassword(),
+                          ),
+                        );
                       },
+                      child: Text(
+                        'Forget Password',
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 8.h),
                   ],
                 ),
-              ),
-              SizedBox(height: 5.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const AdminRegisterScreen(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      'Signup Now',
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const AdminForgetPassword(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      'Forget Password',
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Expanded(child: Container()),
-              CustomButton(
-                onTextPress: onSubmit,
-                buttonText: 'LOG IN',
-              ),
-            ],
+                SizedBox(height: 160.h),
+                CustomButton(
+                  onTextPress: onSubmit,
+                  buttonText: 'LOG IN',
+                ),
+              ],
+            ),
           ),
         ),
       ),

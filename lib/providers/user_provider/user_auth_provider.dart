@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/models/user_models/Meshusermodel.dart';
 import 'package:wash_mesh/models/user_models/Place.dart';
+
 import '../../models/user_models/Categories.dart' as um;
 import '../../models/user_models/Categories.dart';
 import '../../models/user_models/user_registration_model.dart';
@@ -215,7 +216,10 @@ class UserAuthProvider extends ChangeNotifier {
       },
     );
     if (response.statusCode == 200) {
+      print(jsonDecode(response.body)['message']);
       return jsonDecode(response.body)['message'];
+    } else {
+      print(jsonDecode(response.body)['message']);
     }
     notifyListeners();
   }
