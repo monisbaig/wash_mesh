@@ -229,6 +229,35 @@ class UserAuthProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  applyvender(List<int> wash, List<int> mesh) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+    List<int> catlst = wash + mesh;
+
+    var jsonObject = {
+      'category_id[]': wash,
+      'category_id[]': mesh,
+    };
+
+    var url = Uri.parse(
+        '$baseURL/user/vendor/category/apply?category_id[]=$wash&category_id[]=$mesh');
+    var response = await http.post(
+      url,
+      body: jsonEncode(jsonObject),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['message'];
+    } else {
+      print(jsonDecode(response.body)['message']);
+    }
+    notifyListeners();
+  }
 }
 
 class nameid {
