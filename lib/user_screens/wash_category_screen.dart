@@ -91,13 +91,17 @@ class _WashCategoryState extends State<WashCategory> {
                                     },
                                     child: Column(
                                       children: [
-                                        // Image.network(
-                                        //   snapshot.data!.data!.elementAt(index).image,
-                                        //   fit: BoxFit.cover,
-                                        // ),
+                                        Image.network(
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .image,
+                                          fit: BoxFit.cover,
+                                        ),
                                         SizedBox(height: 10.h),
-                                        Text(
-                                          "${snapshot.data!.data!.elementAt(index).name}",
+                                        Expanded(
+                                          child: Text(
+                                            "${snapshot.data!.data!.elementAt(index).name}",
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -124,12 +128,12 @@ class _WashCategoryState extends State<WashCategory> {
                                   3,
                                   (index) => Column(
                                         children: [
-                                          // Image.network(
-                                          //   snapshot.data!.data!
-                                          //       .elementAt(index)
-                                          //       .image,
-                                          //   fit: BoxFit.cover,
-                                          // ),
+                                          Image.network(
+                                            snapshot.data!.data!
+                                                .elementAt(index)
+                                                .image,
+                                            fit: BoxFit.cover,
+                                          ),
                                           SizedBox(height: 10.h),
                                           Text(snapshot.data!.data!
                                               .elementAt(index)

@@ -140,8 +140,8 @@ class UserAuthProvider extends ChangeNotifier {
     }
   }
 
-  static Future<List<String>> getmeshnames() async {
-    List<Meshusermodel> list = [];
+  static Future<nameid> getmeshnames() async {
+    List<WashCategoryModel> list = [];
     List<String> str = [];
     final url = Uri.parse('$baseURL/mesh/categories');
     final response = await http.get(url);
@@ -152,17 +152,20 @@ class UserAuthProvider extends ChangeNotifier {
       // list.add();
       // print(da.data![0].name);
       List<String> str = [];
-      var dt = Meshusermodel.fromJson(jsonDecode(response.body));
-      List.generate(
-          dt.data!.length, (index) => str.add(dt.data!.elementAt(index).name!));
-
-      return str;
+      List<int> id = [];
+      var dt = WashCategoryModel.fromJson(jsonDecode(response.body));
+      List.generate(dt.data!.length, (index) {
+        str.add(dt.data!.elementAt(index).name!);
+        id.add(int.parse(dt.data!.elementAt(index).id!.toString()));
+      });
+      nameid i = nameid.nameid(str, id);
+      return i;
     } else {
-      return str;
+      return nameid();
     }
   }
 
-  static Future<List<String>> getwashnames() async {
+  static Future<nameid> getwashnames() async {
     List<WashCategoryModel> list = [];
     List<String> str = [];
     final url = Uri.parse('$baseURL/wash/categories');
@@ -174,13 +177,16 @@ class UserAuthProvider extends ChangeNotifier {
       // list.add();
       // print(da.data![0].name);
       List<String> str = [];
+      List<int> id = [];
       var dt = WashCategoryModel.fromJson(jsonDecode(response.body));
-      List.generate(
-          dt.data!.length, (index) => str.add(dt.data!.elementAt(index).name!));
-
-      return str;
+      List.generate(dt.data!.length, (index) {
+        str.add(dt.data!.elementAt(index).name!);
+        id.add(int.parse(dt.data!.elementAt(index).id!.toString()));
+      });
+      nameid i = nameid.nameid(str, id);
+      return i;
     } else {
-      return str;
+      return nameid();
     }
   }
 
@@ -222,5 +228,15 @@ class UserAuthProvider extends ChangeNotifier {
       print(token);
     }
     notifyListeners();
+  }
+}
+
+class nameid {
+  List<String> lstname = [];
+  List<int> lstcatid = [];
+  nameid() {}
+  nameid.nameid(List<String> name, List<int> id) {
+    lstname = name;
+    lstcatid = id;
   }
 }
