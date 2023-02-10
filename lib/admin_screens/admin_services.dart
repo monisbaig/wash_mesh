@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wash_mesh/models/user_models/Categories.dart' as wc;
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
@@ -17,7 +18,10 @@ class AdminServices extends StatefulWidget {
 
 class _AdminServicesState extends State<AdminServices> {
   List<String> _selectedWashItems = [];
+  List<int> _selectedwashcat = [];
   List<String> _selectedMeshItems = [];
+  List<int> _selectedmeshcat = [];
+  nameid dt = nameid();
 
   void _showWashCategory(snapshot) async {
     final List<String>? results = await showDialog(
@@ -34,19 +38,79 @@ class _AdminServicesState extends State<AdminServices> {
     }
   }
 
-  _showMeshCategory(snapshot) async {
-    final List<String>? results = await showDialog(
+  _showMeshCategory(nameid ijk) async {
+    _selectedWashItems.clear();
+    _selectedwashcat.clear();
+    await showDialog<nameid>(
       context: context,
       builder: (BuildContext context) {
-        return CustomMultiSelect(items: snapshot);
+        int? selectedRadio = 0;
+        return AlertDialog(
+          title: const Text('Select Category'),
+          content: SingleChildScrollView(
+            child: ListBody(
+                children: List.generate(ijk.lstname.length, (index) {
+              return CheckboxListTile(
+                  value: _selectedWashItems.contains(ijk.lstname[index]),
+                  title: Text(ijk.lstname[index]),
+                  controlAffinity: ListTileControlAffinity.leading,
+                  onChanged: (isChecked) {
+                    if (isChecked!) {
+                      _selectedWashItems.add(ijk.lstname[index]);
+                      _selectedwashcat.add(ijk.lstcatid[index]);
+                    } else {
+                      _selectedWashItems.remove(ijk.lstname[index]);
+                      _selectedwashcat.remove(ijk.lstcatid[index]);
+                    }
+                    setState(() {
+                      _selectedMeshItems;
+                    });
+                  });
+            })
+
+                //CheckboxListTile(
+                //         value: _selectedItems.contains(item),
+                //         title: Text(item),
+                //         controlAffinity: ListTileControlAffinity.leading,
+                //         onChanged: (isChecked) => _washItemChange(
+                //           item,
+                //           isChecked!,
+                //         ),
+                //       ),
+
+                ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                print(_selectedWashItems);
+                print(_selectedwashcat);
+                Navigator.of(context).pop();
+              },
+              child: const Text('Submit'),
+            ),
+          ],
+        );
       },
     );
+    // final List<nameid> results = await showDialog(
+    //   context: context,
+    //   builder: (BuildContext context) {
+    //     return CustomMultiSelect(items: snapshot);
+    //   },
+    // );
 
-    if (results != null) {
-      setState(() {
-        _selectedMeshItems = results;
-      });
-    }
+    // if (results != null) {
+    //   setState(() {
+    //     dt = results;
+    //   });
+    // }
   }
 
   @override
@@ -89,7 +153,7 @@ class _AdminServicesState extends State<AdminServices> {
                     Wrap(
                       alignment: WrapAlignment.start,
                       spacing: 5,
-                      children: _selectedMeshItems
+                      children: _selectedWashItems
                           .map(
                             (e) => Chip(
                               backgroundColor: Colors.white,
@@ -105,16 +169,18 @@ class _AdminServicesState extends State<AdminServices> {
                     SizedBox(height: 10.h),
                     CustomButton(
                       onTextPress: () async {
+                        _selectedMeshItems.clear();
+                        _selectedwashcat.clear();
                         // FutureBuilder<Meshusermodel>(
                         //   future: UserAuthProvider.Getmeshcategories(),
                         //   builder: (context, snapshot) {
                         //     return _showMeshCategory(snapshot.data!);
                         //   },
                         // );
-                        List<String> str = [];
+                        nameid catidaname = nameid();
                         await UserAuthProvider.getwashnames()
-                            .then((value) => str = value);
-                        return _showMeshCategory(str.toList());
+                            .then((value) => catidaname = value);
+                        return _showMeshCategory(catidaname);
                       },
                       buttonText: 'Select Wash Service',
                     ),
@@ -136,7 +202,7 @@ class _AdminServicesState extends State<AdminServices> {
                     Wrap(
                       alignment: WrapAlignment.start,
                       spacing: 5,
-                      children: _selectedWashItems
+                      children: _selectedMeshItems
                           .map(
                             (e) => Chip(
                               backgroundColor: Colors.white,
