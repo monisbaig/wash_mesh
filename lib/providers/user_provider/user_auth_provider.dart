@@ -47,8 +47,8 @@ class UserAuthProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       if (jsonDecode(response.body)['message'] == 'Login Successfully') {
         SharedPreferences pref = await SharedPreferences.getInstance();
-        pref.setString('User', response.body);
-        pref.setString('token', jsonDecode(response.body)['data']['token']);
+        // pref.setString('User', response.body);
+        pref.setString('userToken', jsonDecode(response.body)['data']['token']);
         print(jsonDecode(response.body)['data']['token']);
       }
       return jsonDecode(response.body)['message'];
@@ -60,7 +60,7 @@ class UserAuthProvider extends ChangeNotifier {
 
   updateUserData({var firstName, var lastName, var address}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    var token = pref.getString('token');
+    var token = pref.getString('userToken');
     var jsonObject = {
       'first_name': firstName,
       'last_name': lastName,
@@ -86,7 +86,7 @@ class UserAuthProvider extends ChangeNotifier {
 
   updateUserPassword({var newPassword}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    var token = pref.getString('token');
+    var token = pref.getString('userToken');
     var url =
         Uri.parse('$baseURL/vendor/update/password?password=$newPassword');
     var response = await http.post(
@@ -208,9 +208,8 @@ class UserAuthProvider extends ChangeNotifier {
 
   placewashorder(placemodel p) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    var token = pref.getString('token');
+    var token = pref.getString('userToken');
     var jsonObject = jsonEncode(p);
-
     var url = Uri.parse('$baseURL/user/order/place');
     var response = await http.post(
       url,
@@ -226,6 +225,7 @@ class UserAuthProvider extends ChangeNotifier {
       return jsonDecode(response.body)['message'];
     } else {
       print(jsonDecode(response.body)['message']);
+      print(token);
     }
     notifyListeners();
   }

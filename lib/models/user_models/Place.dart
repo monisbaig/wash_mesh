@@ -30,7 +30,7 @@ class placemodel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data[' category_id'] = category_id;
+    data['category_id'] = category_id;
     data['amount'] = amount;
     data['service_at'] = serviceAt;
     data['description'] = description;
