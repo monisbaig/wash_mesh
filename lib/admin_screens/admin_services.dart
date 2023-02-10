@@ -23,63 +23,73 @@ class _AdminServicesState extends State<AdminServices> {
   List<int> _selectedmeshcat = [];
   nameid dt = nameid();
 
-  void _showWashCategory(snapshot) async {
-    final List<String>? results = await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return CustomMultiSelect(items: snapshot);
-      },
-    );
+  // void _showWashCategory(snapshot) async {
+  //   final List<String>? results = await showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return CustomMultiSelect(items: snapshot);
+  //     },
+  //   );
 
-    if (results != null) {
-      setState(() {
-        _selectedWashItems = results;
-      });
-    }
+  //   if (results != null) {
+  //     setState(() {
+  //       _selectedWashItems = results;
+  //     });
+  //   }
+  // }
+
+  void _washItemChange(String itemValue, bool isSelected, nameid i) {
+    setState(() {
+      if (isSelected) {
+        _selectedWashItems.add(itemValue);
+        int place = i.lstname.indexOf(itemValue);
+        _selectedwashcat.add(i.lstcatid.elementAt(place));
+      } else {
+        int place = _selectedWashItems.indexOf(itemValue);
+        _selectedWashItems.remove(itemValue);
+        _selectedwashcat.removeAt(place);
+      }
+    });
+  }
+
+  void _meshItemChange(String itemValue, bool isSelected, nameid i) {
+    setState(() {
+      if (isSelected) {
+        _selectedMeshItems.add(itemValue);
+        int place = i.lstname.indexOf(itemValue);
+        _selectedmeshcat.add(i.lstcatid.elementAt(place));
+      } else {
+        int place = _selectedMeshItems.indexOf(itemValue);
+        _selectedMeshItems.remove(itemValue);
+        _selectedmeshcat.removeAt(place);
+      }
+    });
   }
 
   _showMeshCategory(nameid ijk) async {
-    _selectedWashItems.clear();
-    _selectedwashcat.clear();
     await showDialog<nameid>(
       context: context,
       builder: (BuildContext context) {
         int? selectedRadio = 0;
         return AlertDialog(
           title: const Text('Select Category'),
-          content: SingleChildScrollView(
-            child: ListBody(
-                children: List.generate(ijk.lstname.length, (index) {
-              return CheckboxListTile(
-                  value: _selectedWashItems.contains(ijk.lstname[index]),
-                  title: Text(ijk.lstname[index]),
-                  controlAffinity: ListTileControlAffinity.leading,
-                  onChanged: (isChecked) {
-                    if (isChecked!) {
-                      _selectedWashItems.add(ijk.lstname[index]);
-                      _selectedwashcat.add(ijk.lstcatid[index]);
-                    } else {
-                      _selectedWashItems.remove(ijk.lstname[index]);
-                      _selectedwashcat.remove(ijk.lstcatid[index]);
-                    }
-                    setState(() {
-                      _selectedMeshItems;
+          content: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+            return SingleChildScrollView(
+              child: ListBody(
+                  children: List.generate(ijk.lstname.length, (index) {
+                return CheckboxListTile(
+                    value: _selectedWashItems.contains(ijk.lstname[index]),
+                    title: Text(ijk.lstname[index]),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    onChanged: (v) {
+                      _washItemChange(ijk.lstname[index], v!, ijk);
+
+                      setState(() {});
                     });
-                  });
-            })
-
-                //CheckboxListTile(
-                //         value: _selectedItems.contains(item),
-                //         title: Text(item),
-                //         controlAffinity: ListTileControlAffinity.leading,
-                //         onChanged: (isChecked) => _washItemChange(
-                //           item,
-                //           isChecked!,
-                //         ),
-                //       ),
-
-                ),
-          ),
+              })),
+            );
+          }),
           actions: [
             TextButton(
               onPressed: () {
@@ -99,18 +109,51 @@ class _AdminServicesState extends State<AdminServices> {
         );
       },
     );
-    // final List<nameid> results = await showDialog(
-    //   context: context,
-    //   builder: (BuildContext context) {
-    //     return CustomMultiSelect(items: snapshot);
-    //   },
-    // );
+  }
 
-    // if (results != null) {
-    //   setState(() {
-    //     dt = results;
-    //   });
-    // }
+  _meshcat(nameid ijk) async {
+    await showDialog<nameid>(
+      context: context,
+      builder: (BuildContext context) {
+        int? selectedRadio = 0;
+        return AlertDialog(
+          title: const Text('Select Category'),
+          content: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+            return SingleChildScrollView(
+              child: ListBody(
+                  children: List.generate(ijk.lstname.length, (index) {
+                return CheckboxListTile(
+                    value: _selectedMeshItems.contains(ijk.lstname[index]),
+                    title: Text(ijk.lstname[index]),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    onChanged: (v) {
+                      _meshItemChange(ijk.lstname[index], v!, ijk);
+
+                      setState(() {});
+                    });
+              })),
+            );
+          }),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                print(_selectedMeshItems);
+                print(_selectedmeshcat);
+                Navigator.of(context).pop();
+              },
+              child: const Text('Submit'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -169,14 +212,6 @@ class _AdminServicesState extends State<AdminServices> {
                     SizedBox(height: 10.h),
                     CustomButton(
                       onTextPress: () async {
-                        _selectedMeshItems.clear();
-                        _selectedwashcat.clear();
-                        // FutureBuilder<Meshusermodel>(
-                        //   future: UserAuthProvider.Getmeshcategories(),
-                        //   builder: (context, snapshot) {
-                        //     return _showMeshCategory(snapshot.data!);
-                        //   },
-                        // );
                         nameid catidaname = nameid();
                         await UserAuthProvider.getwashnames()
                             .then((value) => catidaname = value);
@@ -218,17 +253,10 @@ class _AdminServicesState extends State<AdminServices> {
                     SizedBox(height: 10.h),
                     CustomButton(
                       onTextPress: () async {
-                        // FutureBuilder<Meshusermodel>(
-                        //   future: UserAuthProvider.Getmeshcategories(),
-                        //   builder: (context, snapshot) {
-                        //     return _showMeshCategory(snapshot.data!);
-                        //   },
-                        // );
-                        List<String> str = [];
+                        nameid catidaname = nameid();
                         await UserAuthProvider.getmeshnames()
-                            .then((value) => str = value);
-                        return _showWashCategory(str.toList());
-                        print(str.toString());
+                            .then((value) => catidaname = value);
+                        return _meshcat(catidaname);
                       },
                       buttonText: 'Select Mesh Service',
                     ),

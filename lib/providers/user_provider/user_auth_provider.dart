@@ -140,8 +140,8 @@ class UserAuthProvider extends ChangeNotifier {
     }
   }
 
-  static Future<List<String>> getmeshnames() async {
-    List<Meshusermodel> list = [];
+  static Future<nameid> getmeshnames() async {
+    List<WashCategoryModel> list = [];
     List<String> str = [];
     final url = Uri.parse('$baseURL/mesh/categories');
     final response = await http.get(url);
@@ -152,13 +152,16 @@ class UserAuthProvider extends ChangeNotifier {
       // list.add();
       // print(da.data![0].name);
       List<String> str = [];
-      var dt = Meshusermodel.fromJson(jsonDecode(response.body));
-      List.generate(
-          dt.data!.length, (index) => str.add(dt.data!.elementAt(index).name!));
-
-      return str;
+      List<int> id = [];
+      var dt = WashCategoryModel.fromJson(jsonDecode(response.body));
+      List.generate(dt.data!.length, (index) {
+        str.add(dt.data!.elementAt(index).name!);
+        id.add(int.parse(dt.data!.elementAt(index).id!.toString()));
+      });
+      nameid i = nameid.nameid(str, id);
+      return i;
     } else {
-      return str;
+      return nameid();
     }
   }
 
