@@ -291,15 +291,15 @@ class _WashBookScreenState extends State<WashBookScreen> {
                             String dt = DateTime.now().toString();
                             List<String> lstdt = dt.split(':');
                             dt = lstdt[0] + ":" + lstdt[1];
-                            placemodel p = placemodel(
-                                amount: '300',
-                                description: desp.text.toString(),
-                                orderAttribute: lst,
-                                serviceAt: dt,
-                                category_id: _catid);
+                            // placemodel p = placemodel(
+                            //     amount: '300',
+                            //     description: desp.text.toString(),
+                            //     orderAttribute: lst,
+                            //     serviceAt: dt,
+                            //     category_id: _catid);
 
-                            Provider.of<UserAuthProvider>(context)
-                                .placewashorder(p);
+                            // Provider.of<UserAuthProvider>(context)
+                            //     .placewashorder(p);
                           },
                           buttonText: 'Book Now',
                         ),
