@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:wash_mesh/admin_chat_module/screens/admin_auth_screen.dart';
 import 'package:wash_mesh/admin_screens/admin_home_screen.dart';
 import 'package:wash_mesh/admin_screens/admin_services.dart';
 import 'package:wash_mesh/admin_screens/admin_settings.dart';
@@ -19,7 +20,7 @@ class _CustomNavigationBarAdminState extends State<CustomNavigationBarAdmin> {
     UserBookingScreen(),
     const AdminServices(),
     const AdminHomeScreen(),
-    const AdminSettings(),
+    const AdminAuthScreen(),
     const AdminSettings(),
   ];
 

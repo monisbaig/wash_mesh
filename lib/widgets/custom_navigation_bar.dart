@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:wash_mesh/user_chat_module/screens/user_auth_screen.dart';
 import 'package:wash_mesh/user_screens/user_booking_screen.dart';
 import 'package:wash_mesh/user_screens/user_home_screen.dart';
 import 'package:wash_mesh/user_screens/user_settings.dart';
@@ -18,7 +19,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
     UserBookingScreen(),
     const WashMeshDialog(),
     const UserHomeScreen(),
-    const UserHomeScreen(),
+    const UserAuthScreen(),
     const UserSettings(),
   ];
 
