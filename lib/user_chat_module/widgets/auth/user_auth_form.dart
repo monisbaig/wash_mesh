@@ -39,16 +39,17 @@ class _UserAuthFormState extends State<UserAuthForm> {
       );
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("password", _userPassword);
-    prefs.setString("Uemail", _userEmail);
+    prefs.setString("userPassword", _userPassword);
+    prefs.setString("userEmail", _userEmail);
   }
 
   checkPassword() async {
     SharedPreferences p = await SharedPreferences.getInstance();
 
-    if (p.getString("password") != null && p.getString("Uemail") != null) {
-      userEmail.text = p.getString("Uemail")!;
-      userPassword.text = p.getString("password")!;
+    if (p.getString("userPassword") != null &&
+        p.getString("userEmail") != null) {
+      userEmail.text = p.getString("userEmail")!;
+      userPassword.text = p.getString("userPassword")!;
       setState(() {});
     }
   }

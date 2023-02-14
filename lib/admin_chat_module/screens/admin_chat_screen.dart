@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wash_mesh/admin_chat_module/widgets/chat/admin_messages.dart';
 import 'package:wash_mesh/admin_chat_module/widgets/chat/admin_new_messages.dart';
-import 'package:wash_mesh/register_screen.dart';
+import 'package:wash_mesh/admin_screens/admin_home_screen.dart';
 
 class AdminChatScreen extends StatefulWidget {
   const AdminChatScreen({Key? key}) : super(key: key);
@@ -87,11 +87,12 @@ class _AdminChatScreenState extends State<AdminChatScreen> {
               if (value == 'logout') {
                 FirebaseAuth.instance.signOut();
                 Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const RegisterScreen(),
-                    ),
-                    (route) => false);
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AdminHomeScreen(),
+                  ),
+                  (route) => false,
+                );
               }
               if (value == 'clear') {
                 deleteAll();

@@ -4,11 +4,11 @@ import 'package:wash_mesh/admin_chat_module/screens/admin_auth_screen.dart';
 import 'package:wash_mesh/admin_chat_module/screens/admin_chat_screen.dart';
 
 void main() {
-  runApp(const ChatApp());
+  runApp(const AdminChatApp());
 }
 
-class ChatApp extends StatelessWidget {
-  const ChatApp({super.key});
+class AdminChatApp extends StatelessWidget {
+  const AdminChatApp({super.key});
 
   @override
   Widget build(BuildContext context) {
