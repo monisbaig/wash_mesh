@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
+import 'package:wash_mesh/widgets/custom_colors.dart';
 
 import '../../models/user_models/Categories.dart' as um;
 import '../models/user_models/Place.dart';
@@ -9,11 +10,15 @@ import '../providers/user_provider/user_auth_provider.dart';
 import '../widgets/custom_logo.dart';
 
 class WashBookScreen extends StatefulWidget {
-  static late List<um.Data> data;
+  static late List<um.CatAttribute> data;
+  static late List<String> name;
 
-  WashBookScreen(List<um.Data> d) {
+  WashBookScreen(List<um.CatAttribute> d, String n) {
     data = d;
-    // print(data);
+    name.add(n);
+
+    print(data);
+    print(name.first);
   }
 
   @override
@@ -38,61 +43,61 @@ class _WashBookScreenState extends State<WashBookScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    for (int i = 0; i < WashBookScreen.data.length; i++) {
-      _catname.add(WashBookScreen.data[i].name);
-      _catnameid.add(WashBookScreen.data[i].id);
-      for (int j = 0;
-          j < WashBookScreen.data.elementAt(i).catAttribute!.length;
-          j++) {
-        for (int k = 0;
-            k <=
-                WashBookScreen.data
-                    .elementAt(i)
-                    .catAttribute!
-                    .elementAt(j)
-                    .attribute!
-                    .attributeValue!
-                    .length;
-            k++) {
-          if (k ==
-              WashBookScreen.data
-                  .elementAt(i)
-                  .catAttribute!
-                  .elementAt(j)
-                  .attribute!
-                  .attributeValue!
-                  .length) {
-          } else {
-            _carnameid.add(WashBookScreen.data
-                .elementAt(i)
-                .catAttribute!
-                .elementAt(j)
-                .attribute!
-                .attributeValue!
-                .elementAt(k)
-                .id);
-            _carname.add(WashBookScreen.data
-                .elementAt(i)
-                .catAttribute!
-                .elementAt(j)
-                .attribute!
-                .attributeValue!
-                .elementAt(k)
-                .name);
-            _attval.add(int.parse(WashBookScreen.data
-                .elementAt(i)
-                .catAttribute!
-                .elementAt(j)
-                .attribute!
-                .attributeValue!
-                .elementAt(k)
-                .attributeId));
-          }
-        }
-      }
-      setState(() {});
-    }
-
+    setState(() {});
+    // for (int i = 0; i < WashBookScreen.data.length; i++) {
+    //   _catnameid.add(WashBookScreen.data[i].id);
+    //   for (int j = 0;
+    //       j < WashBookScreen.data.elementAt(i).catAttribute!.length;
+    //       j++) {
+    //     for (int k = 0;
+    //         k <=
+    //             WashBookScreen.data
+    //                 .elementAt(i)
+    //                 .catAttribute!
+    //                 .elementAt(j)
+    //                 .attribute!
+    //                 .attributeValue!
+    //                 .length;
+    //         k++) {
+    //       if (k ==
+    //           WashBookScreen.data
+    //               .elementAt(i)
+    //               .catAttribute!
+    //               .elementAt(j)
+    //               .attribute!
+    //               .attributeValue!
+    //               .length) {
+    //       } else {
+    //         _carnameid.add(WashBookScreen.data
+    //             .elementAt(i)
+    //             .catAttribute!
+    //             .elementAt(j)
+    //             .attribute!
+    //             .attributeValue!
+    //             .elementAt(k)
+    //             .id);
+    //         _carname.add(WashBookScreen.data
+    //             .elementAt(i)
+    //             .catAttribute!
+    //             .elementAt(j)
+    //             .attribute!
+    //             .attributeValue!
+    //             .elementAt(k)
+    //             .name);
+    //         _attval.add(int.parse(WashBookScreen.data
+    //             .elementAt(i)
+    //             .catAttribute!
+    //             .elementAt(j)
+    //             .attribute!
+    //             .attributeValue!
+    //             .elementAt(k)
+    //             .attributeId));
+    //       }
+    //     }
+    //   }
+    //   setState(() {});
+    // }
+    setState(() {});
     catname = _catname.first;
     carname = _carname.first;
   }
@@ -117,69 +122,112 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 10.h),
-              SizedBox(
-                child: DropdownButton<String>(
-                  value: catname,
-                  icon: const Icon(Icons.arrow_downward),
-                  elevation: 16,
-                  style: const TextStyle(color: Colors.deepPurple),
-                  underline: Container(
-                    height: 2,
-                    color: Colors.deepPurpleAccent,
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(32.r),
+                ),
+                child: DropdownButtonFormField<String>(
+                  value: WashBookScreen.name.first.toString(),
+                  hint: const Text(
+                    'Gender',
+                    style: TextStyle(color: Colors.grey),
                   ),
-                  onChanged: (String? value) {
-                    // This is called when the user selects an item.
-                    setState(() {
-                      _catid = _catname.indexOf(value!);
-                      _catid = WashBookScreen.data.elementAt(_catid).id;
-
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text("$_catid")));
-                      catname = value;
-                    });
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select your gender';
+                    }
+                    return null;
                   },
-                  items: _catname.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
+                  items: WashBookScreen.name
+                      .map((e) => DropdownMenuItem<String>(
+                            value: e,
+                            child: Text(e),
+                            alignment: Alignment.center,
+                          ))
+                      .toList(),
+                  borderRadius: BorderRadius.circular(32.r),
+                  onChanged: (String? value) {
+                    _catid = _catname.indexOf(value!);
+                    _catid = WashBookScreen.data.elementAt(_catid).id;
+                  },
+                  decoration: InputDecoration(
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(32.r),
+                      borderSide: const BorderSide(color: Colors.white),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(32.r),
+                      borderSide: const BorderSide(color: Colors.white),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(32.r),
+                      borderSide: const BorderSide(color: Colors.white),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(32.r),
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                  ),
                 ),
               ),
               SizedBox(height: 20.h),
-              SizedBox(
-                child: DropdownButton<String>(
-                  value: carname,
-                  icon: const Icon(Icons.arrow_downward),
-                  elevation: 16,
-                  style: const TextStyle(color: Colors.deepPurple),
-                  underline: Container(
-                    height: 2,
-                    color: Colors.deepPurpleAccent,
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(32.r),
+                ),
+                child: DropdownButtonFormField<String>(
+                  value: WashBookScreen.name.first,
+                  hint: const Text(
+                    'Gender',
+                    style: TextStyle(color: Colors.grey),
                   ),
-                  onChanged: (String? value) {
-                    // This is called when the user selects an item.
-                    setState(() {
-                      _att_val = _carname.indexOf(value!);
-                      _att_id = _attval.elementAt(_att_val);
-                      _att_val = _carnameid.elementAt(_att_val);
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text("$_att_id")));
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text("$_att_val")));
-
-                      carname = value;
-                    });
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select your gender';
+                    }
+                    return null;
                   },
-                  items: _carname.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
+                  items: _carname
+                      .map((e) => DropdownMenuItem<String>(
+                            value: e,
+                            child: Text(e),
+                            alignment: Alignment.center,
+                          ))
+                      .toList(),
+                  borderRadius: BorderRadius.circular(32.r),
+                  onChanged: (String? value) {
+                    _att_val = _carname.indexOf(value!);
+                    _att_id = _attval.elementAt(_att_val);
+                    _att_val = _carnameid.elementAt(_att_val);
+                  },
+                  decoration: InputDecoration(
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(32.r),
+                      borderSide: const BorderSide(color: Colors.white),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(32.r),
+                      borderSide: const BorderSide(color: Colors.white),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(32.r),
+                      borderSide: const BorderSide(color: Colors.white),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(32.r),
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                  ),
                 ),
               ),
+              SizedBox(height: 10.h),
+              SizedBox(height: 20.h),
               SizedBox(height: 20.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -283,8 +331,23 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   ),
                   SizedBox(height: 10.h),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.only(top: 12, bottom: 12),
+                          elevation: 12,
+                          shadowColor: CustomColor().shadowColor,
+                          backgroundColor: CustomColor().mainColor,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          textStyle: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 22.sp,
+                          ),
+                        ),
                         onPressed: () async {
                           print('hy');
                           List<OrderAttribute> lst = [];
@@ -310,12 +373,14 @@ class _WashBookScreenState extends State<WashBookScreen> {
                                   listen: false)
                               .placewashorder(p);
                         },
+
                         child: const Text('Book Now'),
 
                         // CustomButton(
                         //   onTextPress: () {},
                         //   buttonText: 'Book Later',
                       ),
+                      SizedBox(height: 10.h),
                     ],
                   ),
                 ],

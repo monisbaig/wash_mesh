@@ -236,8 +236,8 @@ class UserAuthProvider extends ChangeNotifier {
     List<int> catlst = wash + mesh;
 
     var jsonObject = {
-      'category_id[]': wash,
-      'category_id[]': mesh,
+      'category_id[]': wash.toString(),
+      'category_id[]': mesh.toString(),
     };
 
     var url = Uri.parse(

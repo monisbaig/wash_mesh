@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:wash_mesh/models/user_models/Categories.dart' as wc;
+import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
+import 'package:wash_mesh/providers/auth_provider.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
@@ -259,6 +262,15 @@ class _AdminServicesState extends State<AdminServices> {
                         return _meshcat(catidaname);
                       },
                       buttonText: 'Select Mesh Service',
+                    ),
+                    SizedBox(height: 10.h),
+                    CustomButton(
+                      onTextPress: () async {
+                        await Provider.of<UserAuthProvider>(context,
+                                listen: false)
+                            .applyvender(_selectedwashcat, _selectedmeshcat);
+                      },
+                      buttonText: 'Submit',
                     ),
                   ],
                 ),

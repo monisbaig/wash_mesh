@@ -63,15 +63,19 @@ class _MeshCategoryState extends State<MeshCategory> {
                                       },
                                       child: Column(
                                         children: [
-                                          // Image.network(
-                                          //   snapshot.data!.data!.elementAt(index).image!,
-                                          //   fit: BoxFit.cover,
-                                          // ),
-                                          SizedBox(height: 10.h),
-                                          Text(
+                                          Image.network(
                                             snapshot.data!.data!
                                                 .elementAt(index)
-                                                .name!,
+                                                .image!,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          SizedBox(height: 10.h),
+                                          Expanded(
+                                            child: Text(
+                                              snapshot.data!.data!
+                                                  .elementAt(index)
+                                                  .name!,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -101,10 +105,12 @@ class _MeshCategoryState extends State<MeshCategory> {
                                             onTap: () {},
                                             child: Column(
                                               children: [
-                                                // Image.network(
-                                                // snapshot.data!.data!.elementAt(index).image!,
-                                                //   fit: BoxFit.cover,
-                                                // ),
+                                                Image.network(
+                                                  snapshot.data!.data!
+                                                      .elementAt(index)
+                                                      .image!,
+                                                  fit: BoxFit.cover,
+                                                ),
                                                 SizedBox(height: 10.h),
                                                 Text(
                                                   snapshot.data!.data!
