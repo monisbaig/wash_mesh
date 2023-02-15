@@ -1,6 +1,0 @@
-// "signUp": "سائن اپ کریں",
-// "logIn": "لاگ ان کریں",
-// "signUp": "SIGN UP",
-// "logIn": "LOG IN",
-// "dashboard": "Dashboard",
-// "dashboard": "ڈیش بورڈ",
