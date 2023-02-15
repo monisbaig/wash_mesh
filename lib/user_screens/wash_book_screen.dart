@@ -12,7 +12,7 @@ import '../widgets/custom_logo.dart';
 class WashBookScreen extends StatefulWidget {
   static late List<um.Data> data;
 
-  WashBookScreen(List<um.Data> d) {
+  WashBookScreen(List<um.Data> d, {super.key}) {
     data = d;
     // print(data);
   }
@@ -118,6 +118,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   ),
                 ],
               ),
+              SizedBox(height: 10.h),
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -138,8 +139,8 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   items: _catname
                       .map((e) => DropdownMenuItem<String>(
                             value: e,
-                            child: Text(e),
                             alignment: Alignment.center,
+                            child: Text(e),
                           ))
                       .toList(),
                   borderRadius: BorderRadius.circular(32.r),
@@ -190,8 +191,8 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   items: _carname
                       .map((e) => DropdownMenuItem<String>(
                             value: e,
-                            child: Text(e),
                             alignment: Alignment.center,
+                            child: Text(e),
                           ))
                       .toList(),
                   borderRadius: BorderRadius.circular(32.r),
@@ -222,9 +223,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 10.h),
-              SizedBox(height: 20.h),
-              SizedBox(height: 20.h),
+              SizedBox(height: 15.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -244,7 +243,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   SizedBox(width: 22.w),
                 ],
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 15.h),
               InkWell(
                 onTap: () {},
                 child: Container(
@@ -329,52 +328,55 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.only(top: 12, bottom: 12),
-                          elevation: 12,
-                          shadowColor: CustomColor().shadowColor,
-                          backgroundColor: CustomColor().mainColor,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r),
+                      SizedBox(
+                        width: 200.w,
+                        child: ElevatedButton(
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.only(top: 12, bottom: 12),
+                            elevation: 12,
+                            shadowColor: CustomColor().shadowColor,
+                            backgroundColor: CustomColor().mainColor,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            textStyle: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 22.sp,
+                            ),
                           ),
-                          textStyle: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 22.sp,
-                          ),
+                          onPressed: () async {
+                            print('hy');
+                            List<OrderAttribute> lst = [];
+                            OrderAttribute oa = OrderAttribute(
+                              attributeId: _att_id,
+                              attributeValue: _att_val,
+                            );
+                            List<String> picList = [];
+                            picList.add(picture);
+                            lst.add(oa);
+                            String dt = DateTime.now().toString();
+                            List<String> lstdt = dt.split(':');
+                            dt = "${lstdt[0]}:${lstdt[1]}";
+                            placemodel p = placemodel(
+                              amount: '300',
+                              description: desp.text.toString(),
+                              picture: picList,
+                              orderAttribute: lst,
+                              serviceAt: dt,
+                              category_id: _catid,
+                            );
+                            await Provider.of<UserAuthProvider>(context,
+                                    listen: false)
+                                .placewashorder(p);
+                          },
+
+                          child: const Text('Book Now'),
+
+                          // CustomButton(
+                          //   onTextPress: () {},
+                          //   buttonText: 'Book Later',
                         ),
-                        onPressed: () async {
-                          print('hy');
-                          List<OrderAttribute> lst = [];
-                          OrderAttribute oa = OrderAttribute(
-                            attributeId: _att_id,
-                            attributeValue: _att_val,
-                          );
-                          List<String> picList = [];
-                          picList.add(picture);
-                          lst.add(oa);
-                          String dt = DateTime.now().toString();
-                          List<String> lstdt = dt.split(':');
-                          dt = "${lstdt[0]}:${lstdt[1]}";
-                          placemodel p = placemodel(
-                            amount: '300',
-                            description: desp.text.toString(),
-                            picture: picList,
-                            orderAttribute: lst,
-                            serviceAt: dt,
-                            category_id: _catid,
-                          );
-                          await Provider.of<UserAuthProvider>(context,
-                                  listen: false)
-                              .placewashorder(p);
-                        },
-
-                        child: const Text('Book Now'),
-
-                        // CustomButton(
-                        //   onTextPress: () {},
-                        //   buttonText: 'Book Later',
                       ),
                       SizedBox(height: 10.h),
                     ],

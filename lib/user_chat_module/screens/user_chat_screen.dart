@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wash_mesh/user_screens/user_home_screen.dart';
 
 import '../widgets/chat/user_messages.dart';
@@ -36,7 +37,7 @@ class _UserChatScreenState extends State<UserChatScreen> {
           DropdownButton(
             elevation: 0,
             underline: Container(),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(16.r),
             dropdownColor: Colors.blue,
             icon: Icon(
               Icons.more_vert,
@@ -46,15 +47,13 @@ class _UserChatScreenState extends State<UserChatScreen> {
               DropdownMenuItem(
                 value: 'clear',
                 child: Row(
-                  children: const [
-                    Icon(
+                  children: [
+                    const Icon(
                       Icons.clear_all,
                       color: Colors.white,
                     ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Text(
+                    SizedBox(width: 8.w),
+                    const Text(
                       'Clear Chat',
                       style: TextStyle(
                         color: Colors.white,
@@ -66,15 +65,13 @@ class _UserChatScreenState extends State<UserChatScreen> {
               DropdownMenuItem(
                 value: 'logout',
                 child: Row(
-                  children: const [
-                    Icon(
+                  children: [
+                    const Icon(
                       Icons.exit_to_app,
                       color: Colors.white,
                     ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Text(
+                    SizedBox(width: 8.w),
+                    const Text(
                       'Logout',
                       style: TextStyle(
                         color: Colors.white,

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wash_mesh/admin_chat_module/screens/admin_auth_screen.dart';
 import 'package:wash_mesh/admin_chat_module/screens/admin_chat_screen.dart';
 
@@ -24,7 +25,7 @@ class AdminChatApp extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.only(left: 40, right: 40),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(20.r),
             ),
           ),
         ),
