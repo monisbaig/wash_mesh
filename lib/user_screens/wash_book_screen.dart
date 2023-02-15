@@ -329,52 +329,55 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.only(top: 12, bottom: 12),
-                          elevation: 12,
-                          shadowColor: CustomColor().shadowColor,
-                          backgroundColor: CustomColor().mainColor,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r),
+                      Container(
+                        width: 200.w,
+                        child: ElevatedButton(
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.only(top: 12, bottom: 12),
+                            elevation: 20,
+                            shadowColor: CustomColor().shadowColor,
+                            backgroundColor: CustomColor().mainColor,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            textStyle: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18.sp,
+                            ),
                           ),
-                          textStyle: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 22.sp,
-                          ),
+                          onPressed: () async {
+                            print('hy');
+                            List<OrderAttribute> lst = [];
+                            OrderAttribute oa = OrderAttribute(
+                              attributeId: _att_id,
+                              attributeValue: _att_val,
+                            );
+                            List<String> picList = [];
+                            picList.add(picture);
+                            lst.add(oa);
+                            String dt = DateTime.now().toString();
+                            List<String> lstdt = dt.split(':');
+                            dt = "${lstdt[0]}:${lstdt[1]}";
+                            placemodel p = placemodel(
+                              amount: '300',
+                              description: desp.text.toString(),
+                              picture: picList,
+                              orderAttribute: lst,
+                              serviceAt: dt,
+                              category_id: _catid,
+                            );
+                            await Provider.of<UserAuthProvider>(context,
+                                    listen: false)
+                                .placewashorder(p);
+                          },
+
+                          child: const Text('Book Now'),
+
+                          // CustomButton(
+                          //   onTextPress: () {},
+                          //   buttonText: 'Book Later',
                         ),
-                        onPressed: () async {
-                          print('hy');
-                          List<OrderAttribute> lst = [];
-                          OrderAttribute oa = OrderAttribute(
-                            attributeId: _att_id,
-                            attributeValue: _att_val,
-                          );
-                          List<String> picList = [];
-                          picList.add(picture);
-                          lst.add(oa);
-                          String dt = DateTime.now().toString();
-                          List<String> lstdt = dt.split(':');
-                          dt = "${lstdt[0]}:${lstdt[1]}";
-                          placemodel p = placemodel(
-                            amount: '300',
-                            description: desp.text.toString(),
-                            picture: picList,
-                            orderAttribute: lst,
-                            serviceAt: dt,
-                            category_id: _catid,
-                          );
-                          await Provider.of<UserAuthProvider>(context,
-                                  listen: false)
-                              .placewashorder(p);
-                        },
-
-                        child: const Text('Book Now'),
-
-                        // CustomButton(
-                        //   onTextPress: () {},
-                        //   buttonText: 'Book Later',
                       ),
                       SizedBox(height: 10.h),
                     ],
