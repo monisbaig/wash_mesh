@@ -125,10 +125,11 @@ class _WashBookScreenState extends State<WashBookScreen> {
               ),
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.blue,
                   borderRadius: BorderRadius.circular(32.r),
                 ),
                 child: DropdownButtonFormField<String>(
+                  dropdownColor: CustomColor().mainColor,
                   value: catname,
                   hint: const Text(
                     'Gender',
@@ -169,7 +170,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                       borderSide: const BorderSide(color: Colors.white),
                       borderRadius: BorderRadius.circular(32.r),
                     ),
-                    fillColor: Colors.white,
+                    fillColor: CustomColor().mainColor,
                     filled: true,
                   ),
                 ),
