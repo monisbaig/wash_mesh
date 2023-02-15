@@ -127,6 +127,8 @@ class _WashBookScreenState extends State<WashBookScreen> {
               ),
               SizedBox(height: 10.h),
               Container(
+                width: 320.w,
+                height: 65.h,
                 decoration: BoxDecoration(
                   color: Colors.blue,
                   borderRadius: BorderRadius.circular(32.r),
@@ -134,13 +136,15 @@ class _WashBookScreenState extends State<WashBookScreen> {
                 child: DropdownButtonFormField<String>(
                   dropdownColor: CustomColor().mainColor,
                   value: catname,
-                  hint: const Text(
-                    'Gender',
-                    style: TextStyle(color: Colors.grey),
-                  ),
+                  // hint: const Text(
+                  //   'Gender',
+                  //   style: TextStyle(
+                  //     color: Colors.grey,
+                  //   ),
+                  // ),
                   validator: (value) {
                     if (value == null) {
-                      return 'Please select your gender';
+                      return 'Please select your type';
                     }
                     return null;
                   },
@@ -180,19 +184,21 @@ class _WashBookScreenState extends State<WashBookScreen> {
               ),
               SizedBox(height: 20.h),
               Container(
+                width: 320.w,
+                height: 65.h,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(32.r),
                 ),
                 child: DropdownButtonFormField<String>(
                   value: carname,
-                  hint: const Text(
-                    'Gender',
-                    style: TextStyle(color: Colors.grey),
-                  ),
+                  // hint: const Text(
+                  //   'Gender',
+                  //   style: TextStyle(color: Colors.grey),
+                  // ),
                   validator: (value) {
                     if (value == null) {
-                      return 'Please select your gender';
+                      return 'Please select your type';
                     }
                     return null;
                   },
@@ -232,24 +238,27 @@ class _WashBookScreenState extends State<WashBookScreen> {
                 ),
               ),
               SizedBox(height: 15.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    height: 45.h,
-                    width: 40.w,
-                    decoration: BoxDecoration(
-                      color: Colors.green.shade900,
-                      borderRadius: BorderRadius.circular(20),
+              GestureDetector(
+                onTap: () {},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      height: 42.h,
+                      width: 40.w,
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade900,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Icon(
+                        Icons.add,
+                        size: 26,
+                        color: Colors.white,
+                      ),
                     ),
-                    child: const Icon(
-                      Icons.add,
-                      size: 30,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(width: 22.w),
-                ],
+                    SizedBox(width: 22.w),
+                  ],
+                ),
               ),
               SizedBox(height: 15.h),
               InkWell(
@@ -337,7 +346,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: 200.w,
+                        width: 300.w,
                         child: ElevatedButton(
                           style: TextButton.styleFrom(
                             padding: const EdgeInsets.only(top: 12, bottom: 12),
@@ -380,7 +389,6 @@ class _WashBookScreenState extends State<WashBookScreen> {
                                     listen: false)
                                 .placewashorder(p);
                           },
-
                           child: const Text('Book Now'),
 
                           // CustomButton(
@@ -388,7 +396,6 @@ class _WashBookScreenState extends State<WashBookScreen> {
                           //   buttonText: 'Book Later',
                         ),
                       ),
-                      SizedBox(height: 10.h),
                     ],
                   ),
                 ],

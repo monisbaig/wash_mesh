@@ -2,9 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wash_mesh/user_screens/mesh_category_screen.dart';
+import 'package:wash_mesh/user_screens/wash_category_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
-
-import '../user_screens/wash_book_screen.dart';
 
 class WashMeshDialog extends StatelessWidget {
   const WashMeshDialog({Key? key}) : super(key: key);
@@ -32,11 +32,11 @@ class WashMeshDialog extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) =>  WashBookScreen(),
-                      //   ),
-                      // );
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const WashCategory(),
+                        ),
+                      );
                     },
                     child: Image.asset(
                       'assets/images/wash.png',
@@ -44,7 +44,13 @@ class WashMeshDialog extends StatelessWidget {
                     ),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const MeshCategory(),
+                        ),
+                      );
+                    },
                     child: Image.asset(
                       'assets/images/mesh.png',
                       fit: BoxFit.cover,
