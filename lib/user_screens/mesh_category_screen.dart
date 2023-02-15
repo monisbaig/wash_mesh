@@ -20,110 +20,114 @@ class _MeshCategoryState extends State<MeshCategory> {
       op: 0.1,
       ch: SafeArea(
         child: SingleChildScrollView(
-            child: FutureBuilder<Meshusermodel>(
-                future: UserAuthProvider.Getmeshcategories(),
-                builder: (context, snapshot) {
-                  return snapshot.connectionState == ConnectionState.waiting
-                      ? const Padding(
-                          padding: EdgeInsets.only(top: 320),
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        )
-                      : Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 45.h, horizontal: 12.w),
-                          child: Column(
+          child: FutureBuilder<Meshusermodel>(
+            future: UserAuthProvider.Getmeshcategories(),
+            builder: (context, snapshot) {
+              return snapshot.connectionState == ConnectionState.waiting
+                  ? const Padding(
+                      padding: EdgeInsets.only(top: 320),
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
+                  : Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 45.h, horizontal: 12.w),
+                      child: Column(
+                        children: [
+                          const CustomLogo(),
+                          SizedBox(height: 10.h),
+                          Row(
                             children: [
-                              const CustomLogo(),
-                              SizedBox(height: 10.h),
-                              Row(
-                                children: [
-                                  Image.asset(
-                                    'assets/images/mesh.png',
-                                    fit: BoxFit.cover,
-                                  ),
-                                ],
+                              Image.asset(
+                                'assets/images/mesh.png',
+                                fit: BoxFit.cover,
                               ),
-                              SizedBox(height: 10.h),
-                              SizedBox(
-                                height: 420.h,
-                                child: GridView.builder(
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: 10,
-                                    mainAxisSpacing: 10,
-                                  ),
-                                  itemCount: snapshot.data!.data!.length,
-                                  itemBuilder: (context, index) {
-                                    return InkWell(
-                                      onTap: () {
-                                        // Navigator.of(context).push(MaterialPageRoute(builder: (context) => WashBookScreen(),));
-                                      },
-                                      child: Column(
-                                        children: [
-                                          Image.network(
-                                            snapshot.data!.data!
-                                                .elementAt(index)
-                                                .image!,
-                                            fit: BoxFit.cover,
-                                          ),
-                                          SizedBox(height: 10.h),
-                                          Expanded(
-                                            child: Text(
-                                              snapshot.data!.data!
-                                                  .elementAt(index)
-                                                  .name!,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                              SizedBox(height: 10.h),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Featured',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 30.sp,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 8.h),
-                              Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: List.generate(
-                                      3,
-                                      (index) => InkWell(
-                                            onTap: () {},
-                                            child: Column(
-                                              children: [
-                                                Image.network(
-                                                  snapshot.data!.data!
-                                                      .elementAt(index)
-                                                      .image!,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                                SizedBox(height: 10.h),
-                                                Text(
-                                                  snapshot.data!.data!
-                                                      .elementAt(index)
-                                                      .name!,
-                                                )
-                                              ],
-                                            ),
-                                          ))),
                             ],
                           ),
-                        );
-                })),
+                          SizedBox(height: 10.h),
+                          SizedBox(
+                            height: 380.h,
+                            child: GridView.builder(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                              ),
+                              itemCount: snapshot.data!.data!.length,
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  onTap: () {
+                                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => WashBookScreen(),));
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Image.network(
+                                        snapshot.data!.data!
+                                            .elementAt(index)
+                                            .image!,
+                                        fit: BoxFit.contain,
+                                        width: 80.w,
+                                        height: 80.h,
+                                      ),
+                                      SizedBox(height: 10.h),
+                                      Flexible(
+                                        child: Text(
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .name!,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 10.h),
+                          Row(
+                            children: [
+                              Text(
+                                'Featured',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 30.sp,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 8.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: List.generate(
+                              3,
+                              (index) => InkWell(
+                                onTap: () {},
+                                child: Column(
+                                  children: [
+                                    Image.network(
+                                      snapshot.data!.data!
+                                          .elementAt(index)
+                                          .image!,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    SizedBox(height: 10.h),
+                                    Text(
+                                      snapshot.data!.data!
+                                          .elementAt(index)
+                                          .name!,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+            },
+          ),
+        ),
       ),
     );
   }
