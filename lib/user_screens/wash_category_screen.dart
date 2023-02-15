@@ -84,13 +84,8 @@ class _WashCategoryState extends State<WashCategory> {
                                       List<um.Data> data = snapshot.data!.data!;
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                          builder: (context) => WashBookScreen(
-                                              data
-                                                  .elementAt(index)
-                                                  .catAttribute!,
-                                              snapshot.data!.data!
-                                                  .elementAt(index)
-                                                  .name),
+                                          builder: (context) =>
+                                              WashBookScreen(data),
                                         ),
                                       );
                                     },

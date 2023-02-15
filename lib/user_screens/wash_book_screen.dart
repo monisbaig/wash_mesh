@@ -10,15 +10,11 @@ import '../providers/user_provider/user_auth_provider.dart';
 import '../widgets/custom_logo.dart';
 
 class WashBookScreen extends StatefulWidget {
-  static late List<um.CatAttribute> data;
-  static late List<String> name;
+  static late List<um.Data> data;
 
-  WashBookScreen(List<um.CatAttribute> d, String n) {
+  WashBookScreen(List<um.Data> d) {
     data = d;
-    name.add(n);
-
-    print(data);
-    print(name.first);
+    // print(data);
   }
 
   @override
@@ -43,61 +39,61 @@ class _WashBookScreenState extends State<WashBookScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    setState(() {});
-    // for (int i = 0; i < WashBookScreen.data.length; i++) {
-    //   _catnameid.add(WashBookScreen.data[i].id);
-    //   for (int j = 0;
-    //       j < WashBookScreen.data.elementAt(i).catAttribute!.length;
-    //       j++) {
-    //     for (int k = 0;
-    //         k <=
-    //             WashBookScreen.data
-    //                 .elementAt(i)
-    //                 .catAttribute!
-    //                 .elementAt(j)
-    //                 .attribute!
-    //                 .attributeValue!
-    //                 .length;
-    //         k++) {
-    //       if (k ==
-    //           WashBookScreen.data
-    //               .elementAt(i)
-    //               .catAttribute!
-    //               .elementAt(j)
-    //               .attribute!
-    //               .attributeValue!
-    //               .length) {
-    //       } else {
-    //         _carnameid.add(WashBookScreen.data
-    //             .elementAt(i)
-    //             .catAttribute!
-    //             .elementAt(j)
-    //             .attribute!
-    //             .attributeValue!
-    //             .elementAt(k)
-    //             .id);
-    //         _carname.add(WashBookScreen.data
-    //             .elementAt(i)
-    //             .catAttribute!
-    //             .elementAt(j)
-    //             .attribute!
-    //             .attributeValue!
-    //             .elementAt(k)
-    //             .name);
-    //         _attval.add(int.parse(WashBookScreen.data
-    //             .elementAt(i)
-    //             .catAttribute!
-    //             .elementAt(j)
-    //             .attribute!
-    //             .attributeValue!
-    //             .elementAt(k)
-    //             .attributeId));
-    //       }
-    //     }
-    //   }
-    //   setState(() {});
-    // }
-    setState(() {});
+    for (int i = 0; i < WashBookScreen.data.length; i++) {
+      _catname.add(WashBookScreen.data[i].name);
+      _catnameid.add(WashBookScreen.data[i].id);
+      for (int j = 0;
+          j < WashBookScreen.data.elementAt(i).catAttribute!.length;
+          j++) {
+        for (int k = 0;
+            k <=
+                WashBookScreen.data
+                    .elementAt(i)
+                    .catAttribute!
+                    .elementAt(j)
+                    .attribute!
+                    .attributeValue!
+                    .length;
+            k++) {
+          if (k ==
+              WashBookScreen.data
+                  .elementAt(i)
+                  .catAttribute!
+                  .elementAt(j)
+                  .attribute!
+                  .attributeValue!
+                  .length) {
+          } else {
+            _carnameid.add(WashBookScreen.data
+                .elementAt(i)
+                .catAttribute!
+                .elementAt(j)
+                .attribute!
+                .attributeValue!
+                .elementAt(k)
+                .id);
+            _carname.add(WashBookScreen.data
+                .elementAt(i)
+                .catAttribute!
+                .elementAt(j)
+                .attribute!
+                .attributeValue!
+                .elementAt(k)
+                .name);
+            _attval.add(int.parse(WashBookScreen.data
+                .elementAt(i)
+                .catAttribute!
+                .elementAt(j)
+                .attribute!
+                .attributeValue!
+                .elementAt(k)
+                .attributeId));
+          }
+        }
+      }
+      setState(() {});
+    }
+
     catname = _catname.first;
     carname = _carname.first;
   }
@@ -128,7 +124,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   borderRadius: BorderRadius.circular(32.r),
                 ),
                 child: DropdownButtonFormField<String>(
-                  value: WashBookScreen.name.first.toString(),
+                  value: catname,
                   hint: const Text(
                     'Gender',
                     style: TextStyle(color: Colors.grey),
@@ -139,7 +135,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                     }
                     return null;
                   },
-                  items: WashBookScreen.name
+                  items: _catname
                       .map((e) => DropdownMenuItem<String>(
                             value: e,
                             child: Text(e),
@@ -180,7 +176,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   borderRadius: BorderRadius.circular(32.r),
                 ),
                 child: DropdownButtonFormField<String>(
-                  value: WashBookScreen.name.first,
+                  value: carname,
                   hint: const Text(
                     'Gender',
                     style: TextStyle(color: Colors.grey),
