@@ -11,11 +11,11 @@ import '../widgets/custom_logo.dart';
 
 class WashBookScreen extends StatefulWidget {
   static late List<um.Data> data;
-  static late List<String> name;
+  static late String name;
 
   WashBookScreen(List<um.Data> d, String n) {
     data = d;
-    name.add(n);
+    name = n;
     // print(data);
   }
 
@@ -41,62 +41,65 @@ class _WashBookScreenState extends State<WashBookScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // for (int i = 0; i < WashBookScreen.data.length; i++) {
-    //   _catname.add(WashBookScreen.data[i].name);
-    //   _catnameid.add(WashBookScreen.data[i].id);
-    //   for (int j = 0;
-    //       j < WashBookScreen.data.elementAt(i).catAttribute!.length;
-    //       j++) {
-    //     for (int k = 0;
-    //         k <=
-    //             WashBookScreen.data
-    //                 .elementAt(i)
-    //                 .catAttribute!
-    //                 .elementAt(j)
-    //                 .attribute!
-    //                 .attributeValue!
-    //                 .length;
-    //         k++) {
-    //       if (k ==
-    //           WashBookScreen.data
-    //               .elementAt(i)
-    //               .catAttribute!
-    //               .elementAt(j)
-    //               .attribute!
-    //               .attributeValue!
-    //               .length) {
-    //       } else {
-    //         _carnameid.add(WashBookScreen.data
-    //             .elementAt(i)
-    //             .catAttribute!
-    //             .elementAt(j)
-    //             .attribute!
-    //             .attributeValue!
-    //             .elementAt(k)
-    //             .id);
-    //         _carname.add(WashBookScreen.data
-    //             .elementAt(i)
-    //             .catAttribute!
-    //             .elementAt(j)
-    //             .attribute!
-    //             .attributeValue!
-    //             .elementAt(k)
-    //             .name);
-    //         _attval.add(int.parse(WashBookScreen.data
-    //             .elementAt(i)
-    //             .catAttribute!
-    //             .elementAt(j)
-    //             .attribute!
-    //             .attributeValue!
-    //             .elementAt(k)
-    //             .attributeId));
-    //       }
-    //     }
-    //   }
-    //   setState(() {});
-    // }
+    for (int i = 0; i < WashBookScreen.data.length; i++) {
+      if (WashBookScreen.name == WashBookScreen.data[i].name) {
+        _catname.add(WashBookScreen.data[i].name);
+        _catnameid.add(WashBookScreen.data[i].id);
 
-    catname = _catname.first;
+        for (int j = 0;
+            j < WashBookScreen.data.elementAt(i).catAttribute!.length;
+            j++) {
+          for (int k = 0;
+              k <=
+                  WashBookScreen.data
+                      .elementAt(i)
+                      .catAttribute!
+                      .elementAt(j)
+                      .attribute!
+                      .attributeValue!
+                      .length;
+              k++) {
+            if (k ==
+                WashBookScreen.data
+                    .elementAt(i)
+                    .catAttribute!
+                    .elementAt(j)
+                    .attribute!
+                    .attributeValue!
+                    .length) {
+            } else {
+              _carnameid.add(WashBookScreen.data
+                  .elementAt(i)
+                  .catAttribute!
+                  .elementAt(j)
+                  .attribute!
+                  .attributeValue!
+                  .elementAt(k)
+                  .id);
+              _carname.add(WashBookScreen.data
+                  .elementAt(i)
+                  .catAttribute!
+                  .elementAt(j)
+                  .attribute!
+                  .attributeValue!
+                  .elementAt(k)
+                  .name);
+              _attval.add(int.parse(WashBookScreen.data
+                  .elementAt(i)
+                  .catAttribute!
+                  .elementAt(j)
+                  .attribute!
+                  .attributeValue!
+                  .elementAt(k)
+                  .attributeId));
+            }
+          }
+        }
+        setState(() {});
+      }
+    }
+
+    catname = WashBookScreen.name;
     carname = _carname.first;
   }
 

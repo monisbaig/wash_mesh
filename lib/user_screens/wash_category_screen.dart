@@ -85,7 +85,7 @@ class _WashCategoryState extends State<WashCategory> {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              WashBookScreen(data),
+                                              WashBookScreen(data,snapshot.data!.data!.elementAt(index).name),
                                         ),
                                       );
                                     },
