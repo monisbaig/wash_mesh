@@ -26,7 +26,7 @@ class _UserRecreatePasswordState extends State<UserRecreatePassword> {
         newPassword: newPassword.text,
       );
       newPassword.clear();
-      // Password Upadate Successfully!
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('$result'),
