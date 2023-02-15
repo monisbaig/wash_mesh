@@ -14,13 +14,15 @@ class WashBookScreen extends StatefulWidget {
   static late String name;
 
   WashBookScreen(List<um.Data> d, String n) {
-    data = d;
-    name = n;
-    // print(data);
-  }
+    WashBookScreen(List<um.Data> d, {super.key}) {
+      data = d;
+      name = n;
+      // print(data);
+    }
 
-  @override
-  State<WashBookScreen> createState() => _WashBookScreenState();
+    @override
+    State<WashBookScreen> createState() => _WashBookScreenState();
+  }
 }
 
 class _WashBookScreenState extends State<WashBookScreen> {
@@ -123,6 +125,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   ),
                 ],
               ),
+              SizedBox(height: 10.h),
               Container(
                 decoration: BoxDecoration(
                   color: Colors.blue,
@@ -144,8 +147,8 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   items: _catname
                       .map((e) => DropdownMenuItem<String>(
                             value: e,
-                            child: Text(e),
                             alignment: Alignment.center,
+                            child: Text(e),
                           ))
                       .toList(),
                   borderRadius: BorderRadius.circular(32.r),
@@ -196,8 +199,8 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   items: _carname
                       .map((e) => DropdownMenuItem<String>(
                             value: e,
-                            child: Text(e),
                             alignment: Alignment.center,
+                            child: Text(e),
                           ))
                       .toList(),
                   borderRadius: BorderRadius.circular(32.r),
@@ -228,9 +231,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 10.h),
-              SizedBox(height: 20.h),
-              SizedBox(height: 20.h),
+              SizedBox(height: 15.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -250,7 +251,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   SizedBox(width: 22.w),
                 ],
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 15.h),
               InkWell(
                 onTap: () {},
                 child: Container(
@@ -335,12 +336,13 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 200.w,
                         child: ElevatedButton(
                           style: TextButton.styleFrom(
                             padding: const EdgeInsets.only(top: 12, bottom: 12),
                             elevation: 20,
+                            elevation: 12,
                             shadowColor: CustomColor().shadowColor,
                             backgroundColor: CustomColor().mainColor,
                             foregroundColor: Colors.white,
@@ -350,6 +352,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                             textStyle: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 18.sp,
+                              fontSize: 22.sp,
                             ),
                           ),
                           onPressed: () async {
