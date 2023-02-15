@@ -14,7 +14,7 @@ class WashBookScreen extends StatefulWidget {
   static late String name;
 
   WashBookScreen(List<um.Data> d, String n) {
-    WashBookScreen(List<um.Data> d, {super.key}) {
+
       data = d;
       name = n;
       // print(data);
@@ -23,7 +23,7 @@ class WashBookScreen extends StatefulWidget {
     @override
     State<WashBookScreen> createState() => _WashBookScreenState();
   }
-}
+
 
 class _WashBookScreenState extends State<WashBookScreen> {
   TextEditingController desp = TextEditingController();
@@ -351,7 +351,6 @@ class _WashBookScreenState extends State<WashBookScreen> {
                           style: TextButton.styleFrom(
                             padding: const EdgeInsets.only(top: 12, bottom: 12),
                             elevation: 20,
-                            elevation: 12,
                             shadowColor: CustomColor().shadowColor,
                             backgroundColor: CustomColor().mainColor,
                             foregroundColor: Colors.white,
@@ -361,7 +360,6 @@ class _WashBookScreenState extends State<WashBookScreen> {
                             textStyle: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 18.sp,
-                              fontSize: 22.sp,
                             ),
                           ),
                           onPressed: () async {
