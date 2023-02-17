@@ -14,16 +14,14 @@ class WashBookScreen extends StatefulWidget {
   static late String name;
 
   WashBookScreen(List<um.Data> d, String n) {
-
-      data = d;
-      name = n;
-      // print(data);
-    }
-
-    @override
-    State<WashBookScreen> createState() => _WashBookScreenState();
+    data = d;
+    name = n;
+    // print(data);
   }
 
+  @override
+  State<WashBookScreen> createState() => _WashBookScreenState();
+}
 
 class _WashBookScreenState extends State<WashBookScreen> {
   TextEditingController desp = TextEditingController();
@@ -130,7 +128,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                 width: 320.w,
                 height: 65.h,
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: CustomColor().mainColor,
                   borderRadius: BorderRadius.circular(32.r),
                 ),
                 child: DropdownButtonFormField<String>(
@@ -149,11 +147,17 @@ class _WashBookScreenState extends State<WashBookScreen> {
                     return null;
                   },
                   items: _catname
-                      .map((e) => DropdownMenuItem<String>(
-                            value: e,
-                            alignment: Alignment.center,
-                            child: Text(e),
-                          ))
+                      .map(
+                        (e) => DropdownMenuItem<String>(
+                          value: e,
+                          child: Text(
+                            e,
+                            style: const TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      )
                       .toList(),
                   borderRadius: BorderRadius.circular(32.r),
                   onChanged: (String? value) {
@@ -163,18 +167,18 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   decoration: InputDecoration(
                     errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(32.r),
-                      borderSide: const BorderSide(color: Colors.white),
+                      borderSide: BorderSide(color: CustomColor().mainColor),
                     ),
                     focusedErrorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(32.r),
-                      borderSide: const BorderSide(color: Colors.white),
+                      borderSide: BorderSide(color: CustomColor().mainColor),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(32.r),
-                      borderSide: const BorderSide(color: Colors.white),
+                      borderSide: BorderSide(color: CustomColor().mainColor),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
+                      borderSide: BorderSide(color: CustomColor().mainColor),
                       borderRadius: BorderRadius.circular(32.r),
                     ),
                     fillColor: CustomColor().mainColor,
@@ -205,7 +209,6 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   items: _carname
                       .map((e) => DropdownMenuItem<String>(
                             value: e,
-                            alignment: Alignment.center,
                             child: Text(e),
                           ))
                       .toList(),

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -33,7 +35,7 @@ class _UserProfileState extends State<UserProfile> {
 
   getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
+    var token = prefs.getString('userToken');
     final url = Uri.parse(
         'https://washmesh.stackbuffers.com/api/user/customer/profile');
     var response = await http.get(

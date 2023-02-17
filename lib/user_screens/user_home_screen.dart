@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/user_screens/wash_category_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
@@ -20,11 +24,36 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   User user = User();
 
   dynamic token;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    getUserData();
   }
+
+  getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('userToken');
+    final url = Uri.parse(
+        'https://washmesh.stackbuffers.com/api/user/customer/profile');
+    var response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      var json = jsonDecode(response.body) as Map<String, dynamic>;
+      var firstN = json['data']['User']['first_name'];
+      setState(() {
+        firstName = firstN;
+      });
+    }
+  }
+
+  dynamic firstName;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +73,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${'hello'.tr()}, Ahmed',
+                          '${'hello'.tr()}, $firstName',
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 26.sp,
@@ -64,7 +93,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '12/14/2022',
+                          DateTime.now().toString().substring(0, 11),
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 18.sp,
@@ -72,7 +101,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           ),
                         ),
                         Text(
-                          '12:05 PM',
+                          DateTime.now().toString().substring(11, 16),
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 18.sp,

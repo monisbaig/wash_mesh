@@ -46,18 +46,21 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       },
     );
     if (response.statusCode == 200) {
-      var json = jsonDecode(response.body);
+      var json = jsonDecode(response.body) as Map<String, dynamic>;
       var firstN = json['data']['Vendor']['first_name'];
+      var availability =
+          json['data']['Vendor']['vendor_details']['availability'];
 
       setState(() {
         firstName = firstN;
+        available = availability;
       });
     }
   }
 
   dynamic firstName;
-
   bool isOn = false;
+  dynamic available;
 
   @override
   Widget build(BuildContext context) {
@@ -161,6 +164,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                     SizedBox(width: 100.w),
                                     Switch(
                                       activeColor: Colors.white,
+                                      activeTrackColor: Colors.greenAccent,
                                       value: isOn,
                                       onChanged: (value) {
                                         setState(() {

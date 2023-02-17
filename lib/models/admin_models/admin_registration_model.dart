@@ -59,21 +59,22 @@ class Vendor {
   dynamic status;
   VendorDetails? vendorDetails;
 
-  Vendor(
-      {this.id,
-      this.firstName,
-      this.lastName,
-      this.phone,
-      this.address,
-      this.email,
-      this.password,
-      this.confirmPassword,
-      this.userName,
-      this.referralCode,
-      this.userType,
-      this.image,
-      this.status,
-      this.vendorDetails});
+  Vendor({
+    this.id,
+    this.firstName,
+    this.lastName,
+    this.phone,
+    this.address,
+    this.email,
+    this.password,
+    this.confirmPassword,
+    this.userName,
+    this.referralCode,
+    this.userType,
+    this.image,
+    this.status,
+    this.vendorDetails,
+  });
 
   Vendor.fromJson(Map<String, dynamic> json) {
     id = json['id'];
