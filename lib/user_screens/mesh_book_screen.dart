@@ -4,26 +4,26 @@ import 'package:provider/provider.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 
-import '../../models/user_models/wash_categories_model.dart' as um;
+import '../../models/user_models/mesh_categories_model.dart' as um;
 import '../models/user_models/Place.dart';
 import '../providers/user_provider/user_auth_provider.dart';
 import '../widgets/custom_logo.dart';
 
-class WashBookScreen extends StatefulWidget {
+class MeshBookScreen extends StatefulWidget {
   static late List<um.Data> data;
   static late String name;
 
-  WashBookScreen(List<um.Data> d, String n, id) {
+  MeshBookScreen(List<um.Data> d, String n, id, {super.key}) {
     data = d;
     name = n;
     // print(data);
   }
 
   @override
-  State<WashBookScreen> createState() => _WashBookScreenState();
+  State<MeshBookScreen> createState() => _MeshBookScreenState();
 }
 
-class _WashBookScreenState extends State<WashBookScreen> {
+class _MeshBookScreenState extends State<MeshBookScreen> {
   TextEditingController desp = TextEditingController();
   List<String> _catname = [];
   List<String> _carname = [];
@@ -41,17 +41,17 @@ class _WashBookScreenState extends State<WashBookScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    for (int i = 0; i < WashBookScreen.data.length; i++) {
-      if (WashBookScreen.name == WashBookScreen.data[i].name) {
-        _catname.add(WashBookScreen.data[i].name);
-        _catid = (WashBookScreen.data[i].id);
+    for (int i = 0; i < MeshBookScreen.data.length; i++) {
+      if (MeshBookScreen.name == MeshBookScreen.data[i].name) {
+        _catname.add(MeshBookScreen.data[i].name);
+        _catid = (MeshBookScreen.data[i].id);
 
         for (int j = 0;
-            j < WashBookScreen.data.elementAt(i).catAttribute!.length;
+            j < MeshBookScreen.data.elementAt(i).catAttribute!.length;
             j++) {
           for (int k = 0;
               k <=
-                  WashBookScreen.data
+                  MeshBookScreen.data
                       .elementAt(i)
                       .catAttribute!
                       .elementAt(j)
@@ -60,7 +60,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                       .length;
               k++) {
             if (k ==
-                WashBookScreen.data
+                MeshBookScreen.data
                     .elementAt(i)
                     .catAttribute!
                     .elementAt(j)
@@ -68,7 +68,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                     .attributeValue!
                     .length) {
             } else {
-              _carnameid.add(WashBookScreen.data
+              _carnameid.add(MeshBookScreen.data
                   .elementAt(i)
                   .catAttribute!
                   .elementAt(j)
@@ -76,7 +76,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   .attributeValue!
                   .elementAt(k)
                   .id);
-              _carname.add(WashBookScreen.data
+              _carname.add(MeshBookScreen.data
                   .elementAt(i)
                   .catAttribute!
                   .elementAt(j)
@@ -84,7 +84,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   .attributeValue!
                   .elementAt(k)
                   .name);
-              _attval.add(int.parse(WashBookScreen.data
+              _attval.add(int.parse(MeshBookScreen.data
                   .elementAt(i)
                   .catAttribute!
                   .elementAt(j)
@@ -99,7 +99,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
       }
     }
 
-    catname = WashBookScreen.name;
+    catname = MeshBookScreen.name;
     carname = _carname.first;
   }
 
@@ -118,7 +118,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/images/wash.png',
+                    'assets/images/mesh.png',
                     fit: BoxFit.cover,
                   ),
                 ],
@@ -132,7 +132,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   borderRadius: BorderRadius.circular(32.r),
                 ),
                 child: DropdownButtonFormField<String>(
-                  dropdownColor: CustomColor().mainColor,
+                  dropdownColor: Colors.green,
                   value: catname,
                   // hint: const Text(
                   //   'Gender',
@@ -162,26 +162,26 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   borderRadius: BorderRadius.circular(32.r),
                   onChanged: (String? value) {
                     _catid = _catname.indexOf(value!);
-                    _catid = WashBookScreen.data.elementAt(_catid).id;
+                    _catid = MeshBookScreen.data.elementAt(_catid).id;
                   },
                   decoration: InputDecoration(
                     errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(32.r),
-                      borderSide: BorderSide(color: CustomColor().mainColor),
+                      borderSide: const BorderSide(color: Colors.green),
                     ),
                     focusedErrorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(32.r),
-                      borderSide: BorderSide(color: CustomColor().mainColor),
+                      borderSide: const BorderSide(color: Colors.green),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(32.r),
-                      borderSide: BorderSide(color: CustomColor().mainColor),
+                      borderSide: const BorderSide(color: Colors.green),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: CustomColor().mainColor),
+                      borderSide: const BorderSide(color: Colors.green),
                       borderRadius: BorderRadius.circular(32.r),
                     ),
-                    fillColor: CustomColor().mainColor,
+                    fillColor: Colors.green,
                     filled: true,
                   ),
                 ),
@@ -354,8 +354,8 @@ class _WashBookScreenState extends State<WashBookScreen> {
                           style: TextButton.styleFrom(
                             padding: const EdgeInsets.only(top: 12, bottom: 12),
                             elevation: 20,
-                            shadowColor: CustomColor().shadowColor,
-                            backgroundColor: CustomColor().mainColor,
+                            shadowColor: Colors.greenAccent,
+                            backgroundColor: Colors.green,
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.r),
@@ -366,7 +366,6 @@ class _WashBookScreenState extends State<WashBookScreen> {
                             ),
                           ),
                           onPressed: () async {
-                            print('hy');
                             List<OrderAttribute> lst = [];
                             OrderAttribute oa = OrderAttribute(
                               attributeId: _att_id,
@@ -389,7 +388,6 @@ class _WashBookScreenState extends State<WashBookScreen> {
                             await Provider.of<UserAuthProvider>(context,
                                     listen: false)
                                 .placeOrder(p);
-                            print(_catid);
                           },
                           child: const Text('Book Now'),
 

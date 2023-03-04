@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/admin_screens/admin_registration_form.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
@@ -33,8 +36,6 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
           input: phoneNo.text,
           password: password.text,
         );
-        phoneNo.clear();
-        password.clear();
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -43,6 +44,10 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
         );
 
         if (result == 'Vendor Login Successfully!') {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString("loginPhone", phoneNo.text);
+          prefs.setString("loginPassword", password.text);
+
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => const CustomNavigationBarAdmin(),
@@ -59,6 +64,23 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
     } catch (e) {
       rethrow;
     }
+  }
+
+  checkPassword() async {
+    SharedPreferences p = await SharedPreferences.getInstance();
+
+    if (p.getString("loginPhone") != null &&
+        p.getString("loginPassword") != null) {
+      phoneNo.text = p.getString("loginPhone")!;
+      password.text = p.getString("loginPassword")!;
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkPassword();
   }
 
   @override

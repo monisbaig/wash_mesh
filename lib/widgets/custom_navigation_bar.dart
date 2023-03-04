@@ -16,7 +16,7 @@ class CustomNavigationBar extends StatefulWidget {
 
 class _CustomNavigationBarState extends State<CustomNavigationBar> {
   List pages = [
-    UserBookingScreen(),
+    const UserBookingScreen(),
     const WashMeshDialog(),
     const UserHomeScreen(),
     const UserChatApp(),

@@ -155,6 +155,26 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     });
   }
 
+  File? profileImg;
+  dynamic convertedImage;
+
+  profileImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? imageFile = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 300,
+    );
+    if (imageFile == null) {
+      return;
+    }
+    profileImg = File(imageFile.path);
+
+    final imageByte = profileImg!.readAsBytesSync();
+    setState(() {
+      convertedImage = "data:image/png;base64,${base64Encode(imageByte)}";
+    });
+  }
+
   onRegister() async {
     final adminData = Provider.of<AdminAuthProvider>(context, listen: false);
     try {
@@ -229,7 +249,26 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 30.h),
+                SizedBox(height: 10.h),
+                InkWell(
+                  onTap: profileImage,
+                  child: ClipOval(
+                    child: profileImg != null
+                        ? Image.file(
+                            profileImg!,
+                            width: 105.w,
+                            height: 100.h,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            'assets/images/profile.png',
+                            width: 105.w,
+                            height: 100.h,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
+                ),
+                SizedBox(height: 15.h),
                 Form(
                   key: formKey,
                   child: Column(

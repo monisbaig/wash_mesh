@@ -17,7 +17,7 @@ class CustomNavigationBarAdmin extends StatefulWidget {
 
 class _CustomNavigationBarAdminState extends State<CustomNavigationBarAdmin> {
   List pages = [
-    UserBookingScreen(),
+    const UserBookingScreen(),
     const AdminServices(),
     const AdminHomeScreen(),
     const AdminChatApp(),

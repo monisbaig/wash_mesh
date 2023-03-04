@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:wash_mesh/providers/user_provider/user_auth_provider.dart';
 
-import '../providers/admin_provider/admin_auth_provider.dart';
 import '../widgets/custom_background.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_logo.dart';
@@ -22,10 +22,9 @@ class _AdminRecreatePasswordState extends State<AdminRecreatePassword> {
   final formKey = GlobalKey<FormFieldState>();
 
   onPassChange() async {
-    final adminPassword =
-        Provider.of<AdminAuthProvider>(context, listen: false);
+    final adminPassword = Provider.of<UserAuthProvider>(context, listen: false);
     try {
-      final result = await adminPassword.updateAdminPassword(
+      final result = await adminPassword.recreateUserPassword(
         newPassword: newPassword.text,
       );
       newPassword.clear();

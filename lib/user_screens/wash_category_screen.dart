@@ -5,7 +5,7 @@ import 'package:wash_mesh/user_screens/wash_book_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
 
-import '../models/user_models/Categories.dart' as um;
+import '../models/user_models/wash_categories_model.dart' as um;
 import '../providers/user_provider/user_auth_provider.dart';
 
 class WashCategory extends StatefulWidget {
@@ -39,7 +39,7 @@ class _WashCategoryState extends State<WashCategory> {
       ch: SafeArea(
         child: SingleChildScrollView(
           child: FutureBuilder<um.WashCategoryModel>(
-            future: UserAuthProvider.getwashcategories(),
+            future: UserAuthProvider.getWashCategories(),
             builder: (context, snapshot) {
               return snapshot.connectionState == ConnectionState.waiting
                   ? const Padding(
@@ -83,10 +83,14 @@ class _WashCategoryState extends State<WashCategory> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) => WashBookScreen(
-                                            data,
-                                            snapshot.data!.data!
-                                                .elementAt(index)
-                                                .name),
+                                          data,
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .name,
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .id,
+                                        ),
                                       ),
                                     );
                                   },
@@ -96,7 +100,9 @@ class _WashCategoryState extends State<WashCategory> {
                                         snapshot.data!.data!
                                             .elementAt(index)
                                             .image,
-                                        fit: BoxFit.cover,
+                                        fit: BoxFit.contain,
+                                        width: 80.w,
+                                        height: 80.h,
                                       ),
                                       SizedBox(height: 10.h),
                                       Flexible(
@@ -128,12 +134,14 @@ class _WashCategoryState extends State<WashCategory> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: List.generate(
-                              3,
+                              1,
                               (index) => Column(
                                 children: [
                                   Image.network(
                                     snapshot.data!.data!.elementAt(index).image,
-                                    fit: BoxFit.cover,
+                                    fit: BoxFit.contain,
+                                    width: 80.w,
+                                    height: 80.h,
                                   ),
                                   SizedBox(height: 10.h),
                                   Text(

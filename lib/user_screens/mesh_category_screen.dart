@@ -1,10 +1,149 @@
+// import 'package:flutter/material.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:wash_mesh/models/user_models/Meshusermodel.dart';
+// import 'package:wash_mesh/providers/user_provider/user_auth_provider.dart';
+// import 'package:wash_mesh/widgets/custom_background.dart';
+//
+// import '../widgets/custom_logo.dart';
+//
+// class MeshCategory extends StatefulWidget {
+//   const MeshCategory({Key? key}) : super(key: key);
+//
+//   @override
+//   State<MeshCategory> createState() => _MeshCategoryState();
+// }
+//
+// class _MeshCategoryState extends State<MeshCategory> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return CustomBackground(
+//       op: 0.1,
+//       ch: SafeArea(
+//         child: SingleChildScrollView(
+//           child: FutureBuilder<Meshusermodel>(
+//             future: UserAuthProvider.Getmeshcategories(),
+//             builder: (context, snapshot) {
+//               return snapshot.connectionState == ConnectionState.waiting
+//                   ? const Padding(
+//                       padding: EdgeInsets.only(top: 320),
+//                       child: Center(
+//                         child: CircularProgressIndicator(),
+//                       ),
+//                     )
+//                   : Padding(
+//                       padding: EdgeInsets.symmetric(
+//                           vertical: 45.h, horizontal: 12.w),
+//                       child: Column(
+//                         children: [
+//                           const CustomLogo(),
+//                           SizedBox(height: 10.h),
+//                           Row(
+//                             children: [
+//                               Image.asset(
+//                                 'assets/images/mesh.png',
+//                                 fit: BoxFit.cover,
+//                               ),
+//                             ],
+//                           ),
+//                           SizedBox(height: 10.h),
+//                           SizedBox(
+//                             height: 380.h,
+//                             child: GridView.builder(
+//                               gridDelegate:
+//                                   const SliverGridDelegateWithFixedCrossAxisCount(
+//                                 crossAxisCount: 3,
+//                               ),
+//                               itemCount: snapshot.data!.data!.length,
+//                               itemBuilder: (context, index) {
+//                                 return InkWell(
+//                                   onTap: () {
+//                                     // Navigator.of(context).push(MaterialPageRoute(builder: (context) => WashBookScreen(),));
+//                                   },
+//                                   child: Column(
+//                                     children: [
+//                                       Image.network(
+//                                         snapshot.data!.data!
+//                                             .elementAt(index)
+//                                             .image!,
+//                                         fit: BoxFit.contain,
+//                                         width: 80.w,
+//                                         height: 80.h,
+//                                       ),
+//                                       SizedBox(height: 10.h),
+//                                       Flexible(
+//                                         child: Text(
+//                                           snapshot.data!.data!
+//                                               .elementAt(index)
+//                                               .name!,
+//                                           textAlign: TextAlign.center,
+//                                         ),
+//                                       ),
+//                                     ],
+//                                   ),
+//                                 );
+//                               },
+//                             ),
+//                           ),
+//                           SizedBox(height: 10.h),
+//                           Row(
+//                             children: [
+//                               Text(
+//                                 'Featured',
+//                                 style: TextStyle(
+//                                   fontWeight: FontWeight.w400,
+//                                   fontSize: 30.sp,
+//                                 ),
+//                               ),
+//                             ],
+//                           ),
+//                           SizedBox(height: 8.h),
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                             children: List.generate(
+//                               1,
+//                               (index) => InkWell(
+//                                 onTap: () {},
+//                                 child: Column(
+//                                   children: [
+//                                     Image.network(
+//                                       snapshot.data!.data!
+//                                           .elementAt(index)
+//                                           .image!,
+//                                       fit: BoxFit.contain,
+//                                       width: 80.w,
+//                                       height: 80.h,
+//                                     ),
+//                                     SizedBox(height: 10.h),
+//                                     Text(
+//                                       snapshot.data!.data!
+//                                           .elementAt(index)
+//                                           .name!,
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     );
+//             },
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wash_mesh/models/user_models/Meshusermodel.dart';
-import 'package:wash_mesh/providers/user_provider/user_auth_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:wash_mesh/user_screens/mesh_book_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
+import 'package:wash_mesh/widgets/custom_logo.dart';
 
-import '../widgets/custom_logo.dart';
+import '../models/user_models/mesh_categories_model.dart' as um;
+import '../providers/user_provider/user_auth_provider.dart';
 
 class MeshCategory extends StatefulWidget {
   const MeshCategory({Key? key}) : super(key: key);
@@ -14,14 +153,30 @@ class MeshCategory extends StatefulWidget {
 }
 
 class _MeshCategoryState extends State<MeshCategory> {
+  List<um.MeshCategoryModel> catlst = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    instance();
+  }
+
+  late final userData;
+
+  instance() async {
+    userData = Provider.of<UserAuthProvider>(context, listen: false);
+  }
+
+  final List<um.MeshCategoryModel> _data = [];
   @override
   Widget build(BuildContext context) {
     return CustomBackground(
       op: 0.1,
       ch: SafeArea(
         child: SingleChildScrollView(
-          child: FutureBuilder<Meshusermodel>(
-            future: UserAuthProvider.Getmeshcategories(),
+          child: FutureBuilder<um.MeshCategoryModel>(
+            future: UserAuthProvider.getMeshCategories(),
             builder: (context, snapshot) {
               return snapshot.connectionState == ConnectionState.waiting
                   ? const Padding(
@@ -47,7 +202,7 @@ class _MeshCategoryState extends State<MeshCategory> {
                           ),
                           SizedBox(height: 10.h),
                           SizedBox(
-                            height: 380.h,
+                            height: 260.h,
                             child: GridView.builder(
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
@@ -56,15 +211,32 @@ class _MeshCategoryState extends State<MeshCategory> {
                               itemCount: snapshot.data!.data!.length,
                               itemBuilder: (context, index) {
                                 return InkWell(
-                                  onTap: () {
-                                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => WashBookScreen(),));
+                                  onTap: () async {
+                                    // .attribute!
+                                    // .attributeValue!
+                                    // .elementAt(index)
+                                    // .id);
+                                    List<um.Data> data = snapshot.data!.data!;
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => MeshBookScreen(
+                                          data,
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .name,
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .id,
+                                        ),
+                                      ),
+                                    );
                                   },
                                   child: Column(
                                     children: [
                                       Image.network(
                                         snapshot.data!.data!
                                             .elementAt(index)
-                                            .image!,
+                                            .image,
                                         fit: BoxFit.contain,
                                         width: 80.w,
                                         height: 80.h,
@@ -72,9 +244,8 @@ class _MeshCategoryState extends State<MeshCategory> {
                                       SizedBox(height: 10.h),
                                       Flexible(
                                         child: Text(
-                                          snapshot.data!.data!
-                                              .elementAt(index)
-                                              .name!,
+                                          "${snapshot.data!.data!.elementAt(index).name}",
+                                          // overflow: TextOverflow.ellipsis,
                                           textAlign: TextAlign.center,
                                         ),
                                       ),
@@ -100,25 +271,20 @@ class _MeshCategoryState extends State<MeshCategory> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: List.generate(
-                              3,
-                              (index) => InkWell(
-                                onTap: () {},
-                                child: Column(
-                                  children: [
-                                    Image.network(
-                                      snapshot.data!.data!
-                                          .elementAt(index)
-                                          .image!,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    SizedBox(height: 10.h),
-                                    Text(
-                                      snapshot.data!.data!
-                                          .elementAt(index)
-                                          .name!,
-                                    ),
-                                  ],
-                                ),
+                              1,
+                              (index) => Column(
+                                children: [
+                                  Image.network(
+                                    snapshot.data!.data!.elementAt(index).image,
+                                    fit: BoxFit.contain,
+                                    width: 80.w,
+                                    height: 80.h,
+                                  ),
+                                  SizedBox(height: 10.h),
+                                  Text(
+                                    snapshot.data!.data!.elementAt(index).name,
+                                  ),
+                                ],
                               ),
                             ),
                           ),

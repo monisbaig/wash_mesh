@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:wash_mesh/models/user_models/Categories.dart' as wc;
-import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
-import 'package:wash_mesh/providers/auth_provider.dart';
+// import 'package:wash_mesh/models/user_models/wash_categories_model.dart' as wc;
+// import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
-import 'package:wash_mesh/widgets/custom_multiselect.dart';
+
+// import 'package:wash_mesh/widgets/custom_multiselect.dart';
 
 import '../providers/user_provider/user_auth_provider.dart';
 import '../widgets/custom_logo.dart';
@@ -216,7 +216,7 @@ class _AdminServicesState extends State<AdminServices> {
                     CustomButton(
                       onTextPress: () async {
                         nameid catidaname = nameid();
-                        await UserAuthProvider.getwashnames()
+                        await UserAuthProvider.getWashNames()
                             .then((value) => catidaname = value);
                         return _showMeshCategory(catidaname);
                       },
@@ -257,7 +257,7 @@ class _AdminServicesState extends State<AdminServices> {
                     CustomButton(
                       onTextPress: () async {
                         nameid catidaname = nameid();
-                        await UserAuthProvider.getmeshnames()
+                        await UserAuthProvider.getMeshNames()
                             .then((value) => catidaname = value);
                         return _meshcat(catidaname);
                       },
@@ -268,7 +268,7 @@ class _AdminServicesState extends State<AdminServices> {
                       onTextPress: () async {
                         await Provider.of<UserAuthProvider>(context,
                                 listen: false)
-                            .applyvender(_selectedwashcat, _selectedmeshcat);
+                            .applyVendor(_selectedwashcat, _selectedmeshcat);
                       },
                       buttonText: 'Submit',
                     ),

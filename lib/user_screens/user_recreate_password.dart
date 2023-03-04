@@ -22,7 +22,7 @@ class _UserRecreatePasswordState extends State<UserRecreatePassword> {
   onPassChange() async {
     final adminPassword = Provider.of<UserAuthProvider>(context, listen: false);
     try {
-      final result = await adminPassword.updateUserPassword(
+      final result = await adminPassword.recreateUserPassword(
         newPassword: newPassword.text,
       );
       newPassword.clear();

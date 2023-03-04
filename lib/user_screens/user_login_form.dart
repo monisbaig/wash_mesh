@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/user_screens/user_forget_password.dart';
 import 'package:wash_mesh/user_screens/user_registration_form.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
@@ -34,8 +37,6 @@ class _UserLoginFormState extends State<UserLoginForm> {
           input: emailPhone.text,
           password: password.text,
         );
-        emailPhone.clear();
-        password.clear();
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -44,6 +45,10 @@ class _UserLoginFormState extends State<UserLoginForm> {
         );
 
         if (result == 'Login Successfully') {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString("userEmail", emailPhone.text);
+          prefs.setString("userPassword", password.text);
+
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => const CustomNavigationBar(),
@@ -60,6 +65,23 @@ class _UserLoginFormState extends State<UserLoginForm> {
     } catch (e) {
       rethrow;
     }
+  }
+
+  checkPassword() async {
+    SharedPreferences p = await SharedPreferences.getInstance();
+
+    if (p.getString("userEmail") != null &&
+        p.getString("userPassword") != null) {
+      emailPhone.text = p.getString("userEmail")!;
+      password.text = p.getString("userPassword")!;
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkPassword();
   }
 
   @override

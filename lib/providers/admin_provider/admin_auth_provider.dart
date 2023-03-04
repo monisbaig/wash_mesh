@@ -8,8 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/models/admin_models/wash_category_model.dart';
 import 'package:wash_mesh/providers/admin_provider/place_model.dart';
 
-import '../../helpers/dp_helper.dart';
-import '../../helpers/location_helper.dart';
 import '../../models/admin_models/admin_registration_model.dart';
 
 class AdminAuthProvider extends ChangeNotifier {
@@ -168,7 +166,7 @@ class AdminAuthProvider extends ChangeNotifier {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString('token');
     var jsonObject = {
-      'image': image,
+      'image': image.toString(),
     };
     var jsonString = jsonEncode(jsonObject);
 
@@ -194,44 +192,44 @@ class AdminAuthProvider extends ChangeNotifier {
     return [..._items];
   }
 
-  Future<void> fetchAndSetPlaces() async {
-    final dataList = await DBHelper.getData('user_places');
-    _items = dataList
-        .map((item) => PlaceModel(
-              id: item['id'],
-              location: PlaceLocation(
-                latitude: item['loc_lat'],
-                longitude: item['loc_lng'],
-                address: item['address'],
-              ),
-            ))
-        .toList();
-    notifyListeners();
-  }
+  // Future<void> fetchAndSetPlaces() async {
+  //   final dataList = await DBHelper.getData('user_places');
+  //   _items = dataList
+  //       .map((item) => PlaceModel(
+  //             id: item['id'],
+  //             location: PlaceLocation(
+  //               latitude: item['loc_lat'],
+  //               longitude: item['loc_lng'],
+  //               address: item['address'],
+  //             ),
+  //           ))
+  //       .toList();
+  //   notifyListeners();
+  // }
 
-  Future<void> addPlace(
-    PlaceLocation pickedLocation,
-  ) async {
-    final address = await LocationHelper.getPlaceAddress(
-        pickedLocation.latitude!, pickedLocation.longitude!);
-    final updateLocation = PlaceLocation(
-      latitude: pickedLocation.latitude,
-      longitude: pickedLocation.longitude,
-      address: address,
-    );
-    final newPlace = PlaceModel(
-      id: DateTime.now().toString(),
-      location: updateLocation,
-    );
-    _items.add(newPlace);
-    notifyListeners();
-    DBHelper.insert('user_places', {
-      'id': newPlace.id,
-      'loc_lat': newPlace.location!.latitude,
-      'loc_lng': newPlace.location!.longitude,
-      'address': newPlace.location!.address,
-    });
-  }
+  // Future<void> addPlace(
+  //   PlaceLocation pickedLocation,
+  // ) async {
+  //   final address = await LocationHelper.getPlaceAddress(
+  //       pickedLocation.latitude!, pickedLocation.longitude!);
+  //   final updateLocation = PlaceLocation(
+  //     latitude: pickedLocation.latitude,
+  //     longitude: pickedLocation.longitude,
+  //     address: address,
+  //   );
+  //   final newPlace = PlaceModel(
+  //     id: DateTime.now().toString(),
+  //     location: updateLocation,
+  //   );
+  //   _items.add(newPlace);
+  //   notifyListeners();
+  //   DBHelper.insert('user_places', {
+  //     'id': newPlace.id,
+  //     'loc_lat': newPlace.location!.latitude,
+  //     'loc_lng': newPlace.location!.longitude,
+  //     'address': newPlace.location!.address,
+  //   });
+  // }
 
   Future<List<WashCategoryModel>> getInfo() async {
     final url = Uri.parse('$baseURL/wash/categories');

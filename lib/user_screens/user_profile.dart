@@ -33,7 +33,13 @@ class _UserProfileState extends State<UserProfile> {
   TextEditingController place = TextEditingController();
   TextEditingController address = TextEditingController();
 
+  bool loading = false;
+
   getUserData() async {
+    setState(() {
+      loading = true;
+    });
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('userToken');
     final url = Uri.parse(
@@ -56,6 +62,7 @@ class _UserProfileState extends State<UserProfile> {
         firstName.text = firstN;
         lastName.text = lastN;
         address.text = add;
+        loading = false;
       });
     }
   }

@@ -30,11 +30,16 @@ class _AdminProfileState extends State<AdminProfile> {
   File? profileImg;
   dynamic convertedImage;
   dynamic getImage;
+  bool loading = false;
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
   TextEditingController address = TextEditingController();
 
   getAdminData() async {
+    setState(() {
+      loading = true;
+    });
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
     final url =
@@ -47,6 +52,7 @@ class _AdminProfileState extends State<AdminProfile> {
         'Authorization': 'Bearer $token',
       },
     );
+
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body) as Map<String, dynamic>;
       var firstN = json['data']['Vendor']['first_name'];
@@ -58,6 +64,7 @@ class _AdminProfileState extends State<AdminProfile> {
         firstName.text = firstN;
         lastName.text = lastN;
         address.text = add;
+        loading = false;
         getImage = img;
       });
     }
@@ -143,6 +150,7 @@ class _AdminProfileState extends State<AdminProfile> {
       return;
     }
     profileImg = File(imageFile.path);
+
     final imageByte = profileImg!.readAsBytesSync();
     setState(() {
       convertedImage = "data:image/png;base64,${base64Encode(imageByte)}";
@@ -182,21 +190,25 @@ class _AdminProfileState extends State<AdminProfile> {
                   children: [
                     InkWell(
                       onTap: profileImage,
-                      child: ClipOval(
-                        child: profileImg != null
-                            ? Image.file(
-                                profileImg!,
-                                width: 105.w,
-                                height: 100.h,
-                                fit: BoxFit.cover,
-                              )
-                            : Image.network(
-                                '$getImage',
-                                width: 105.w,
-                                height: 100.h,
-                                fit: BoxFit.cover,
-                              ),
-                      ),
+                      child: loading
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : ClipOval(
+                              child: profileImg != null
+                                  ? Image.file(
+                                      profileImg!,
+                                      width: 105.w,
+                                      height: 100.h,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.network(
+                                      '$getImage',
+                                      width: 105.w,
+                                      height: 100.h,
+                                      fit: BoxFit.cover,
+                                    ),
+                            ),
                     ),
                   ],
                 ),
