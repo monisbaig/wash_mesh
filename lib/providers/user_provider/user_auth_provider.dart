@@ -275,23 +275,27 @@ class UserAuthProvider extends ChangeNotifier {
     var token = pref.getString('token');
     List<int> catlst = wash + mesh;
 
-    var jsonObject = {
-      'category_id[]': wash.toString(),
-      'category_id[]': mesh.toString(),
-    };
+    var list = catlst.map((i) => i.toString()).join(",");
 
-    var url = Uri.parse(
-        '$baseURL/user/vendor/category/apply?category_id[]=$wash&category_id[]=$mesh');
+    // var jsonObject = {
+    //   'category_id[]': wash.toString(),
+    //   'category_id[]': mesh.toString(),
+    // };
+
+    var url =
+        Uri.parse('$baseURL/user/vendor/category/apply?category_id=$list');
     var response = await http.post(
       url,
-      body: jsonEncode(jsonObject),
+      // body: jsonEncode(jsonObject),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',
       },
     );
+
     if (response.statusCode == 200) {
+      print(jsonDecode(response.body)['message']);
       return jsonDecode(response.body)['message'];
     } else {
       print(jsonDecode(response.body)['message']);

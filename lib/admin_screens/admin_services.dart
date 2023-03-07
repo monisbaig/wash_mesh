@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:wash_mesh/models/admin_models/vendor_applied.dart';
+import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
 // import 'package:wash_mesh/models/user_models/wash_categories_model.dart' as wc;
 // import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
@@ -42,31 +44,27 @@ class _AdminServicesState extends State<AdminServices> {
   // }
 
   void _washItemChange(String itemValue, bool isSelected, nameid i) {
-    setState(() {
-      if (isSelected) {
-        _selectedWashItems.add(itemValue);
-        int place = i.lstname.indexOf(itemValue);
-        _selectedwashcat.add(i.lstcatid.elementAt(place));
-      } else {
-        int place = _selectedWashItems.indexOf(itemValue);
-        _selectedWashItems.remove(itemValue);
-        _selectedwashcat.removeAt(place);
-      }
-    });
+    if (isSelected) {
+      _selectedWashItems.add(itemValue);
+      int place = i.lstname.indexOf(itemValue);
+      _selectedwashcat.add(i.lstcatid.elementAt(place));
+    } else {
+      int place = _selectedWashItems.indexOf(itemValue);
+      _selectedWashItems.remove(itemValue);
+      _selectedwashcat.removeAt(place);
+    }
   }
 
   void _meshItemChange(String itemValue, bool isSelected, nameid i) {
-    setState(() {
-      if (isSelected) {
-        _selectedMeshItems.add(itemValue);
-        int place = i.lstname.indexOf(itemValue);
-        _selectedmeshcat.add(i.lstcatid.elementAt(place));
-      } else {
-        int place = _selectedMeshItems.indexOf(itemValue);
-        _selectedMeshItems.remove(itemValue);
-        _selectedmeshcat.removeAt(place);
-      }
-    });
+    if (isSelected) {
+      _selectedMeshItems.add(itemValue);
+      int place = i.lstname.indexOf(itemValue);
+      _selectedmeshcat.add(i.lstcatid.elementAt(place));
+    } else {
+      int place = _selectedMeshItems.indexOf(itemValue);
+      _selectedMeshItems.remove(itemValue);
+      _selectedmeshcat.removeAt(place);
+    }
   }
 
   _showMeshCategory(nameid ijk) async {
@@ -102,8 +100,6 @@ class _AdminServicesState extends State<AdminServices> {
             ),
             ElevatedButton(
               onPressed: () {
-                print(_selectedWashItems);
-                print(_selectedwashcat);
                 Navigator.of(context).pop();
               },
               child: const Text('Submit'),
@@ -147,8 +143,6 @@ class _AdminServicesState extends State<AdminServices> {
             ),
             ElevatedButton(
               onPressed: () {
-                print(_selectedMeshItems);
-                print(_selectedmeshcat);
                 Navigator.of(context).pop();
               },
               child: const Text('Submit'),
@@ -159,124 +153,179 @@ class _AdminServicesState extends State<AdminServices> {
     );
   }
 
+  List<VendorApplied> appliedList = [];
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   instance();
+  // }
+  //
+  // late final appliedData;
+  //
+  // instance() async {
+  //   appliedData = Provider.of<AdminAuthProvider>(context, listen: false);
+  // }
+
   @override
   Widget build(BuildContext context) {
     return CustomBackground(
       op: 0.1,
       ch: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 45.h, horizontal: 12.w),
-            child: Column(
-              children: [
-                const CustomLogo(),
-                SizedBox(height: 15.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Services',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 30.sp,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset(
-                      'assets/images/wash.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10.h),
-                Column(
-                  children: [
-                    Wrap(
-                      alignment: WrapAlignment.start,
-                      spacing: 5,
-                      children: _selectedWashItems
-                          .map(
-                            (e) => Chip(
-                              backgroundColor: Colors.white,
-                              labelStyle: TextStyle(
-                                color: CustomColor().mainColor,
-                                fontSize: 16,
-                              ),
-                              label: Text(e),
+          child: FutureBuilder<VendorApplied>(
+              future: AdminAuthProvider.getVendorApplied(),
+              builder: (context, snapshot) {
+                return snapshot.hasError
+                    ? const Padding(
+                        padding: EdgeInsets.only(top: 300),
+                        child: Center(
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            'Something Went Wrong, \nPlease ask admin for further assistance Thank you.',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.redAccent,
+                            ),
+                          ),
+                        ),
+                      )
+                    : snapshot.connectionState == ConnectionState.waiting
+                        ? const Padding(
+                            padding: EdgeInsets.only(top: 320),
+                            child: Center(
+                              child: CircularProgressIndicator(),
                             ),
                           )
-                          .toList(),
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomButton(
-                      onTextPress: () async {
-                        nameid catidaname = nameid();
-                        await UserAuthProvider.getWashNames()
-                            .then((value) => catidaname = value);
-                        return _showMeshCategory(catidaname);
-                      },
-                      buttonText: 'Select Wash Service',
-                    ),
-                  ],
-                ),
-                SizedBox(height: 30.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset(
-                      'assets/images/mesh.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10.h),
-                Column(
-                  children: [
-                    Wrap(
-                      alignment: WrapAlignment.start,
-                      spacing: 5,
-                      children: _selectedMeshItems
-                          .map(
-                            (e) => Chip(
-                              backgroundColor: Colors.white,
-                              labelStyle: TextStyle(
-                                color: CustomColor().mainColor,
-                                fontSize: 16,
-                              ),
-                              label: Text(e),
+                        : Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 35.h, horizontal: 15.w),
+                            child: Column(
+                              children: [
+                                const CustomLogo(),
+                                SizedBox(height: 15.h),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Services',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 30.sp,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 10.h),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/wash.png',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 10.h),
+                                Column(
+                                  children: [
+                                    Wrap(
+                                      alignment: WrapAlignment.start,
+                                      spacing: 5,
+                                      children: snapshot.data!.data == null
+                                          ? []
+                                          : snapshot.data!.data!.wash!
+                                              .map(
+                                                (e) => Chip(
+                                                  backgroundColor: Colors.white,
+                                                  labelStyle: TextStyle(
+                                                    color:
+                                                        CustomColor().mainColor,
+                                                    fontSize: 16,
+                                                  ),
+                                                  label: Text(e.category!.name
+                                                      .toString()),
+                                                ),
+                                              )
+                                              .toList(),
+                                    ),
+                                    SizedBox(height: 10.h),
+                                    CustomButton(
+                                      onTextPress: () async {
+                                        nameid catidaname = nameid();
+                                        await UserAuthProvider.getWashNames()
+                                            .then(
+                                                (value) => catidaname = value);
+                                        return _showMeshCategory(catidaname);
+                                      },
+                                      buttonText: 'Select Wash Service',
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 30.h),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/mesh.png',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 10.h),
+                                Column(
+                                  children: [
+                                    Wrap(
+                                      alignment: WrapAlignment.start,
+                                      spacing: 5,
+                                      children: snapshot.data!.data == null
+                                          ? []
+                                          : snapshot.data!.data!.mesh!
+                                              .map(
+                                                (e) => Chip(
+                                                  backgroundColor: Colors.white,
+                                                  labelStyle: TextStyle(
+                                                    color:
+                                                        CustomColor().mainColor,
+                                                    fontSize: 16,
+                                                  ),
+                                                  label: Text(e.category!.name
+                                                      .toString()),
+                                                ),
+                                              )
+                                              .toList(),
+                                    ),
+                                    SizedBox(height: 10.h),
+                                    CustomButton(
+                                      onTextPress: () async {
+                                        nameid catidaname = nameid();
+                                        await UserAuthProvider.getMeshNames()
+                                            .then(
+                                                (value) => catidaname = value);
+                                        return _meshcat(catidaname);
+                                      },
+                                      buttonText: 'Select Mesh Service',
+                                    ),
+                                    SizedBox(height: 30.h),
+                                    CustomButton(
+                                      onTextPress: () async {
+                                        await Provider.of<UserAuthProvider>(
+                                                context,
+                                                listen: false)
+                                            .applyVendor(_selectedwashcat,
+                                                _selectedmeshcat);
+                                        setState(() {});
+                                      },
+                                      buttonText: 'Submit',
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          )
-                          .toList(),
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomButton(
-                      onTextPress: () async {
-                        nameid catidaname = nameid();
-                        await UserAuthProvider.getMeshNames()
-                            .then((value) => catidaname = value);
-                        return _meshcat(catidaname);
-                      },
-                      buttonText: 'Select Mesh Service',
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomButton(
-                      onTextPress: () async {
-                        await Provider.of<UserAuthProvider>(context,
-                                listen: false)
-                            .applyVendor(_selectedwashcat, _selectedmeshcat);
-                      },
-                      buttonText: 'Submit',
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+                          );
+              }),
         ),
       ),
     );

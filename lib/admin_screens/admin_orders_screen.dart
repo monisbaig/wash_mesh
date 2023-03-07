@@ -1,0 +1,131 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:wash_mesh/models/admin_models/vendor_orders.dart';
+import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
+import 'package:wash_mesh/widgets/custom_background.dart';
+import 'package:wash_mesh/widgets/custom_logo.dart';
+
+class AdminOrdersScreen extends StatefulWidget {
+  const AdminOrdersScreen({Key? key}) : super(key: key);
+
+  @override
+  State<AdminOrdersScreen> createState() => _AdminOrdersScreenState();
+}
+
+class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
+  @override
+  Widget build(BuildContext context) {
+    var vendorAuthProvider =
+        Provider.of<AdminAuthProvider>(context, listen: false);
+
+    return CustomBackground(
+      op: 0.1,
+      ch: SafeArea(
+        child: SingleChildScrollView(
+          child: FutureBuilder<VendorOrders>(
+            future: AdminAuthProvider.getVendorOrders(),
+            builder: (context, snapshot) {
+              return snapshot.connectionState == ConnectionState.waiting
+                  ? const Padding(
+                      padding: EdgeInsets.only(top: 320),
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
+                  : Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 45.h, horizontal: 12.w),
+                      child: Column(
+                        children: [
+                          const CustomLogo(),
+                          SizedBox(height: 10.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'All Vendor Orders',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30.sp,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10.h),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: snapshot.data!.data!.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: const EdgeInsets.only(bottom: 6),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: ListTile(
+                                  minVerticalPadding: 10,
+                                  leading: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text("Amount :"),
+                                      SizedBox(height: 10.h),
+                                      Text(
+                                        "${snapshot.data!.data!.elementAt(index).amount}",
+                                      ),
+                                    ],
+                                  ),
+                                  title: Text(
+                                    "Status : ${snapshot.data!.data!.elementAt(index).status}",
+                                  ),
+                                  subtitle: Text(
+                                    "Description : ${snapshot.data!.data!.elementAt(index).description}",
+                                  ),
+                                  trailing: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      InkWell(
+                                        onTap: () async {
+                                          var id = snapshot.data!.data!
+                                              .elementAt(index)
+                                              .id;
+                                          await vendorAuthProvider
+                                              .vendorRejectOrder(id: id);
+                                        },
+                                        child: const Text(
+                                          'Reject',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ),
+                                      SizedBox(height: 10.h),
+                                      InkWell(
+                                        onTap: () async {
+                                          var id = snapshot.data!.data!
+                                              .elementAt(index)
+                                              .id;
+                                          await vendorAuthProvider
+                                              .vendorAcceptOrder(id: id);
+                                        },
+                                        child: const Text(
+                                          'Accept',
+                                          style: TextStyle(color: Colors.blue),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}

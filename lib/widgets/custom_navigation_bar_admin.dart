@@ -4,8 +4,9 @@ import 'package:wash_mesh/admin_chat_module/main.dart';
 import 'package:wash_mesh/admin_screens/admin_home_screen.dart';
 import 'package:wash_mesh/admin_screens/admin_services.dart';
 import 'package:wash_mesh/admin_screens/admin_settings.dart';
-import 'package:wash_mesh/user_screens/user_booking_screen.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
+
+import '../admin_screens/admin_booking_screen.dart';
 
 class CustomNavigationBarAdmin extends StatefulWidget {
   const CustomNavigationBarAdmin({super.key});
@@ -17,7 +18,7 @@ class CustomNavigationBarAdmin extends StatefulWidget {
 
 class _CustomNavigationBarAdminState extends State<CustomNavigationBarAdmin> {
   List pages = [
-    const UserBookingScreen(),
+    const AdminBookingScreen(),
     const AdminServices(),
     const AdminHomeScreen(),
     const AdminChatApp(),

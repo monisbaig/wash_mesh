@@ -5,7 +5,11 @@ class CustomBackground extends StatelessWidget {
   final Widget ch;
   final double op;
 
-  const CustomBackground({super.key, required this.ch, required this.op});
+  const CustomBackground({
+    super.key,
+    required this.ch,
+    required this.op,
+  });
 
   @override
   Widget build(BuildContext context) {

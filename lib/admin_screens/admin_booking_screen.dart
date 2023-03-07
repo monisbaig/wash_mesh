@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wash_mesh/user_screens/user_orders_screen.dart';
+import 'package:wash_mesh/admin_screens/admin_orders_screen.dart';
 
 import '../widgets/custom_background.dart';
 import '../widgets/custom_logo.dart';
 
-class UserBookingScreen extends StatefulWidget {
-  const UserBookingScreen({Key? key}) : super(key: key);
+class AdminBookingScreen extends StatefulWidget {
+  const AdminBookingScreen({Key? key}) : super(key: key);
 
   @override
-  State<UserBookingScreen> createState() => _UserBookingScreenState();
+  State<AdminBookingScreen> createState() => _AdminBookingScreenState();
 }
 
-class _UserBookingScreenState extends State<UserBookingScreen> {
+class _AdminBookingScreenState extends State<AdminBookingScreen> {
   final List items = [
     'All',
     'Pending',
@@ -47,11 +47,11 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const UserOrdersScreen(),
+                          builder: (context) => const AdminOrdersScreen(),
                         ),
                       );
                     },
-                    child: const Text('User Orders Screen'),
+                    child: const Text('Vendor Orders Screen'),
                   ),
                 ),
               ],

@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wash_mesh/models/admin_models/vendor_applied.dart';
+import 'package:wash_mesh/models/admin_models/vendor_orders.dart';
 import 'package:wash_mesh/models/admin_models/wash_category_model.dart';
-import 'package:wash_mesh/providers/admin_provider/place_model.dart';
 
 import '../../models/admin_models/admin_registration_model.dart';
 
@@ -166,7 +167,7 @@ class AdminAuthProvider extends ChangeNotifier {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString('token');
     var jsonObject = {
-      'image': image.toString(),
+      'image': image,
     };
     var jsonString = jsonEncode(jsonObject);
 
@@ -186,50 +187,49 @@ class AdminAuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<PlaceModel> _items = [];
+  vendorAcceptOrder({dynamic id}) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
 
-  List<PlaceModel> get items {
-    return [..._items];
+    var url = Uri.parse('$baseURL/user/vendor/accept/order?order_id=$id');
+    var response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      print(jsonDecode(response.body)['message']);
+      return jsonDecode(response.body)['message'];
+    } else {
+      print(jsonDecode(response.body)['message']);
+    }
+    notifyListeners();
   }
 
-  // Future<void> fetchAndSetPlaces() async {
-  //   final dataList = await DBHelper.getData('user_places');
-  //   _items = dataList
-  //       .map((item) => PlaceModel(
-  //             id: item['id'],
-  //             location: PlaceLocation(
-  //               latitude: item['loc_lat'],
-  //               longitude: item['loc_lng'],
-  //               address: item['address'],
-  //             ),
-  //           ))
-  //       .toList();
-  //   notifyListeners();
-  // }
+  vendorRejectOrder({dynamic id}) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
 
-  // Future<void> addPlace(
-  //   PlaceLocation pickedLocation,
-  // ) async {
-  //   final address = await LocationHelper.getPlaceAddress(
-  //       pickedLocation.latitude!, pickedLocation.longitude!);
-  //   final updateLocation = PlaceLocation(
-  //     latitude: pickedLocation.latitude,
-  //     longitude: pickedLocation.longitude,
-  //     address: address,
-  //   );
-  //   final newPlace = PlaceModel(
-  //     id: DateTime.now().toString(),
-  //     location: updateLocation,
-  //   );
-  //   _items.add(newPlace);
-  //   notifyListeners();
-  //   DBHelper.insert('user_places', {
-  //     'id': newPlace.id,
-  //     'loc_lat': newPlace.location!.latitude,
-  //     'loc_lng': newPlace.location!.longitude,
-  //     'address': newPlace.location!.address,
-  //   });
-  // }
+    var url = Uri.parse('$baseURL/user/vendor/reject/order?order_id=$id');
+    var response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      print(jsonDecode(response.body)['message']);
+      return jsonDecode(response.body)['message'];
+    } else {
+      print(jsonDecode(response.body)['message']);
+    }
+    notifyListeners();
+  }
 
   Future<List<WashCategoryModel>> getInfo() async {
     final url = Uri.parse('$baseURL/wash/categories');
@@ -262,5 +262,48 @@ class AdminAuthProvider extends ChangeNotifier {
     final GoogleSignInAccount? gUser = await GoogleSignIn().signOut();
     await FirebaseAuth.instance.signOut();
     return gUser;
+  }
+
+  static Future<VendorApplied> getVendorApplied() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+    final url = Uri.parse('$baseURL/user/vendor/category/applied');
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      print(response.body);
+      return VendorApplied?.fromJson(jsonDecode(response.body));
+    } else {
+      print(response.body);
+      return VendorApplied();
+    }
+  }
+
+  static Future<VendorOrders> getVendorOrders() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+    final url = Uri.parse('$baseURL/user/vendor/orders');
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
+      Map<String, dynamic> lst = jsonDecode(response.body);
+
+      // List<WashCategoryModel> list=[];
+      // list.add();
+      // print(da.data![0].name);
+      return VendorOrders?.fromJson(jsonDecode(response.body));
+    } else {
+      print(response.body);
+      return VendorOrders();
+    }
   }
 }
