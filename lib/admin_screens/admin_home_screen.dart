@@ -106,7 +106,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          DateTime.now().year.toString(),
+                          DateTime.now().toString().substring(0, 11),
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 18.sp,
@@ -114,7 +114,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                           ),
                         ),
                         Text(
-                          DateTime.now().hour.toString(),
+                          DateTime.now().toString().substring(11, 16),
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 18.sp,

@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wash_mesh/models/user_models/Place.dart';
 import 'package:wash_mesh/models/user_models/orders_model.dart' as or;
+import 'package:wash_mesh/models/user_models/place_order_model.dart';
+import 'package:wash_mesh/models/user_models/vendor_accepted_order.dart' as vc;
 
 import '../../models/user_models/mesh_categories_model.dart' as um;
-import '../../models/user_models/user_registration_model.dart';
+import '../../models/user_models/user_model.dart';
 import '../../models/user_models/wash_categories_model.dart' as um;
 import '../../models/user_models/wash_categories_model.dart';
 
@@ -126,33 +127,12 @@ class UserAuthProvider extends ChangeNotifier {
     }
   }
 
-  // static Future<Meshusermodel> Getmeshcategories() async {
-  //   List<Meshusermodel> list = [];
-  //   final url = Uri.parse('$baseURL/mesh/categories');
-  //   final response = await http.get(url);
-  //   if (response.statusCode == 200) {
-  //     Map<String, dynamic> lst = jsonDecode(response.body);
-  //
-  //     // List<WashCategoryModel> list=[];
-  //     // list.add();
-  //     // print(da.data![0].name);
-  //     return Meshusermodel.fromJson(jsonDecode(response.body));
-  //   } else {
-  //     return Meshusermodel();
-  //   }
-  // }
-
   static Future<nameid> getMeshNames() async {
     List<WashCategoryModel> list = [];
     List<String> str = [];
     final url = Uri.parse('$baseURL/mesh/categories');
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      Map<String, dynamic> lst = jsonDecode(response.body);
-
-      // List<WashCategoryModel> list=[];
-      // list.add();
-      // print(da.data![0].name);
       List<String> str = [];
       List<int> id = [];
       var dt = WashCategoryModel.fromJson(jsonDecode(response.body));
@@ -173,11 +153,6 @@ class UserAuthProvider extends ChangeNotifier {
     final url = Uri.parse('$baseURL/wash/categories');
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      Map<String, dynamic> lst = jsonDecode(response.body);
-
-      // List<WashCategoryModel> list=[];
-      // list.add();
-      // print(da.data![0].name);
       List<String> str = [];
       List<int> id = [];
       var dt = WashCategoryModel.fromJson(jsonDecode(response.body));
@@ -196,14 +171,8 @@ class UserAuthProvider extends ChangeNotifier {
     final url = Uri.parse('$baseURL/wash/categories');
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      Map<String, dynamic> lst = jsonDecode(response.body);
-
-      // List<WashCategoryModel> list=[];
-      // list.add();
-      // print(da.data![0].name);
       return um.WashCategoryModel?.fromJson(jsonDecode(response.body));
     } else {
-      print(response.body);
       return um.WashCategoryModel();
     }
   }
@@ -212,14 +181,8 @@ class UserAuthProvider extends ChangeNotifier {
     final url = Uri.parse('$baseURL/mesh/categories');
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      Map<String, dynamic> lst = jsonDecode(response.body);
-
-      // List<WashCategoryModel> list=[];
-      // list.add();
-      // print(da.data![0].name);
       return um.MeshCategoryModel?.fromJson(jsonDecode(response.body));
     } else {
-      print(response.body);
       return um.MeshCategoryModel();
     }
   }
@@ -234,19 +197,13 @@ class UserAuthProvider extends ChangeNotifier {
       'Authorization': 'Bearer $token',
     });
     if (response.statusCode == 200) {
-      Map<String, dynamic> lst = jsonDecode(response.body);
-
-      // List<WashCategoryModel> list=[];
-      // list.add();
-      // print(da.data![0].name);
       return or.OrdersModel?.fromJson(jsonDecode(response.body));
     } else {
-      print(response.body);
       return or.OrdersModel();
     }
   }
 
-  placeOrder(placemodel p) async {
+  placeOrder(PlaceOrderModel p, context) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString('userToken');
     var jsonObject = jsonEncode(p);
@@ -261,32 +218,33 @@ class UserAuthProvider extends ChangeNotifier {
       },
     );
     if (response.statusCode == 200) {
-      print(jsonDecode(response.body)['message']);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(jsonDecode(response.body)['message']),
+        ),
+      );
       return jsonDecode(response.body)['message'];
     } else {
-      print(jsonDecode(response.body)['message']);
-      print(token);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(jsonDecode(response.body)['message']),
+        ),
+      );
     }
     notifyListeners();
   }
 
-  applyVendor(List<int> wash, List<int> mesh) async {
+  applyVendor(List<int> wash, List<int> mesh, context) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString('token');
     List<int> catlst = wash + mesh;
 
     var list = catlst.map((i) => i.toString()).join(",");
 
-    // var jsonObject = {
-    //   'category_id[]': wash.toString(),
-    //   'category_id[]': mesh.toString(),
-    // };
-
     var url =
         Uri.parse('$baseURL/user/vendor/category/apply?category_id=$list');
     var response = await http.post(
       url,
-      // body: jsonEncode(jsonObject),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -295,10 +253,71 @@ class UserAuthProvider extends ChangeNotifier {
     );
 
     if (response.statusCode == 200) {
-      print(jsonDecode(response.body)['message']);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(jsonDecode(response.body)['message']),
+        ),
+      );
+
       return jsonDecode(response.body)['message'];
     } else {
-      print(jsonDecode(response.body)['message']);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(jsonDecode(response.body)['message']),
+        ),
+      );
+    }
+    notifyListeners();
+  }
+
+  static Future<vc.VendorAcceptedOrder> getAcceptedVendorOrder(
+      dynamic id, context) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('userToken');
+    final url = Uri.parse(
+        '$baseURL/user/customer/order/all_accepted_vendors?order_id=$id');
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      return vc.VendorAcceptedOrder?.fromJson(jsonDecode(response.body));
+    } else {
+      return vc.VendorAcceptedOrder();
+    }
+  }
+
+  userAcceptOrder({dynamic orderId, dynamic vendorId, context}) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('userToken');
+
+    var url = Uri.parse(
+        '$baseURL/user/customer/order/accept_vendor_request?order_id=$orderId&vendor_id=$vendorId');
+    var response = await http.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(jsonDecode(response.body)['message']),
+        ),
+      );
+      return jsonDecode(response.body)['message'];
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(jsonDecode(response.body)['message']),
+        ),
+      );
     }
     notifyListeners();
   }

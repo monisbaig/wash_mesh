@@ -5,7 +5,7 @@ import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 
 import '../../models/user_models/wash_categories_model.dart' as um;
-import '../models/user_models/Place.dart';
+import '../models/user_models/place_order_model.dart';
 import '../providers/user_provider/user_auth_provider.dart';
 import '../widgets/custom_logo.dart';
 
@@ -378,17 +378,17 @@ class _WashBookScreenState extends State<WashBookScreen> {
                             String dt = DateTime.now().toString();
                             List<String> lstdt = dt.split(':');
                             dt = "${lstdt[0]}:${lstdt[1]}";
-                            placemodel p = placemodel(
+                            PlaceOrderModel p = PlaceOrderModel(
                               amount: '300',
                               description: desp.text.toString(),
                               picture: picList,
                               orderAttribute: lst,
                               serviceAt: dt,
-                              category_id: _catid,
+                              categoryId: _catid,
                             );
                             await Provider.of<UserAuthProvider>(context,
                                     listen: false)
-                                .placeOrder(p);
+                                .placeOrder(p, context);
                             print(_catid);
                           },
                           child: const Text('Book Now'),

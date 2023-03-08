@@ -51,9 +51,24 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                         ),
                       );
                     },
-                    child: const Text('User Orders Screen'),
+                    child: const Text('All User Orders'),
                   ),
                 ),
+                // SizedBox(height: 16.h),
+                // SizedBox(
+                //   width: 300.w,
+                //   child: ElevatedButton(
+                //     onPressed: () {
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //           builder: (context) => const UserOrdersScreen(),
+                //         ),
+                //       );
+                //     },
+                //     child: const Text('All Accepted Orders'),
+                //   ),
+                // ),
               ],
             ),
           ),

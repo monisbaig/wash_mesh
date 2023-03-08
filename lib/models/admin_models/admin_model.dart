@@ -1,11 +1,11 @@
-class AdminRegistrationModel {
+class AdminModel {
   dynamic status;
   dynamic message;
   dynamic data;
 
-  AdminRegistrationModel({this.status, this.message, this.data});
+  AdminModel({this.status, this.message, this.data});
 
-  AdminRegistrationModel.fromJson(Map<String, dynamic> json) {
+  AdminModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;

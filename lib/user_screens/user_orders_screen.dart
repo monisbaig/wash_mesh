@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wash_mesh/user_screens/accepted_orders_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
 
@@ -21,41 +22,43 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
     return CustomBackground(
       op: 0.1,
       ch: SafeArea(
-        child: SingleChildScrollView(
-          child: FutureBuilder<or.OrdersModel>(
-            future: UserAuthProvider.getOrders(),
-            builder: (context, snapshot) {
-              return snapshot.connectionState == ConnectionState.waiting
-                  ? const Padding(
-                      padding: EdgeInsets.only(top: 320),
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    )
-                  : Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 45.h, horizontal: 12.w),
-                      child: Column(
-                        children: [
-                          const CustomLogo(),
-                          SizedBox(height: 10.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'All User Orders',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30.sp,
-                                ),
+        child: FutureBuilder<or.OrdersModel>(
+          future: UserAuthProvider.getOrders(),
+          builder: (context, snapshot) {
+            return snapshot.connectionState == ConnectionState.waiting
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 45.h, horizontal: 12.w),
+                    child: Column(
+                      children: [
+                        const CustomLogo(),
+                        SizedBox(height: 10.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'All User Orders',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30.sp,
                               ),
-                            ],
-                          ),
-                          SizedBox(height: 10.h),
-                          ListView.builder(
-                            shrinkWrap: true,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10.h),
+                        SizedBox(
+                          height: 550.h,
+                          child: ListView.builder(
                             itemCount: snapshot.data!.data!.length,
                             itemBuilder: (context, index) {
+                              var status =
+                                  snapshot.data!.data!.elementAt(index).status;
+                              var orderId =
+                                  snapshot.data!.data!.elementAt(index).id;
+
                               return Container(
                                 margin: const EdgeInsets.only(bottom: 6),
                                 decoration: BoxDecoration(
@@ -75,42 +78,35 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
                                       ),
                                     ],
                                   ),
-                                  title: Text(
-                                    "Status : ${snapshot.data!.data!.elementAt(index).status}",
-                                  ),
+                                  title: status.toString() == '1'
+                                      ? const Text('Processing...')
+                                      : const Text('Accepted'),
                                   subtitle: Text(
                                     "Description : ${snapshot.data!.data!.elementAt(index).description}",
                                   ),
-                                  trailing: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      InkWell(
-                                        onTap: () {},
-                                        child: const Text(
-                                          'Reject',
-                                          style: TextStyle(color: Colors.red),
+                                  trailing: TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              AcceptedOrdersScreen(
+                                            acceptedOrderId: orderId,
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(height: 10.h),
-                                      InkWell(
-                                        onTap: () {},
-                                        child: const Text(
-                                          'Accept',
-                                          style: TextStyle(color: Colors.blue),
-                                        ),
-                                      ),
-                                    ],
+                                      );
+                                    },
+                                    child: const Text('Order Status'),
                                   ),
                                 ),
                               );
                             },
                           ),
-                        ],
-                      ),
-                    );
-            },
-          ),
+                        ),
+                      ],
+                    ),
+                  );
+          },
         ),
       ),
     );

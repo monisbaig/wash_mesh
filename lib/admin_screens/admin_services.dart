@@ -315,7 +315,7 @@ class _AdminServicesState extends State<AdminServices> {
                                                 context,
                                                 listen: false)
                                             .applyVendor(_selectedwashcat,
-                                                _selectedmeshcat);
+                                                _selectedmeshcat, context);
                                         setState(() {});
                                       },
                                       buttonText: 'Submit',

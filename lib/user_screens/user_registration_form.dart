@@ -1,3 +1,5 @@
+// ignore_for_file: unrelated_type_equality_checks
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +10,7 @@ import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
 import 'package:wash_mesh/widgets/custom_text_field.dart';
 
-import '../models/user_models/user_registration_model.dart';
+import '../models/user_models/user_model.dart';
 import '../providers/admin_provider/admin_auth_provider.dart';
 import '../providers/user_provider/user_auth_provider.dart';
 import '../widgets/custom_navigation_bar.dart';
@@ -61,20 +63,20 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
         confirmPassword.clear();
         address.clear();
 
-        ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('${userData.registerUser(user)}'),
           ),
         );
 
         if (userData.registerUser(user) == 'Registered Successfully') {
-          Navigator.of(context as BuildContext).pushReplacement(
+          Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => const UserLoginForm(),
             ),
           );
         } else {
-          Navigator.of(context as BuildContext).pushReplacement(
+          Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => const UserRegistrationForm(),
             ),

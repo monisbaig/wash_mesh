@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -7,12 +9,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/admin_screens/admin_login_form.dart';
-import 'package:wash_mesh/models/admin_models/admin_registration_model.dart';
 import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
 
+import '../models/admin_models/admin_model.dart';
 import '../widgets/custom_colors.dart';
 import '../widgets/custom_text_field.dart';
 
@@ -217,6 +219,12 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
         base64ImageExp = '';
         base64ImageF = '';
         base64ImageB = '';
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${adminData.registerAdmin(vendor)}'),
+          ),
+        );
 
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(

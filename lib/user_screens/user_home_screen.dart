@@ -10,7 +10,7 @@ import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
 
-import '../models/user_models/user_registration_model.dart';
+import '../models/user_models/user_model.dart';
 import 'mesh_category_screen.dart';
 
 class UserHomeScreen extends StatefulWidget {

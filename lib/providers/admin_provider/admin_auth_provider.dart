@@ -9,7 +9,7 @@ import 'package:wash_mesh/models/admin_models/vendor_applied.dart';
 import 'package:wash_mesh/models/admin_models/vendor_orders.dart';
 import 'package:wash_mesh/models/admin_models/wash_category_model.dart';
 
-import '../../models/admin_models/admin_registration_model.dart';
+import '../../models/admin_models/admin_model.dart';
 
 class AdminAuthProvider extends ChangeNotifier {
   static const baseURL = 'https://washmesh.stackbuffers.com/api';
@@ -187,7 +187,7 @@ class AdminAuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  vendorAcceptOrder({dynamic id}) async {
+  vendorAcceptOrder({dynamic id, context}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString('token');
 
@@ -201,15 +201,23 @@ class AdminAuthProvider extends ChangeNotifier {
       },
     );
     if (response.statusCode == 200) {
-      print(jsonDecode(response.body)['message']);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(jsonDecode(response.body)['message']),
+        ),
+      );
       return jsonDecode(response.body)['message'];
     } else {
-      print(jsonDecode(response.body)['message']);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(jsonDecode(response.body)['message']),
+        ),
+      );
     }
     notifyListeners();
   }
 
-  vendorRejectOrder({dynamic id}) async {
+  vendorRejectOrder({dynamic id, context}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString('token');
 
@@ -223,10 +231,18 @@ class AdminAuthProvider extends ChangeNotifier {
       },
     );
     if (response.statusCode == 200) {
-      print(jsonDecode(response.body)['message']);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(jsonDecode(response.body)['message']),
+        ),
+      );
       return jsonDecode(response.body)['message'];
     } else {
-      print(jsonDecode(response.body)['message']);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(jsonDecode(response.body)['message']),
+        ),
+      );
     }
     notifyListeners();
   }
@@ -277,10 +293,8 @@ class AdminAuthProvider extends ChangeNotifier {
       },
     );
     if (response.statusCode == 200) {
-      print(response.body);
       return VendorApplied?.fromJson(jsonDecode(response.body));
     } else {
-      print(response.body);
       return VendorApplied();
     }
   }
@@ -295,14 +309,8 @@ class AdminAuthProvider extends ChangeNotifier {
       'Authorization': 'Bearer $token',
     });
     if (response.statusCode == 200) {
-      Map<String, dynamic> lst = jsonDecode(response.body);
-
-      // List<WashCategoryModel> list=[];
-      // list.add();
-      // print(da.data![0].name);
       return VendorOrders?.fromJson(jsonDecode(response.body));
     } else {
-      print(response.body);
       return VendorOrders();
     }
   }

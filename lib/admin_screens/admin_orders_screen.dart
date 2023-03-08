@@ -57,6 +57,8 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
                             shrinkWrap: true,
                             itemCount: snapshot.data!.data!.length,
                             itemBuilder: (context, index) {
+                              var status =
+                                  snapshot.data!.data!.elementAt(index).status;
                               return Container(
                                 margin: const EdgeInsets.only(bottom: 6),
                                 decoration: BoxDecoration(
@@ -76,9 +78,9 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
                                       ),
                                     ],
                                   ),
-                                  title: Text(
-                                    "Status : ${snapshot.data!.data!.elementAt(index).status}",
-                                  ),
+                                  title: status == '1'
+                                      ? const Text('Pending')
+                                      : const Text(''),
                                   subtitle: Text(
                                     "Description : ${snapshot.data!.data!.elementAt(index).description}",
                                   ),
@@ -92,7 +94,8 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
                                               .elementAt(index)
                                               .id;
                                           await vendorAuthProvider
-                                              .vendorRejectOrder(id: id);
+                                              .vendorRejectOrder(
+                                                  id: id, context: context);
                                         },
                                         child: const Text(
                                           'Reject',
@@ -106,7 +109,8 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
                                               .elementAt(index)
                                               .id;
                                           await vendorAuthProvider
-                                              .vendorAcceptOrder(id: id);
+                                              .vendorAcceptOrder(
+                                                  id: id, context: context);
                                         },
                                         child: const Text(
                                           'Accept',

@@ -1,21 +1,21 @@
-class placemodel {
-  dynamic category_id;
+class PlaceOrderModel {
+  dynamic categoryId;
   dynamic amount;
   dynamic serviceAt;
   dynamic description;
   List<OrderAttribute>? orderAttribute;
   List<String>? picture;
 
-  placemodel(
-      {this.category_id,
+  PlaceOrderModel(
+      {this.categoryId,
       this.amount,
       this.serviceAt,
       this.description,
       this.orderAttribute,
       this.picture});
 
-  placemodel.fromJson(Map<String, dynamic> json) {
-    category_id = json['category_id'];
+  PlaceOrderModel.fromJson(Map<String, dynamic> json) {
+    categoryId = json['category_id'];
     amount = json['amount'];
     serviceAt = json['service_at'];
     description = json['description'];
@@ -30,7 +30,7 @@ class placemodel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['category_id'] = category_id;
+    data['category_id'] = categoryId;
     data['amount'] = amount;
     data['service_at'] = serviceAt;
     data['description'] = description;
