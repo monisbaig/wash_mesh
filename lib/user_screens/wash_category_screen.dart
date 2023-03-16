@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -64,59 +66,58 @@ class _WashCategoryState extends State<WashCategory> {
                             ],
                           ),
                           SizedBox(height: 10.h),
-                          SizedBox(
-                            height: 260.h,
-                            child: GridView.builder(
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                              ),
-                              itemCount: snapshot.data!.data!.length,
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: () async {
-                                    // .attribute!
-                                    // .attributeValue!
-                                    // .elementAt(index)
-                                    // .id);
-                                    List<um.Data> data = snapshot.data!.data!;
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => WashBookScreen(
-                                          data,
-                                          snapshot.data!.data!
-                                              .elementAt(index)
-                                              .name,
-                                          snapshot.data!.data!
-                                              .elementAt(index)
-                                              .id,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Image.network(
+                          GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                            ),
+                            itemCount: snapshot.data!.data!.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () async {
+                                  // .attribute!
+                                  // .attributeValue!
+                                  // .elementAt(index)
+                                  // .id);
+                                  List<um.Data> data = snapshot.data!.data!;
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => WashBookScreen(
+                                        data,
                                         snapshot.data!.data!
                                             .elementAt(index)
-                                            .image,
-                                        fit: BoxFit.contain,
-                                        width: 80.w,
-                                        height: 80.h,
+                                            .name,
+                                        snapshot.data!.data!
+                                            .elementAt(index)
+                                            .id,
                                       ),
-                                      SizedBox(height: 10.h),
-                                      Flexible(
-                                        child: Text(
-                                          "${snapshot.data!.data!.elementAt(index).name}",
-                                          // overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.center,
-                                        ),
+                                    ),
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    Image.network(
+                                      snapshot.data!.data!
+                                          .elementAt(index)
+                                          .image,
+                                      fit: BoxFit.contain,
+                                      width: 80.w,
+                                      height: 80.h,
+                                    ),
+                                    SizedBox(height: 10.h),
+                                    Flexible(
+                                      child: Text(
+                                        "${snapshot.data!.data!.elementAt(index).name}",
+                                        // overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.center,
                                       ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
                           ),
                           SizedBox(height: 10.h),
                           Row(
@@ -134,20 +135,46 @@ class _WashCategoryState extends State<WashCategory> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: List.generate(
-                              1,
-                              (index) => Column(
-                                children: [
-                                  Image.network(
-                                    snapshot.data!.data!.elementAt(index).image,
-                                    fit: BoxFit.contain,
-                                    width: 80.w,
-                                    height: 80.h,
-                                  ),
-                                  SizedBox(height: 10.h),
-                                  Text(
-                                    snapshot.data!.data!.elementAt(index).name,
-                                  ),
-                                ],
+                              3,
+                              (index) => InkWell(
+                                onTap: () async {
+                                  // .attribute!
+                                  // .attributeValue!
+                                  // .elementAt(index)
+                                  // .id);
+                                  List<um.Data> data = snapshot.data!.data!;
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => WashBookScreen(
+                                        data,
+                                        snapshot.data!.data!
+                                            .elementAt(index)
+                                            .name,
+                                        snapshot.data!.data!
+                                            .elementAt(index)
+                                            .id,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    Image.network(
+                                      snapshot.data!.data!
+                                          .elementAt(index)
+                                          .image,
+                                      fit: BoxFit.contain,
+                                      width: 80.w,
+                                      height: 80.h,
+                                    ),
+                                    SizedBox(height: 10.h),
+                                    Text(
+                                      snapshot.data!.data!
+                                          .elementAt(index)
+                                          .name,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),

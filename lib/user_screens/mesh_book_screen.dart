@@ -25,11 +25,10 @@ class MeshBookScreen extends StatefulWidget {
 
 class _MeshBookScreenState extends State<MeshBookScreen> {
   TextEditingController desp = TextEditingController();
-  List<String> _catname = [];
-  List<String> _carname = [];
-  List<int> _carnameid = [];
-  List<int> _catnameid = [];
-  List<int> _attval = [];
+  final List<String> _catname = [];
+  final List<String> _carname = [];
+  final List<int> _carnameid = [];
+  final List<int> _attval = [];
   String? catname;
   String? carname;
   int _catid = 0;

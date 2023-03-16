@@ -35,7 +35,7 @@ class _AdminProfileState extends State<AdminProfile> {
   TextEditingController lastName = TextEditingController();
   TextEditingController address = TextEditingController();
 
-  getAdminData() async {
+  getAdminProfile() async {
     setState(() {
       loading = true;
     });
@@ -83,6 +83,8 @@ class _AdminProfileState extends State<AdminProfile> {
         firstName.clear();
         lastName.clear();
         address.clear();
+
+        onUpdateImage();
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -160,7 +162,7 @@ class _AdminProfileState extends State<AdminProfile> {
   @override
   void initState() {
     super.initState();
-    getAdminData();
+    getAdminProfile();
   }
 
   @override
@@ -257,11 +259,6 @@ class _AdminProfileState extends State<AdminProfile> {
                 CustomButton(
                   onTextPress: onUpdateAdmin,
                   buttonText: 'Save Changes',
-                ),
-                SizedBox(height: 20.h),
-                CustomButton(
-                  onTextPress: onUpdateImage,
-                  buttonText: 'Save Image',
                 ),
               ],
             ),

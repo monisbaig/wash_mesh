@@ -9,10 +9,10 @@ import 'package:wash_mesh/admin_screens/admin_registration_form.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
+import 'package:wash_mesh/widgets/custom_navigation_bar_admin.dart';
 import 'package:wash_mesh/widgets/custom_text_field.dart';
 
 import '../providers/admin_provider/admin_auth_provider.dart';
-import '../widgets/custom_navigation_bar_admin.dart';
 import 'admin_forget_password.dart';
 
 class AdminLoginForm extends StatefulWidget {
@@ -48,10 +48,11 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
           prefs.setString("loginPhone", phoneNo.text);
           prefs.setString("loginPassword", password.text);
 
-          Navigator.of(context).pushReplacement(
+          Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (context) => const CustomNavigationBarAdmin(),
             ),
+            (route) => false,
           );
         } else {
           Navigator.of(context).pushReplacement(

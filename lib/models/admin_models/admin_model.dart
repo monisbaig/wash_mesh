@@ -1,7 +1,7 @@
 class AdminModel {
   dynamic status;
   dynamic message;
-  dynamic data;
+  Data? data;
 
   AdminModel({this.status, this.message, this.data});
 

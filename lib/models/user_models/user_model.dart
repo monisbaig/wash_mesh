@@ -1,7 +1,7 @@
 class UserModel {
   dynamic status;
   dynamic message;
-  dynamic data;
+  Data? data;
 
   UserModel({this.status, this.message, this.data});
 
@@ -51,7 +51,10 @@ class User {
   dynamic password;
   dynamic confirmPassword;
   dynamic address;
+  dynamic gender;
+  dynamic image;
   dynamic userType;
+  dynamic id;
 
   User(
       {this.firstName,
@@ -61,7 +64,10 @@ class User {
       this.password,
       this.confirmPassword,
       this.address,
-      this.userType});
+      this.gender,
+      this.image,
+      this.userType,
+      this.id});
 
   User.fromJson(Map<String, dynamic> json) {
     firstName = json['first_name'];
@@ -71,7 +77,10 @@ class User {
     password = json['password'];
     confirmPassword = json['confirm_password'];
     address = json['address'];
+    image = json['image'];
+    gender = json['gender'];
     userType = json['user_type'];
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -83,7 +92,10 @@ class User {
     data['password'] = password;
     data['confirm_password'] = confirmPassword;
     data['address'] = address;
+    data['image'] = address;
+    data['gender'] = gender;
     data['user_type'] = userType;
+    data['id'] = id;
     return data;
   }
 }

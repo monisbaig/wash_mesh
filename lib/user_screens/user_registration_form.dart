@@ -1,8 +1,12 @@
-// ignore_for_file: unrelated_type_equality_checks
+// ignore_for_file: unrelated_type_equality_checks, use_build_context_synchronously
+
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/user_screens/user_login_form.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
@@ -33,11 +37,32 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
   TextEditingController address = TextEditingController();
-  dynamic selectedGender;
+  String? selectedGender;
   List gender = [
-    'Male',
-    'Female',
+    '1',
+    '2',
   ];
+
+  File? profileImg;
+  dynamic convertedImage;
+  bool loading = false;
+
+  profileImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? imageFile = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 300,
+    );
+    if (imageFile == null) {
+      return;
+    }
+    profileImg = File(imageFile.path);
+
+    final imageByte = profileImg!.readAsBytesSync();
+    setState(() {
+      convertedImage = "data:image/png;base64,${base64Encode(imageByte)}";
+    });
+  }
 
   onRegister() async {
     final userData = Provider.of<UserAuthProvider>(context, listen: false);
@@ -51,37 +76,11 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
           password: password.text,
           confirmPassword: confirmPassword.text,
           address: address.text,
+          image: convertedImage,
           phone: phoneNo.text,
+          gender: selectedGender,
         );
-        userData.registerUser(user);
-
-        firstName.clear();
-        lastName.clear();
-        email.clear();
-        phoneNo.clear();
-        password.clear();
-        confirmPassword.clear();
-        address.clear();
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${userData.registerUser(user)}'),
-          ),
-        );
-
-        if (userData.registerUser(user) == 'Registered Successfully') {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const UserLoginForm(),
-            ),
-          );
-        } else {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const UserRegistrationForm(),
-            ),
-          );
-        }
+        await userData.registerUser(user, context);
       }
     } catch (e) {
       rethrow;
@@ -103,13 +102,32 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                 Container(
                   alignment: Alignment.center,
                   child: Text(
-                    'Customer',
+                    'Registration Form',
                     style: TextStyle(
                       fontSize: 25.sp,
                     ),
                   ),
                 ),
-                SizedBox(height: 30.h),
+                SizedBox(height: 10.h),
+                InkWell(
+                  onTap: profileImage,
+                  child: ClipOval(
+                    child: profileImg != null
+                        ? Image.file(
+                            profileImg!,
+                            width: 105.w,
+                            height: 100.h,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            'assets/images/profile.png',
+                            width: 105.w,
+                            height: 100.h,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
+                ),
+                SizedBox(height: 15.h),
                 Form(
                   key: formKey,
                   child: Column(
@@ -231,7 +249,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                           items: gender
                               .map((e) => DropdownMenuItem<String>(
                                     value: e,
-                                    child: Text(e),
+                                    child: Text(e == '1' ? 'Male' : 'Female'),
                                   ))
                               .toList(),
                           borderRadius: BorderRadius.circular(32.r),

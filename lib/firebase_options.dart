@@ -47,30 +47,30 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDdsEMKji7HlKn-4TvT-1P5z80zf2l9cLk',
-    appId: '1:453421016006:web:0eb64a5cf3cd416b17c8c7',
-    messagingSenderId: '453421016006',
-    projectId: 'stacked-demo-project',
-    authDomain: 'stacked-demo-project.firebaseapp.com',
-    storageBucket: 'stacked-demo-project.appspot.com',
+    apiKey: 'AIzaSyAcrItYTXM8fMMvZ6xspovBBe3LEIrCSZE',
+    appId: '1:152610794945:web:d106ce18f3acf7dd865340',
+    messagingSenderId: '152610794945',
+    projectId: 'wash-mesh-92883',
+    authDomain: 'wash-mesh-92883.firebaseapp.com',
+    storageBucket: 'wash-mesh-92883.appspot.com',
+    measurementId: 'G-W2QVQ1BX3Z',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDQHy5sGLIl3Y96q0du7t2T9iVmCBgetTs',
-    appId: '1:453421016006:android:687b0531da0089fa17c8c7',
-    messagingSenderId: '453421016006',
-    projectId: 'stacked-demo-project',
-    storageBucket: 'stacked-demo-project.appspot.com',
+    apiKey: 'AIzaSyCH55sKqKF3QurscJu1CtyvQxwBYIc_mLY',
+    appId: '1:152610794945:android:dce043bafc5122b9865340',
+    messagingSenderId: '152610794945',
+    projectId: 'wash-mesh-92883',
+    storageBucket: 'wash-mesh-92883.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAM5IDdc6KGov9JRvuVsDpxWbGWaNe-Cos',
-    appId: '1:453421016006:ios:5e5944063f8467d717c8c7',
-    messagingSenderId: '453421016006',
-    projectId: 'stacked-demo-project',
-    storageBucket: 'stacked-demo-project.appspot.com',
-    iosClientId:
-        '453421016006-pbe8s5ea8vheoap36hb5ooirhj2jt4po.apps.googleusercontent.com',
-    iosBundleId: 'com.example.stackedDemo',
+    apiKey: 'AIzaSyByl6NLUDx1c01NQOc__MyjfxAwxpPUT4A',
+    appId: '1:152610794945:ios:e3565d8600b8bd64865340',
+    messagingSenderId: '152610794945',
+    projectId: 'wash-mesh-92883',
+    storageBucket: 'wash-mesh-92883.appspot.com',
+    iosClientId: '152610794945-o05amro6k5e0imsnjdo1judbcpmm4pg0.apps.googleusercontent.com',
+    iosBundleId: 'com.example.washMesh',
   );
 }

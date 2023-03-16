@@ -13,7 +13,7 @@ class WashBookScreen extends StatefulWidget {
   static late List<um.Data> data;
   static late String name;
 
-  WashBookScreen(List<um.Data> d, String n, id) {
+  WashBookScreen(List<um.Data> d, String n, id, {super.key}) {
     data = d;
     name = n;
     // print(data);
@@ -25,11 +25,10 @@ class WashBookScreen extends StatefulWidget {
 
 class _WashBookScreenState extends State<WashBookScreen> {
   TextEditingController desp = TextEditingController();
-  List<String> _catname = [];
-  List<String> _carname = [];
-  List<int> _carnameid = [];
-  List<int> _catnameid = [];
-  List<int> _attval = [];
+  final List<String> _catname = [];
+  final List<String> _carname = [];
+  final List<int> _carnameid = [];
+  final List<int> _attval = [];
   String? catname;
   String? carname;
   int _catid = 0;

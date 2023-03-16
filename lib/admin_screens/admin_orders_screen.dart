@@ -26,106 +26,121 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
           child: FutureBuilder<VendorOrders>(
             future: AdminAuthProvider.getVendorOrders(),
             builder: (context, snapshot) {
-              return snapshot.connectionState == ConnectionState.waiting
-                  ? const Padding(
-                      padding: EdgeInsets.only(top: 320),
-                      child: Center(
-                        child: CircularProgressIndicator(),
+              return snapshot.hasData
+                  ? Center(
+                      heightFactor: 12.h,
+                      child: const Text(
+                        textAlign: TextAlign.center,
+                        'No orders available\n Thank you.',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.redAccent,
+                        ),
                       ),
                     )
-                  : Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 45.h, horizontal: 12.w),
-                      child: Column(
-                        children: [
-                          const CustomLogo(),
-                          SizedBox(height: 10.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                  : snapshot.connectionState == ConnectionState.waiting
+                      ? const Padding(
+                          padding: EdgeInsets.only(top: 320),
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                      : Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 45.h, horizontal: 12.w),
+                          child: Column(
                             children: [
-                              Text(
-                                'All Vendor Orders',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30.sp,
-                                ),
+                              const CustomLogo(),
+                              SizedBox(height: 10.h),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'All Vendor Orders',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30.sp,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10.h),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.data!.length,
+                                itemBuilder: (context, index) {
+                                  var status = snapshot.data!.data!
+                                      .elementAt(index)
+                                      .status;
+                                  return Container(
+                                    margin: const EdgeInsets.only(bottom: 6),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: ListTile(
+                                      minVerticalPadding: 10,
+                                      leading: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text("Amount :"),
+                                          SizedBox(height: 10.h),
+                                          Text(
+                                            "${snapshot.data!.data!.elementAt(index).amount}",
+                                          ),
+                                        ],
+                                      ),
+                                      title: status == '1'
+                                          ? const Text('Pending')
+                                          : const Text(''),
+                                      subtitle: Text(
+                                        "Description : ${snapshot.data!.data!.elementAt(index).description}",
+                                      ),
+                                      trailing: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          InkWell(
+                                            onTap: () async {
+                                              var id = snapshot.data!.data!
+                                                  .elementAt(index)
+                                                  .id;
+                                              await vendorAuthProvider
+                                                  .vendorRejectOrder(
+                                                      id: id, context: context);
+                                            },
+                                            child: const Text(
+                                              'Reject',
+                                              style:
+                                                  TextStyle(color: Colors.red),
+                                            ),
+                                          ),
+                                          SizedBox(height: 10.h),
+                                          InkWell(
+                                            onTap: () async {
+                                              var id = snapshot.data!.data!
+                                                  .elementAt(index)
+                                                  .id;
+                                              await vendorAuthProvider
+                                                  .vendorAcceptOrder(
+                                                      id: id, context: context);
+                                            },
+                                            child: const Text(
+                                              'Accept',
+                                              style:
+                                                  TextStyle(color: Colors.blue),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             ],
                           ),
-                          SizedBox(height: 10.h),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: snapshot.data!.data!.length,
-                            itemBuilder: (context, index) {
-                              var status =
-                                  snapshot.data!.data!.elementAt(index).status;
-                              return Container(
-                                margin: const EdgeInsets.only(bottom: 6),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: ListTile(
-                                  minVerticalPadding: 10,
-                                  leading: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text("Amount :"),
-                                      SizedBox(height: 10.h),
-                                      Text(
-                                        "${snapshot.data!.data!.elementAt(index).amount}",
-                                      ),
-                                    ],
-                                  ),
-                                  title: status == '1'
-                                      ? const Text('Pending')
-                                      : const Text(''),
-                                  subtitle: Text(
-                                    "Description : ${snapshot.data!.data!.elementAt(index).description}",
-                                  ),
-                                  trailing: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      InkWell(
-                                        onTap: () async {
-                                          var id = snapshot.data!.data!
-                                              .elementAt(index)
-                                              .id;
-                                          await vendorAuthProvider
-                                              .vendorRejectOrder(
-                                                  id: id, context: context);
-                                        },
-                                        child: const Text(
-                                          'Reject',
-                                          style: TextStyle(color: Colors.red),
-                                        ),
-                                      ),
-                                      SizedBox(height: 10.h),
-                                      InkWell(
-                                        onTap: () async {
-                                          var id = snapshot.data!.data!
-                                              .elementAt(index)
-                                              .id;
-                                          await vendorAuthProvider
-                                              .vendorAcceptOrder(
-                                                  id: id, context: context);
-                                        },
-                                        child: const Text(
-                                          'Accept',
-                                          style: TextStyle(color: Colors.blue),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    );
+                        );
             },
           ),
         ),

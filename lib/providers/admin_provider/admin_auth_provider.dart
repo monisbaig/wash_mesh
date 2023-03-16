@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wash_mesh/admin_screens/admin_registration_form.dart';
+import 'package:wash_mesh/admin_screens/admin_services.dart';
 import 'package:wash_mesh/models/admin_models/vendor_applied.dart';
 import 'package:wash_mesh/models/admin_models/vendor_orders.dart';
 import 'package:wash_mesh/models/admin_models/wash_category_model.dart';
@@ -16,27 +18,7 @@ class AdminAuthProvider extends ChangeNotifier {
 
 // Admin Authentication Code:
 
-  Future<Vendor> getAdminProfile() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
-    final url = Uri.parse('$baseURL/user/vendor/profile');
-    final response = await http.get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-    );
-    if (response.statusCode == 200) {
-      print(response.body);
-      return jsonDecode(response.body);
-    }
-    notifyListeners();
-    return jsonDecode(response.body);
-  }
-
-  Future<Vendor> registerAdmin(Vendor adminData) async {
+  registerAdmin(Vendor adminData, context) async {
     final url = Uri.parse('$baseURL/user/vendor/register');
 
     final response = await http.post(
@@ -50,6 +32,7 @@ class AdminAuthProvider extends ChangeNotifier {
         'confirm_password': adminData.confirmPassword,
         'user_name': adminData.userName,
         'referral_code': adminData.referralCode,
+        'image': adminData.image,
         'cnic': adminData.vendorDetails!.cnic,
         'experience': adminData.vendorDetails!.experience,
         'gender': adminData.vendorDetails!.gender,
@@ -62,15 +45,41 @@ class AdminAuthProvider extends ChangeNotifier {
         'Accept': 'application/json',
       },
     );
-    try {
-      if (response.statusCode == 200) {
-        print(jsonDecode(response.body));
-      }
-    } catch (e) {
-      print(jsonDecode(response.body));
+
+    if (response.statusCode == 200) {
+      dynamic token = jsonDecode(response.body)['data']['token'];
+      dynamic result = jsonDecode(response.body)['message'];
+
+      // 'Vendor Registered Successfully'
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(result!),
+        ),
+      );
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => AdminServices(token: token),
+        ),
+      );
+    } else {
+      String? error = jsonDecode(response.body)['message'];
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error!),
+        ),
+      );
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const AdminRegisterScreen(),
+        ),
+      );
     }
-    notifyListeners();
     print(jsonDecode(response.body));
+    notifyListeners();
     return Vendor.fromJson(jsonDecode(response.body));
   }
 
@@ -183,6 +192,41 @@ class AdminAuthProvider extends ChangeNotifier {
     );
     if (response.statusCode == 200) {
       return jsonDecode(response.body)['message'];
+    }
+    notifyListeners();
+  }
+
+  updateAvailability({dynamic availability, context}) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+    var jsonObject = {
+      'availability': availability,
+    };
+    var jsonString = jsonEncode(jsonObject);
+
+    var url = Uri.parse('$baseURL/user/vendor/availability/update');
+    var response = await http.post(
+      url,
+      body: jsonString,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(jsonDecode(response.body)['message']),
+        ),
+      );
+      return jsonDecode(response.body)['message'];
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(jsonDecode(response.body)['message']),
+        ),
+      );
     }
     notifyListeners();
   }
@@ -309,9 +353,27 @@ class AdminAuthProvider extends ChangeNotifier {
       'Authorization': 'Bearer $token',
     });
     if (response.statusCode == 200) {
-      return VendorOrders?.fromJson(jsonDecode(response.body));
+      return VendorOrders.fromJson(jsonDecode(response.body));
     } else {
       return VendorOrders();
+    }
+  }
+
+  Future<AdminModel> getAdminData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+    var url = Uri.parse('$baseURL/user/vendor/profile');
+    var response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    notifyListeners();
+
+    if (response.statusCode == 200) {
+      return AdminModel?.fromJson(jsonDecode(response.body));
+    } else {
+      return AdminModel();
     }
   }
 }

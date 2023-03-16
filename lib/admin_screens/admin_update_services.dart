@@ -1,35 +1,49 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/models/admin_models/vendor_applied.dart';
+import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
+// import 'package:wash_mesh/models/user_models/wash_categories_model.dart' as wc;
+// import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 
+// import 'package:wash_mesh/widgets/custom_multiselect.dart';
+
 import '../providers/user_provider/user_auth_provider.dart';
 import '../widgets/custom_logo.dart';
-import 'admin_login_form.dart';
 
-class AdminServices extends StatefulWidget {
-  final String? token;
-
-  const AdminServices({super.key, required this.token});
+class AdminUpdateServices extends StatefulWidget {
+  const AdminUpdateServices({Key? key}) : super(key: key);
 
   @override
-  State<AdminServices> createState() => _AdminServicesState();
+  State<AdminUpdateServices> createState() => _AdminUpdateServicesState();
 }
 
-class _AdminServicesState extends State<AdminServices> {
+class _AdminUpdateServicesState extends State<AdminUpdateServices> {
   final List<String> _selectedWashItems = [];
   final List<int> _selectedwashcat = [];
   final List<String> _selectedMeshItems = [];
   final List<int> _selectedmeshcat = [];
   nameid dt = nameid();
+
+  // void _showWashCategory(snapshot) async {
+  //   final List<String>? results = await showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return CustomMultiSelect(items: snapshot);
+  //     },
+  //   );
+
+  //   if (results != null) {
+  //     setState(() {
+  //       _selectedWashItems = results;
+  //     });
+  //   }
+  // }
 
   void _washItemChange(String itemValue, bool isSelected, nameid i) {
     if (isSelected) {
@@ -89,12 +103,7 @@ class _AdminServicesState extends State<AdminServices> {
             ElevatedButton(
               onPressed: () async {
                 await Provider.of<UserAuthProvider>(context, listen: false)
-                    .applyVendor(
-                  wash: _selectedwashcat,
-                  mesh: _selectedmeshcat,
-                  token: widget.token!,
-                  context: context,
-                );
+                    .updateVendor(_selectedwashcat, _selectedmeshcat, context);
                 setState(() {});
                 Navigator.pop(context);
               },
@@ -140,20 +149,9 @@ class _AdminServicesState extends State<AdminServices> {
             ElevatedButton(
               onPressed: () async {
                 await Provider.of<UserAuthProvider>(context, listen: false)
-                    .applyVendor(
-                  wash: _selectedwashcat,
-                  mesh: _selectedmeshcat,
-                  token: widget.token!,
-                  context: context,
-                );
-                setState(() {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => const AdminLoginForm(),
-                    ),
-                    (route) => false,
-                  );
-                });
+                    .updateVendor(_selectedwashcat, _selectedmeshcat, context);
+                setState(() {});
+                Navigator.pop(context);
               },
               child: const Text('Submit'),
             ),
@@ -163,23 +161,19 @@ class _AdminServicesState extends State<AdminServices> {
     );
   }
 
-  Future<VendorApplied> showVendorApplied() async {
-    final url = Uri.parse(
-        'https://washmesh.stackbuffers.com/api/user/vendor/category/applied');
-    final response = await http.get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ${widget.token}',
-      },
-    );
-    if (response.statusCode == 200) {
-      return VendorApplied?.fromJson(jsonDecode(response.body));
-    } else {
-      return VendorApplied();
-    }
-  }
+  List<VendorApplied> appliedList = [];
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   instance();
+  // }
+  //
+  // late final appliedData;
+  //
+  // instance() async {
+  //   appliedData = Provider.of<AdminAuthProvider>(context, listen: false);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +182,7 @@ class _AdminServicesState extends State<AdminServices> {
       ch: SafeArea(
         child: SingleChildScrollView(
           child: FutureBuilder<VendorApplied>(
-              future: showVendorApplied(),
+              future: AdminAuthProvider.getVendorApplied(),
               builder: (context, snapshot) {
                 return snapshot.hasError
                     ? const Padding(

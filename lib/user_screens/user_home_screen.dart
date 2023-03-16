@@ -5,12 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wash_mesh/user_screens/wash_book_screen.dart';
 import 'package:wash_mesh/user_screens/wash_category_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
 
+import '../models/user_models/mesh_categories_model.dart' as mc;
 import '../models/user_models/user_model.dart';
+import '../models/user_models/wash_categories_model.dart' as um;
+import '../providers/user_provider/user_auth_provider.dart';
+import 'mesh_book_screen.dart';
 import 'mesh_category_screen.dart';
 
 class UserHomeScreen extends StatefulWidget {
@@ -213,76 +218,122 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   ],
                 ),
                 SizedBox(height: 8.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        Image.asset(
-                          'assets/images/car-wash.png',
-                          fit: BoxFit.cover,
-                        ),
-                        SizedBox(height: 10.h),
-                        const Text('Car Wash'),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Image.asset(
-                          'assets/images/car-wash.png',
-                          fit: BoxFit.cover,
-                        ),
-                        SizedBox(height: 10.h),
-                        const Text('Car Wash'),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Image.asset(
-                          'assets/images/car-wash.png',
-                          fit: BoxFit.cover,
-                        ),
-                        SizedBox(height: 10.h),
-                        const Text('Car Wash'),
-                      ],
-                    ),
-                  ],
+                FutureBuilder<um.WashCategoryModel>(
+                  future: UserAuthProvider.getWashCategories(),
+                  builder: (context, snapshot) {
+                    return snapshot.connectionState == ConnectionState.waiting
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                            ),
+                            itemCount: 3,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () async {
+                                  List<um.Data> data = snapshot.data!.data!;
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => WashBookScreen(
+                                        data,
+                                        snapshot.data!.data!
+                                            .elementAt(index)
+                                            .name,
+                                        snapshot.data!.data!
+                                            .elementAt(index)
+                                            .id,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    Image.network(
+                                      snapshot.data!.data!
+                                          .elementAt(index)
+                                          .image,
+                                      fit: BoxFit.contain,
+                                      width: 80.w,
+                                      height: 80.h,
+                                    ),
+                                    SizedBox(height: 10.h),
+                                    Flexible(
+                                      child: Text(
+                                        "${snapshot.data!.data!.elementAt(index).name}",
+                                        // overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                  },
                 ),
                 SizedBox(height: 10.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        Image.asset(
-                          'assets/images/mechanic.png',
-                          fit: BoxFit.cover,
-                        ),
-                        SizedBox(height: 10.h),
-                        const Text('Mechanic'),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Image.asset(
-                          'assets/images/mechanic.png',
-                          fit: BoxFit.cover,
-                        ),
-                        SizedBox(height: 10.h),
-                        const Text('Mechanic'),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Image.asset(
-                          'assets/images/mechanic.png',
-                          fit: BoxFit.cover,
-                        ),
-                        SizedBox(height: 10.h),
-                        const Text('Mechanic'),
-                      ],
-                    ),
-                  ],
+                FutureBuilder<mc.MeshCategoryModel>(
+                  future: UserAuthProvider.getMeshCategories(),
+                  builder: (context, snapshot) {
+                    return snapshot.connectionState == ConnectionState.waiting
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                            ),
+                            itemCount: 3,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () async {
+                                  List<mc.Data> data = snapshot.data!.data!;
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => MeshBookScreen(
+                                        data,
+                                        snapshot.data!.data!
+                                            .elementAt(index)
+                                            .name,
+                                        snapshot.data!.data!
+                                            .elementAt(index)
+                                            .id,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    Image.network(
+                                      snapshot.data!.data!
+                                          .elementAt(index)
+                                          .image,
+                                      fit: BoxFit.contain,
+                                      width: 80.w,
+                                      height: 80.h,
+                                    ),
+                                    SizedBox(height: 10.h),
+                                    Flexible(
+                                      child: Text(
+                                        "${snapshot.data!.data!.elementAt(index).name}",
+                                        // overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                  },
                 ),
               ],
             ),

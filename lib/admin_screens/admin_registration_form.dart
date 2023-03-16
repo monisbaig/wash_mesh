@@ -36,8 +36,8 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
   dynamic base64ImageB;
   dynamic selectedGender;
   List gender = [
-    'Male',
-    'Female',
+    '1',
+    '2',
   ];
 
   TextEditingController firstName = TextEditingController();
@@ -159,6 +159,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
 
   File? profileImg;
   dynamic convertedImage;
+  bool loading = false;
 
   profileImage() async {
     final ImagePicker picker = ImagePicker();
@@ -183,7 +184,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
       final isValid = formKey.currentState!.validate();
       if (isValid) {
         VendorDetails vendorDetails = VendorDetails(
-          gender: gender.indexOf(selectedGender).toString(),
+          gender: selectedGender,
           experience: experience.text,
           cnic: cnicNo.text,
           experienceCertImg: base64ImageExp,
@@ -196,6 +197,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
           lastName: lastName.text,
           userName: userName.text,
           phone: phoneNo.text,
+          image: convertedImage,
           address: address.text,
           password: password.text,
           confirmPassword: confirmPassword.text,
@@ -203,34 +205,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
           vendorDetails: vendorDetails,
         );
 
-        await adminData.registerAdmin(vendor);
-
-        firstName.clear();
-        lastName.clear();
-        userName.clear();
-        phoneNo.clear();
-        cnicNo.clear();
-        password.clear();
-        confirmPassword.clear();
-        experience.clear();
-        code.clear();
-        address.clear();
-        gender.clear();
-        base64ImageExp = '';
-        base64ImageF = '';
-        base64ImageB = '';
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${adminData.registerAdmin(vendor)}'),
-          ),
-        );
-
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const AdminLoginForm(),
-          ),
-        );
+        await adminData.registerAdmin(vendor, context);
       }
     } catch (e) {
       rethrow;
@@ -433,7 +408,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                           items: gender
                               .map((e) => DropdownMenuItem<String>(
                                     value: e,
-                                    child: Text(e),
+                                    child: Text(e == '1' ? 'Male' : 'Female'),
                                   ))
                               .toList(),
                           borderRadius: BorderRadius.circular(32.r),
@@ -750,7 +725,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                 ),
                 CustomButton(
                   onTextPress: isChecked == true ? onRegister : null,
-                  buttonText: 'SIGN UP',
+                  buttonText: 'Next',
                 ),
               ],
             ),

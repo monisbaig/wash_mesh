@@ -15,8 +15,6 @@ class UserOrdersScreen extends StatefulWidget {
 }
 
 class _UserOrdersScreenState extends State<UserOrdersScreen> {
-  List<or.OrdersModel> orderList = [];
-
   @override
   Widget build(BuildContext context) {
     return CustomBackground(
@@ -25,87 +23,99 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
         child: FutureBuilder<or.OrdersModel>(
           future: UserAuthProvider.getOrders(),
           builder: (context, snapshot) {
-            return snapshot.connectionState == ConnectionState.waiting
+            return snapshot.hasData
                 ? const Center(
-                    child: CircularProgressIndicator(),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      'Place your order first\n Thank you.',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.redAccent,
+                      ),
+                    ),
                   )
-                : Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 45.h, horizontal: 12.w),
-                    child: Column(
-                      children: [
-                        const CustomLogo(),
-                        SizedBox(height: 10.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                : snapshot.connectionState == ConnectionState.waiting
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 45.h, horizontal: 12.w),
+                        child: Column(
                           children: [
-                            Text(
-                              'All User Orders',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30.sp,
+                            const CustomLogo(),
+                            SizedBox(height: 10.h),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'All User Orders',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 30.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10.h),
+                            SizedBox(
+                              height: 550.h,
+                              child: ListView.builder(
+                                itemCount: snapshot.data!.data!.length,
+                                itemBuilder: (context, index) {
+                                  var status = snapshot.data!.data!
+                                      .elementAt(index)
+                                      .status;
+                                  var orderId =
+                                      snapshot.data!.data!.elementAt(index).id;
+
+                                  return Container(
+                                    margin: const EdgeInsets.only(bottom: 6),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: ListTile(
+                                      minVerticalPadding: 10,
+                                      leading: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text("Amount :"),
+                                          SizedBox(height: 10.h),
+                                          Text(
+                                            "${snapshot.data!.data!.elementAt(index).amount}",
+                                          ),
+                                        ],
+                                      ),
+                                      title: status.toString() == '1'
+                                          ? const Text('Processing...')
+                                          : const Text('Accepted'),
+                                      subtitle: Text(
+                                        "Description : ${snapshot.data!.data!.elementAt(index).description}",
+                                      ),
+                                      trailing: TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AcceptedOrdersScreen(
+                                                acceptedOrderId: orderId,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: const Text('Order Status'),
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 10.h),
-                        SizedBox(
-                          height: 550.h,
-                          child: ListView.builder(
-                            itemCount: snapshot.data!.data!.length,
-                            itemBuilder: (context, index) {
-                              var status =
-                                  snapshot.data!.data!.elementAt(index).status;
-                              var orderId =
-                                  snapshot.data!.data!.elementAt(index).id;
-
-                              return Container(
-                                margin: const EdgeInsets.only(bottom: 6),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: ListTile(
-                                  minVerticalPadding: 10,
-                                  leading: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text("Amount :"),
-                                      SizedBox(height: 10.h),
-                                      Text(
-                                        "${snapshot.data!.data!.elementAt(index).amount}",
-                                      ),
-                                    ],
-                                  ),
-                                  title: status.toString() == '1'
-                                      ? const Text('Processing...')
-                                      : const Text('Accepted'),
-                                  subtitle: Text(
-                                    "Description : ${snapshot.data!.data!.elementAt(index).description}",
-                                  ),
-                                  trailing: TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              AcceptedOrdersScreen(
-                                            acceptedOrderId: orderId,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: const Text('Order Status'),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
+                      );
           },
         ),
       ),
