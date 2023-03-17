@@ -5,7 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
+import 'package:wash_mesh/providers/admin_provider/admin_info_provider.dart';
 import 'package:wash_mesh/providers/user_provider/user_auth_provider.dart';
+import 'package:wash_mesh/providers/user_provider/user_info_provider.dart';
 import 'package:wash_mesh/splash_screen.dart';
 
 import 'firebase_options.dart';
@@ -43,6 +45,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => UserAuthProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AdminInfoProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => UserInfoProvider(),
         ),
       ],
       child: ScreenUtilInit(

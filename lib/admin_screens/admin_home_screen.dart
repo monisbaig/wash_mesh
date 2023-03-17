@@ -1,6 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/admin_screens/admin_update_services.dart';
 import 'package:wash_mesh/admin_screens/today_services.dart';
@@ -9,8 +15,10 @@ import 'package:wash_mesh/admin_screens/total_earnings.dart';
 import 'package:wash_mesh/admin_screens/upcoming_services.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 
+import '../admin_assistant/admin_assistant_methods.dart';
 import '../models/admin_models/admin_model.dart';
 import '../providers/admin_provider/admin_auth_provider.dart';
+import '../providers/admin_provider/admin_info_provider.dart';
 import '../widgets/custom_colors.dart';
 import '../widgets/custom_logo.dart';
 
@@ -22,9 +30,60 @@ class AdminHomeScreen extends StatefulWidget {
 }
 
 class _AdminHomeScreenState extends State<AdminHomeScreen> {
+  final Completer<GoogleMapController> _googleMapController =
+      Completer<GoogleMapController>();
+
+  GoogleMapController? newGoogleMapController;
+
+  Position? userCurrentPosition;
+  LocationPermission? _locationPermission;
+
+  allowLocationPermission() async {
+    _locationPermission = await Geolocator.requestPermission();
+    if (_locationPermission == LocationPermission.denied) {
+      _locationPermission = await Geolocator.requestPermission();
+    }
+  }
+
+  userLocation() async {
+    Position currentPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    userCurrentPosition = currentPosition;
+
+    LatLng latLngPosition =
+        LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude);
+
+    CameraPosition cameraPosition = CameraPosition(
+      target: latLngPosition,
+      zoom: 14,
+    );
+
+    newGoogleMapController!.animateCamera(
+      CameraUpdate.newCameraPosition(
+        cameraPosition,
+      ),
+    );
+
+    await AdminAssistantMethods.reverseGeocoding(userCurrentPosition!, context);
+  }
+
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    allowLocationPermission();
+  }
+
   @override
   Widget build(BuildContext context) {
     var adminData = Provider.of<AdminAuthProvider>(context, listen: false);
+    var locationData = Provider.of<AdminInfoProvider>(context, listen: false)
+        .adminPickUpLocation;
 
     return CustomBackground(
       op: 0.1,
@@ -177,6 +236,56 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                   ),
                                 ],
                               ),
+                            ),
+                          ),
+                          SizedBox(height: 8.h),
+                          InkWell(
+                            onTap: () {},
+                            child: Container(
+                              width: double.infinity,
+                              height: 50.h,
+                              decoration: BoxDecoration(
+                                color: CustomColor().mainColor,
+                                borderRadius: BorderRadius.circular(14.r),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    locationData != null
+                                        ? '${locationData.locationName!.substring(0, 29)}...'
+                                        : 'Current Location',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                  SizedBox(width: 50.w),
+                                  Icon(
+                                    Icons.my_location,
+                                    size: 28.sp,
+                                    color: Colors.white,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 8.h),
+                          SizedBox(
+                            height: 200.h,
+                            child: GoogleMap(
+                              mapType: MapType.normal,
+                              myLocationEnabled: true,
+                              zoomGesturesEnabled: true,
+                              zoomControlsEnabled: true,
+                              initialCameraPosition: _kGooglePlex,
+                              onMapCreated: (controller) {
+                                _googleMapController.complete(controller);
+                                newGoogleMapController = controller;
+
+                                userLocation();
+                              },
                             ),
                           ),
                           SizedBox(height: 8.h),

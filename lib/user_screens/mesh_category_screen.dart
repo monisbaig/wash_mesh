@@ -139,6 +139,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/user_screens/mesh_book_screen.dart';
+import 'package:wash_mesh/user_screens/user_home_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
 
@@ -212,24 +213,36 @@ class _MeshCategoryState extends State<MeshCategory> {
                             itemBuilder: (context, index) {
                               return InkWell(
                                 onTap: () async {
-                                  // .attribute!
-                                  // .attributeValue!
-                                  // .elementAt(index)
-                                  // .id);
                                   List<um.Data> data = snapshot.data!.data!;
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => MeshBookScreen(
-                                        data,
-                                        snapshot.data!.data!
-                                            .elementAt(index)
-                                            .name,
-                                        snapshot.data!.data!
-                                            .elementAt(index)
-                                            .id,
+
+                                  if (!snapshot.hasData) {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => MeshBookScreen(
+                                          data,
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .name,
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .id,
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content:
+                                            Text('Something went wrong!!!'),
+                                      ),
+                                    );
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const UserHomeScreen(),
+                                      ),
+                                    );
+                                  }
                                 },
                                 child: Column(
                                   children: [
@@ -273,24 +286,36 @@ class _MeshCategoryState extends State<MeshCategory> {
                               3,
                               (index) => InkWell(
                                 onTap: () async {
-                                  // .attribute!
-                                  // .attributeValue!
-                                  // .elementAt(index)
-                                  // .id);
                                   List<um.Data> data = snapshot.data!.data!;
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => MeshBookScreen(
-                                        data,
-                                        snapshot.data!.data!
-                                            .elementAt(index)
-                                            .name,
-                                        snapshot.data!.data!
-                                            .elementAt(index)
-                                            .id,
+
+                                  if (!snapshot.hasData) {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => MeshBookScreen(
+                                          data,
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .name,
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .id,
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content:
+                                            Text('Something went wrong!!!'),
+                                      ),
+                                    );
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const UserHomeScreen(),
+                                      ),
+                                    );
+                                  }
                                 },
                                 child: Column(
                                   children: [

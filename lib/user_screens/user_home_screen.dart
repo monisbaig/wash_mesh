@@ -1,10 +1,17 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wash_mesh/providers/user_provider/user_info_provider.dart';
 import 'package:wash_mesh/user_screens/wash_book_screen.dart';
 import 'package:wash_mesh/user_screens/wash_category_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
@@ -15,6 +22,7 @@ import '../models/user_models/mesh_categories_model.dart' as mc;
 import '../models/user_models/user_model.dart';
 import '../models/user_models/wash_categories_model.dart' as um;
 import '../providers/user_provider/user_auth_provider.dart';
+import '../user_assistant/user_assistant_methods.dart';
 import 'mesh_book_screen.dart';
 import 'mesh_category_screen.dart';
 
@@ -29,12 +37,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   User user = User();
 
   dynamic token;
-
-  @override
-  void initState() {
-    super.initState();
-    getUserData();
-  }
 
   getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -60,8 +62,61 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   dynamic firstName;
 
+  final Completer<GoogleMapController> _googleMapController =
+      Completer<GoogleMapController>();
+
+  GoogleMapController? newGoogleMapController;
+
+  Position? userCurrentPosition;
+  LocationPermission? _locationPermission;
+
+  allowLocationPermission() async {
+    _locationPermission = await Geolocator.requestPermission();
+    if (_locationPermission == LocationPermission.denied) {
+      _locationPermission = await Geolocator.requestPermission();
+    }
+  }
+
+  userLocation() async {
+    Position currentPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    userCurrentPosition = currentPosition;
+
+    LatLng latLngPosition =
+        LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude);
+
+    CameraPosition cameraPosition = CameraPosition(
+      target: latLngPosition,
+      zoom: 14,
+    );
+
+    newGoogleMapController!.animateCamera(
+      CameraUpdate.newCameraPosition(
+        cameraPosition,
+      ),
+    );
+
+    await UserAssistantMethods.reverseGeocoding(userCurrentPosition!, context);
+  }
+
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    allowLocationPermission();
+    getUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var locationData = Provider.of<UserInfoProvider>(context, listen: false)
+        .userPickUpLocation;
+
     return CustomBackground(
       ch: SafeArea(
         child: SingleChildScrollView(
@@ -122,7 +177,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   'assets/images/home-cover.png',
                   fit: BoxFit.cover,
                 ),
-                SizedBox(height: 10.h),
+                SizedBox(height: 8.h),
                 InkWell(
                   onTap: () {},
                   child: Container(
@@ -131,25 +186,20 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     decoration: BoxDecoration(
                       color: CustomColor().mainColor,
                       borderRadius: BorderRadius.circular(14.r),
-                      boxShadow: [
-                        BoxShadow(
-                          color: CustomColor().shadowColor2,
-                          blurRadius: 12,
-                        ),
-                      ],
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          'location'.tr(),
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20.sp,
+                          locationData != null
+                              ? '${locationData.locationName!.substring(0, 29)}...'
+                              : 'Current Location',
+                          style: const TextStyle(
                             color: Colors.white,
+                            fontSize: 13,
                           ),
                         ),
-                        SizedBox(width: 100.w),
+                        SizedBox(width: 50.w),
                         Icon(
                           Icons.my_location,
                           size: 28.sp,
@@ -157,6 +207,23 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         ),
                       ],
                     ),
+                  ),
+                ),
+                SizedBox(height: 8.h),
+                SizedBox(
+                  height: 200.h,
+                  child: GoogleMap(
+                    mapType: MapType.normal,
+                    myLocationEnabled: true,
+                    zoomGesturesEnabled: true,
+                    zoomControlsEnabled: true,
+                    initialCameraPosition: _kGooglePlex,
+                    onMapCreated: (controller) {
+                      _googleMapController.complete(controller);
+                      newGoogleMapController = controller;
+
+                      userLocation();
+                    },
                   ),
                 ),
                 SizedBox(height: 8.h),
@@ -236,20 +303,33 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                             itemBuilder: (context, index) {
                               return InkWell(
                                 onTap: () async {
+                                  // .attribute!
+                                  // .attributeValue!
+                                  // .elementAt(index)
+                                  // .id);
                                   List<um.Data> data = snapshot.data!.data!;
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => WashBookScreen(
-                                        data,
-                                        snapshot.data!.data!
-                                            .elementAt(index)
-                                            .name,
-                                        snapshot.data!.data!
-                                            .elementAt(index)
-                                            .id,
+                                  if (!snapshot.hasData) {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => WashBookScreen(
+                                          data,
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .name,
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .id,
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content:
+                                            Text('Something went wrong!!!'),
+                                      ),
+                                    );
+                                  }
                                 },
                                 child: Column(
                                   children: [
@@ -295,20 +375,33 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                             itemBuilder: (context, index) {
                               return InkWell(
                                 onTap: () async {
+                                  // .attribute!
+                                  // .attributeValue!
+                                  // .elementAt(index)
+                                  // .id);
                                   List<mc.Data> data = snapshot.data!.data!;
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => MeshBookScreen(
-                                        data,
-                                        snapshot.data!.data!
-                                            .elementAt(index)
-                                            .name,
-                                        snapshot.data!.data!
-                                            .elementAt(index)
-                                            .id,
+                                  if (!snapshot.hasData) {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => MeshBookScreen(
+                                          data,
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .name,
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .id,
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content:
+                                            Text('Something went wrong!!!'),
+                                      ),
+                                    );
+                                  }
                                 },
                                 child: Column(
                                   children: [

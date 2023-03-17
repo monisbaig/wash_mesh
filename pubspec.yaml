@@ -46,7 +46,6 @@ dependencies:
   path: ^1.8.2
   sqflite: ^2.2.2
   location: ^4.4.0
-  google_maps_flutter: ^2.2.2
   pinput: ^2.2.21
   firebase_core: ^2.4.1
   firebase_auth: ^4.2.5
@@ -54,6 +53,11 @@ dependencies:
   google_sign_in: ^5.4.4
   easy_localization: ^3.0.1
   expandable: ^5.0.1
+  google_maps_flutter: ^2.2.4
+  geolocator: ^9.0.2
+  firebase_database: ^10.0.14
+  flutter_polyline_points: ^1.0.0
+  flutter_geofire: ^2.0.3
 
 dev_dependencies:
   flutter_test:
