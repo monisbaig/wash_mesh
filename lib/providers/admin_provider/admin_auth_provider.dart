@@ -50,7 +50,7 @@ class AdminAuthProvider extends ChangeNotifier {
       dynamic token = jsonDecode(response.body)['data']['token'];
       dynamic result = jsonDecode(response.body)['message'];
 
-      // 'Vendor Registered Successfully'
+      // Service Provider Registered Successfully
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -92,7 +92,7 @@ class AdminAuthProvider extends ChangeNotifier {
     final response = await http.post(url);
     if (response.statusCode == 200) {
       if (jsonDecode(response.body)['message'] ==
-          'Vendor Login Successfully!') {
+          'Service Provider Logged in Successfully!') {
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString('Vendor', response.body);
         pref.setString('token', jsonDecode(response.body)['data']['token']);

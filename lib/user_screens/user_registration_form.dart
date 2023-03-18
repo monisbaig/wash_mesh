@@ -109,23 +109,24 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                   ),
                 ),
                 SizedBox(height: 10.h),
-                InkWell(
-                  onTap: profileImage,
+                SizedBox(
+                  height: 100.h,
+                  width: 100.w,
                   child: ClipOval(
                     child: profileImg != null
                         ? Image.file(
                             profileImg!,
-                            width: 105.w,
-                            height: 100.h,
                             fit: BoxFit.cover,
                           )
                         : Image.asset(
                             'assets/images/profile.png',
-                            width: 105.w,
-                            height: 100.h,
                             fit: BoxFit.cover,
                           ),
                   ),
+                ),
+                TextButton(
+                  onPressed: profileImage,
+                  child: const Text('Upload Image'),
                 ),
                 SizedBox(height: 15.h),
                 Form(

@@ -13,6 +13,7 @@ import 'package:wash_mesh/admin_screens/today_services.dart';
 import 'package:wash_mesh/admin_screens/total_bookings.dart';
 import 'package:wash_mesh/admin_screens/total_earnings.dart';
 import 'package:wash_mesh/admin_screens/upcoming_services.dart';
+import 'package:wash_mesh/global_variables/global_variables.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 
 import '../admin_assistant/admin_assistant_methods.dart';
@@ -37,6 +38,172 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 
   Position? userCurrentPosition;
   LocationPermission? _locationPermission;
+
+  void mapDarkTheme() {
+    newGoogleMapController!.setMapStyle('''
+                    [
+                      {
+                        "elementType": "geometry",
+                        "stylers": [
+                          {
+                            "color": "#242f3e"
+                          }
+                        ]
+                      },
+                      {
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                          {
+                            "color": "#746855"
+                          }
+                        ]
+                      },
+                      {
+                        "elementType": "labels.text.stroke",
+                        "stylers": [
+                          {
+                            "color": "#242f3e"
+                          }
+                        ]
+                      },
+                      {
+                        "featureType": "administrative.locality",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                          {
+                            "color": "#d59563"
+                          }
+                        ]
+                      },
+                      {
+                        "featureType": "poi",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                          {
+                            "color": "#d59563"
+                          }
+                        ]
+                      },
+                      {
+                        "featureType": "poi.park",
+                        "elementType": "geometry",
+                        "stylers": [
+                          {
+                            "color": "#263c3f"
+                          }
+                        ]
+                      },
+                      {
+                        "featureType": "poi.park",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                          {
+                            "color": "#6b9a76"
+                          }
+                        ]
+                      },
+                      {
+                        "featureType": "road",
+                        "elementType": "geometry",
+                        "stylers": [
+                          {
+                            "color": "#38414e"
+                          }
+                        ]
+                      },
+                      {
+                        "featureType": "road",
+                        "elementType": "geometry.stroke",
+                        "stylers": [
+                          {
+                            "color": "#212a37"
+                          }
+                        ]
+                      },
+                      {
+                        "featureType": "road",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                          {
+                            "color": "#9ca5b3"
+                          }
+                        ]
+                      },
+                      {
+                        "featureType": "road.highway",
+                        "elementType": "geometry",
+                        "stylers": [
+                          {
+                            "color": "#746855"
+                          }
+                        ]
+                      },
+                      {
+                        "featureType": "road.highway",
+                        "elementType": "geometry.stroke",
+                        "stylers": [
+                          {
+                            "color": "#1f2835"
+                          }
+                        ]
+                      },
+                      {
+                        "featureType": "road.highway",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                          {
+                            "color": "#f3d19c"
+                          }
+                        ]
+                      },
+                      {
+                        "featureType": "transit",
+                        "elementType": "geometry",
+                        "stylers": [
+                          {
+                            "color": "#2f3948"
+                          }
+                        ]
+                      },
+                      {
+                        "featureType": "transit.station",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                          {
+                            "color": "#d59563"
+                          }
+                        ]
+                      },
+                      {
+                        "featureType": "water",
+                        "elementType": "geometry",
+                        "stylers": [
+                          {
+                            "color": "#17263c"
+                          }
+                        ]
+                      },
+                      {
+                        "featureType": "water",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                          {
+                            "color": "#515c6d"
+                          }
+                        ]
+                      },
+                      {
+                        "featureType": "water",
+                        "elementType": "labels.text.stroke",
+                        "stylers": [
+                          {
+                            "color": "#17263c"
+                          }
+                        ]
+                      }
+                    ]
+                ''');
+  }
 
   allowLocationPermission() async {
     _locationPermission = await Geolocator.requestPermission();
@@ -119,7 +286,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '${'hello'.tr()}, ${snapshot.data!.data!.vendor!.userName}',
+                                    '${'hello'.tr()}, ${snapshot.data!.data!.vendor!.userName.toString().toCapitalized()}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 26.sp,
@@ -159,51 +326,49 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                             ],
                           ),
                           SizedBox(height: 15.h),
-                          InkWell(
-                            onTap: () async {
-                              var availability = snapshot.data!.data!.vendor!
-                                  .vendorDetails!.availability;
+                          Container(
+                            width: double.infinity,
+                            height: 50.h,
+                            decoration: BoxDecoration(
+                              color: CustomColor().mainColor,
+                              borderRadius: BorderRadius.circular(14.r),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  snapshot.data!.data!.vendor!.vendorDetails!
+                                              .availability ==
+                                          '1'
+                                      ? 'available'.tr()
+                                      : 'notAvailable'.tr(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 20.sp,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                SizedBox(width: 100.w),
+                                Switch(
+                                  activeColor: Colors.white,
+                                  activeTrackColor: Colors.greenAccent,
+                                  value: snapshot.data!.data!.vendor!
+                                              .vendorDetails!.availability ==
+                                          '1'
+                                      ? true
+                                      : false,
+                                  onChanged: (bool value) async {
+                                    var availability = snapshot.data!.data!
+                                        .vendor!.vendorDetails!.availability;
 
-                              await adminData.updateAvailability(
-                                  availability: availability, context: context);
-                              setState(() {});
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              height: 50.h,
-                              decoration: BoxDecoration(
-                                color: CustomColor().mainColor,
-                                borderRadius: BorderRadius.circular(14.r),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    snapshot.data!.data!.vendor!.vendorDetails!
-                                                .availability ==
-                                            '1'
-                                        ? 'available'.tr()
-                                        : 'notAvailable'.tr(),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 20.sp,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  SizedBox(width: 100.w),
-                                  Switch(
-                                    activeColor: Colors.white,
-                                    activeTrackColor: Colors.greenAccent,
-                                    value: snapshot.data!.data!.vendor!
-                                                .vendorDetails!.availability ==
-                                            '1'
-                                        ? true
-                                        : false,
-                                    onChanged: (bool value) {},
-                                  ),
-                                ],
-                              ),
+                                    await adminData.updateAvailability(
+                                      availability: availability,
+                                      context: context,
+                                    );
+                                    setState(() {});
+                                  },
+                                ),
+                              ],
                             ),
                           ),
                           SizedBox(height: 8.h),
@@ -239,46 +404,13 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                             ),
                           ),
                           SizedBox(height: 8.h),
-                          InkWell(
-                            onTap: () {},
-                            child: Container(
-                              width: double.infinity,
-                              height: 50.h,
-                              decoration: BoxDecoration(
-                                color: CustomColor().mainColor,
-                                borderRadius: BorderRadius.circular(14.r),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    locationData != null
-                                        ? '${locationData.locationName!.substring(0, 29)}...'
-                                        : 'Current Location',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                  SizedBox(width: 50.w),
-                                  Icon(
-                                    Icons.my_location,
-                                    size: 28.sp,
-                                    color: Colors.white,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 8.h),
                           SizedBox(
                             height: 200.h,
                             child: GoogleMap(
                               mapType: MapType.normal,
                               myLocationEnabled: true,
-                              zoomGesturesEnabled: true,
-                              zoomControlsEnabled: true,
+                              zoomGesturesEnabled: false,
+                              zoomControlsEnabled: false,
                               initialCameraPosition: _kGooglePlex,
                               onMapCreated: (controller) {
                                 _googleMapController.complete(controller);
@@ -286,6 +418,30 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 
                                 userLocation();
                               },
+                            ),
+                          ),
+                          Container(
+                            width: double.infinity,
+                            height: 50.h,
+                            color: CustomColor().mainColor,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(width: 10.w),
+                                Flexible(
+                                  child: Text(
+                                    overflow: TextOverflow.ellipsis,
+                                    locationData != null
+                                        ? locationData.locationName!
+                                        : 'Current Location',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 10.w),
+                              ],
                             ),
                           ),
                           SizedBox(height: 8.h),

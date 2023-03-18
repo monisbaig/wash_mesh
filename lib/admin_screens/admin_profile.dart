@@ -187,34 +187,35 @@ class _AdminProfileState extends State<AdminProfile> {
                   ),
                 ),
                 SizedBox(height: 10.h),
-                Row(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    InkWell(
-                      onTap: profileImage,
-                      child: loading
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : ClipOval(
+                    loading
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : SizedBox(
+                            height: 100.h,
+                            width: 100.w,
+                            child: ClipOval(
                               child: profileImg != null
                                   ? Image.file(
                                       profileImg!,
-                                      width: 105.w,
-                                      height: 100.h,
                                       fit: BoxFit.cover,
                                     )
                                   : Image.network(
                                       '$getImage',
-                                      width: 105.w,
-                                      height: 100.h,
                                       fit: BoxFit.cover,
                                     ),
                             ),
+                          ),
+                    TextButton(
+                      onPressed: profileImage,
+                      child: const Text('Upload Image'),
                     ),
                   ],
                 ),
-                SizedBox(height: 30.h),
+                SizedBox(height: 20.h),
                 Form(
                   key: formKey,
                   child: Column(

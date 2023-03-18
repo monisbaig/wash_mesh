@@ -43,7 +43,7 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
           ),
         );
 
-        if (result == 'Vendor Login Successfully!') {
+        if (result == 'Service Provider Logged in Successfully!') {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString("loginPhone", phoneNo.text);
           prefs.setString("loginPassword", password.text);

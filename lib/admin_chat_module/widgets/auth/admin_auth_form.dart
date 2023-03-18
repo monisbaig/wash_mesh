@@ -22,7 +22,7 @@ class _AdminAuthFormState extends State<AdminAuthForm> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController userEmail = TextEditingController();
   TextEditingController userPassword = TextEditingController();
-  dynamic _userName, _userEmail, _userPassword = '', _isLogin = true;
+  dynamic _userName, _userEmail, _userPassword = '', _isLogin = false;
   // ignore: unused_field
 
   void _trySubmit() async {

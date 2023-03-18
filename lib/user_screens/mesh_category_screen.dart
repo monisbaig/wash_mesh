@@ -139,7 +139,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/user_screens/mesh_book_screen.dart';
-import 'package:wash_mesh/user_screens/user_home_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
 
@@ -215,7 +214,11 @@ class _MeshCategoryState extends State<MeshCategory> {
                                 onTap: () async {
                                   List<um.Data> data = snapshot.data!.data!;
 
-                                  if (!snapshot.hasData) {
+                                  var meshCategory = snapshot.data!.data!
+                                      .elementAt(index)
+                                      .catAttribute;
+
+                                  if (meshCategory!.isNotEmpty) {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) => MeshBookScreen(
@@ -234,12 +237,6 @@ class _MeshCategoryState extends State<MeshCategory> {
                                       const SnackBar(
                                         content:
                                             Text('Something went wrong!!!'),
-                                      ),
-                                    );
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const UserHomeScreen(),
                                       ),
                                     );
                                   }
@@ -288,7 +285,11 @@ class _MeshCategoryState extends State<MeshCategory> {
                                 onTap: () async {
                                   List<um.Data> data = snapshot.data!.data!;
 
-                                  if (!snapshot.hasData) {
+                                  var meshCategory = snapshot.data!.data!
+                                      .elementAt(index)
+                                      .catAttribute;
+
+                                  if (meshCategory!.isNotEmpty) {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) => MeshBookScreen(
@@ -307,12 +308,6 @@ class _MeshCategoryState extends State<MeshCategory> {
                                       const SnackBar(
                                         content:
                                             Text('Something went wrong!!!'),
-                                      ),
-                                    );
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const UserHomeScreen(),
                                       ),
                                     );
                                   }

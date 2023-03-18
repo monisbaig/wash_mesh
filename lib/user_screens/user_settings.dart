@@ -29,7 +29,7 @@ class _UserSettingsState extends State<UserSettings> {
       op: 0.1,
       ch: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 45.h, horizontal: 12.w),
+          padding: EdgeInsets.symmetric(vertical: 35.h, horizontal: 12.w),
           child: Column(
             children: [
               const CustomLogo(),
@@ -53,7 +53,7 @@ class _UserSettingsState extends State<UserSettings> {
                   ),
                 ],
               ),
-              SizedBox(height: 90.h),
+              SizedBox(height: 30.h),
               InkWell(
                 onTap: () {
                   Navigator.of(context).push(
@@ -223,7 +223,7 @@ class _UserSettingsState extends State<UserSettings> {
                   ),
                 ),
               ),
-              SizedBox(height: 90.h),
+              SizedBox(height: 70.h),
               InkWell(
                 onTap: () async {
                   await Provider.of<AdminAuthProvider>(context, listen: false)
