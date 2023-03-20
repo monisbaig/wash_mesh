@@ -346,7 +346,7 @@ class AdminAuthProvider extends ChangeNotifier {
   static Future<VendorOrders> getVendorOrders() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString('token');
-    final url = Uri.parse('$baseURL/user/vendor/orders');
+    final url = Uri.parse('$baseURL/user/vendor/orders/all');
     final response = await http.get(url, headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',

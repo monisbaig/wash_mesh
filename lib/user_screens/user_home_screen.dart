@@ -38,6 +38,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   User user = User();
 
   dynamic token;
+  bool isLoading = false;
 
   getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -245,6 +246,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   }
 
   userLocation() async {
+    setState(() {
+      isLoading = true;
+    });
     Position currentPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
 
@@ -265,6 +269,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     );
 
     await UserAssistantMethods.reverseGeocoding(userCurrentPosition!, context);
+    setState(() {
+      isLoading = false;
+    });
   }
 
   static const CameraPosition _kGooglePlex = CameraPosition(
@@ -370,16 +377,22 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     children: [
                       SizedBox(width: 10.w),
                       Flexible(
-                        child: Text(
-                          overflow: TextOverflow.ellipsis,
-                          locationData != null
-                              ? locationData.locationName!
-                              : 'Current Location',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 13,
-                          ),
-                        ),
+                        child: isLoading
+                            ? const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              )
+                            : Text(
+                                overflow: TextOverflow.ellipsis,
+                                locationData != null
+                                    ? locationData.locationName!
+                                    : 'Current Location',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                ),
+                              ),
                       ),
                       SizedBox(width: 10.w),
                     ],

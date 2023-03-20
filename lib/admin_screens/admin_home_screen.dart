@@ -38,6 +38,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 
   Position? userCurrentPosition;
   LocationPermission? _locationPermission;
+  bool isLoading = false;
 
   void mapDarkTheme() {
     newGoogleMapController!.setMapStyle('''
@@ -213,6 +214,9 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   }
 
   userLocation() async {
+    setState(() {
+      isLoading = true;
+    });
     Position currentPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
 
@@ -233,6 +237,9 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     );
 
     await AdminAssistantMethods.reverseGeocoding(userCurrentPosition!, context);
+    setState(() {
+      isLoading = false;
+    });
   }
 
   static const CameraPosition _kGooglePlex = CameraPosition(
@@ -429,16 +436,22 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                               children: [
                                 SizedBox(width: 10.w),
                                 Flexible(
-                                  child: Text(
-                                    overflow: TextOverflow.ellipsis,
-                                    locationData != null
-                                        ? locationData.locationName!
-                                        : 'Current Location',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 13,
-                                    ),
-                                  ),
+                                  child: isLoading
+                                      ? const Center(
+                                          child: CircularProgressIndicator(
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                      : Text(
+                                          overflow: TextOverflow.ellipsis,
+                                          locationData != null
+                                              ? locationData.locationName!
+                                              : 'Current Location',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 13,
+                                          ),
+                                        ),
                                 ),
                                 SizedBox(width: 10.w),
                               ],

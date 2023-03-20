@@ -51,9 +51,24 @@ class _AdminBookingScreenState extends State<AdminBookingScreen> {
                         ),
                       );
                     },
-                    child: const Text('Vendor Orders Screen'),
+                    child: const Text('Service Provider Orders Screen'),
                   ),
                 ),
+                // SizedBox(height: 10.h),
+                // SizedBox(
+                //   width: 300.w,
+                //   child: ElevatedButton(
+                //     onPressed: () {
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //           builder: (context) => const AdminRespondedScreen(),
+                //         ),
+                //       );
+                //     },
+                //     child: const Text('Service Provider Orders Screen'),
+                //   ),
+                // ),
               ],
             ),
           ),

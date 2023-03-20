@@ -1,6 +1,6 @@
 class VendorAcceptedOrder {
-  int? status;
-  String? message;
+  dynamic status;
+  dynamic message;
   List<Data>? data;
 
   VendorAcceptedOrder({this.status, this.message, this.data});
@@ -28,17 +28,19 @@ class VendorAcceptedOrder {
 }
 
 class Data {
-  int? id;
-  String? vendorId;
-  String? status;
+  dynamic id;
+  dynamic vendorId;
+  dynamic status;
+  dynamic orderId;
   Vendors? vendors;
 
-  Data({this.id, this.vendorId, this.status, this.vendors});
+  Data({this.id, this.vendorId, this.status, this.orderId, this.vendors});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     vendorId = json['vendor_id'];
     status = json['status'];
+    orderId = json['order_id'];
     vendors =
         json['vendors'] != null ? Vendors.fromJson(json['vendors']) : null;
   }
@@ -48,6 +50,7 @@ class Data {
     data['id'] = id;
     data['vendor_id'] = vendorId;
     data['status'] = status;
+    data['order_id'] = orderId;
     if (vendors != null) {
       data['vendors'] = vendors!.toJson();
     }
@@ -56,8 +59,8 @@ class Data {
 }
 
 class Vendors {
-  int? id;
-  String? userId;
+  dynamic id;
+  dynamic userId;
   User? user;
 
   Vendors({this.id, this.userId, this.user});
@@ -80,12 +83,12 @@ class Vendors {
 }
 
 class User {
-  int? id;
-  String? firstName;
-  String? lastName;
-  String? userName;
-  String? image;
-  String? status;
+  dynamic id;
+  dynamic firstName;
+  dynamic lastName;
+  dynamic userName;
+  dynamic image;
+  dynamic status;
 
   User(
       {this.id,

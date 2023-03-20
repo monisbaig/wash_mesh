@@ -34,6 +34,12 @@ class _UserProfileState extends State<UserProfile> {
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
   TextEditingController address = TextEditingController();
+  TextEditingController phone = TextEditingController();
+  String? selectedGender;
+  List gender = [
+    '1',
+    '2',
+  ];
 
   getUserData() async {
     setState(() {
@@ -59,13 +65,17 @@ class _UserProfileState extends State<UserProfile> {
       var lastN = json['data']['User']['last_name'];
       var add = json['data']['User']['address'];
       var img = json['data']['User']['image'];
+      var phn = json['data']['User']['phone'];
+      var gnd = json['data']['User']['gender'];
 
       setState(() {
         firstName.text = firstN;
         lastName.text = lastN;
         address.text = add;
+        phone.text = phn;
         loading = false;
         getImage = img;
+        selectedGender = gnd;
       });
     }
   }
@@ -79,10 +89,13 @@ class _UserProfileState extends State<UserProfile> {
           firstName: firstName.text,
           lastName: lastName.text,
           address: address.text,
+          phone: phone.text,
+          gender: selectedGender,
         );
         firstName.clear();
         lastName.clear();
         address.clear();
+        phone.clear();
 
         await onUpdateImage();
 
@@ -118,11 +131,11 @@ class _UserProfileState extends State<UserProfile> {
         image: convertedImage,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('$result'),
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text('$result'),
+      //   ),
+      // );
 
       if (result != null) {
         Navigator.of(context).pushReplacement(
@@ -251,6 +264,67 @@ class _UserProfileState extends State<UserProfile> {
                           }
                           return null;
                         },
+                      ),
+                      SizedBox(height: 10.h),
+                      CustomTextField(
+                        hint: 'Phone',
+                        controller: phone,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your phone number';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10.h),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(32.r),
+                        ),
+                        child: DropdownButtonFormField<String>(
+                          value: selectedGender,
+                          hint: const Text(
+                            'Gender',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Please select your gender';
+                            }
+                            return null;
+                          },
+                          items: gender
+                              .map((e) => DropdownMenuItem<String>(
+                                    value: e,
+                                    child: Text(e == '1' ? 'Male' : 'Female'),
+                                  ))
+                              .toList(),
+                          borderRadius: BorderRadius.circular(32.r),
+                          onChanged: (String? value) {
+                            selectedGender = value!;
+                          },
+                          decoration: InputDecoration(
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(32.r),
+                              borderSide: const BorderSide(color: Colors.white),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(32.r),
+                              borderSide: const BorderSide(color: Colors.white),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(32.r),
+                              borderSide: const BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(32.r),
+                            ),
+                            fillColor: Colors.white,
+                            filled: true,
+                          ),
+                        ),
                       ),
                       SizedBox(height: 10.h),
                     ],

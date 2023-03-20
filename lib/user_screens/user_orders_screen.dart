@@ -23,11 +23,11 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
         child: FutureBuilder<or.OrdersModel>(
           future: UserAuthProvider.getOrders(),
           builder: (context, snapshot) {
-            return snapshot.hasData
+            return !snapshot.hasData
                 ? const Center(
                     child: Text(
                       textAlign: TextAlign.center,
-                      'Place your order first\n Thank you.',
+                      'Place your order\nOr\n Wait for the process to complete',
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.redAccent,
@@ -94,20 +94,22 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
                                       subtitle: Text(
                                         "Description : ${snapshot.data!.data!.elementAt(index).description}",
                                       ),
-                                      trailing: TextButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AcceptedOrdersScreen(
-                                                acceptedOrderId: orderId,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        child: const Text('Order Status'),
-                                      ),
+                                      trailing: status.toString() == '1'
+                                          ? TextButton(
+                                              onPressed: () async {
+                                                await Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        AcceptedOrdersScreen(
+                                                      acceptedOrderId: orderId,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: const Text('Order Status'),
+                                            )
+                                          : const Text(''),
                                     ),
                                   );
                                 },

@@ -26,14 +26,14 @@ class _AcceptedOrdersScreenState extends State<AcceptedOrdersScreen> {
       op: 0.1,
       ch: SafeArea(
         child: FutureBuilder<VendorAcceptedOrder>(
-          future: UserAuthProvider.getAcceptedVendorOrder(
-              widget.acceptedOrderId, context),
+          future:
+              UserAuthProvider.getAcceptedVendorOrder(widget.acceptedOrderId),
           builder: (context, snapshot) {
-            return snapshot.hasData
+            return !snapshot.hasData
                 ? const Center(
                     child: Text(
                       textAlign: TextAlign.center,
-                      'No Vendor Available,\n against this order Thank you.',
+                      'Processing please wait...',
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.redAccent,
@@ -102,7 +102,7 @@ class _AcceptedOrdersScreenState extends State<AcceptedOrdersScreen> {
                                               .vendorId;
                                           var orderId = snapshot.data!.data!
                                               .elementAt(index)
-                                              .id;
+                                              .orderId;
 
                                           await userAuthProvider
                                               .userAcceptOrder(
@@ -130,3 +130,8 @@ class _AcceptedOrdersScreenState extends State<AcceptedOrdersScreen> {
     );
   }
 }
+
+// return snapshot.data!.message ==
+// 'There is no Record of Accepted Service Providers against this Order' ||
+// snapshot.data!.message ==
+// 'This Customer Choose Service Provider against this Order'

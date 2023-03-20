@@ -6,14 +6,14 @@ import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
 
-class AdminOrdersScreen extends StatefulWidget {
-  const AdminOrdersScreen({Key? key}) : super(key: key);
+class AdminRespondedScreen extends StatefulWidget {
+  const AdminRespondedScreen({Key? key}) : super(key: key);
 
   @override
-  State<AdminOrdersScreen> createState() => _AdminOrdersScreenState();
+  State<AdminRespondedScreen> createState() => _AdminRespondedScreenState();
 }
 
-class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
+class _AdminRespondedScreenState extends State<AdminRespondedScreen> {
   @override
   Widget build(BuildContext context) {
     var vendorAuthProvider =
@@ -26,7 +26,7 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
           child: FutureBuilder<VendorOrders>(
             future: AdminAuthProvider.getVendorOrders(),
             builder: (context, snapshot) {
-              return !snapshot.hasData || snapshot.data!.data!.isEmpty
+              return !snapshot.hasData
                   ? Center(
                       heightFactor: 12.h,
                       child: const Text(
@@ -56,7 +56,7 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'All Vendor Orders',
+                                    'All Vendor Orders Response',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 30.sp,
@@ -96,43 +96,6 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
                                           : const Text(''),
                                       subtitle: Text(
                                         "Description : ${snapshot.data!.data!.elementAt(index).description}",
-                                      ),
-                                      trailing: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          InkWell(
-                                            onTap: () async {
-                                              var id = snapshot.data!.data!
-                                                  .elementAt(index)
-                                                  .id;
-                                              await vendorAuthProvider
-                                                  .vendorRejectOrder(
-                                                      id: id, context: context);
-                                            },
-                                            child: const Text(
-                                              'Reject',
-                                              style:
-                                                  TextStyle(color: Colors.red),
-                                            ),
-                                          ),
-                                          SizedBox(height: 10.h),
-                                          InkWell(
-                                            onTap: () async {
-                                              var id = snapshot.data!.data!
-                                                  .elementAt(index)
-                                                  .id;
-                                              await vendorAuthProvider
-                                                  .vendorAcceptOrder(
-                                                      id: id, context: context);
-                                            },
-                                            child: const Text(
-                                              'Accept',
-                                              style:
-                                                  TextStyle(color: Colors.blue),
-                                            ),
-                                          ),
-                                        ],
                                       ),
                                     ),
                                   );

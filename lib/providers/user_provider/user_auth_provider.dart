@@ -97,13 +97,16 @@ class UserAuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateUserData({var firstName, var lastName, var address}) async {
+  updateUserData(
+      {var firstName, var lastName, var address, var phone, var gender}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString('userToken');
     var jsonObject = {
       'first_name': firstName,
       'last_name': lastName,
       'address': address,
+      'phone': phone,
+      'gender': gender,
     };
     var jsonString = jsonEncode(jsonObject);
 
@@ -243,6 +246,54 @@ class UserAuthProvider extends ChangeNotifier {
     }
   }
 
+  // static Future<or.OrdersModel> orderMessage(orderId, context) async {
+  //   SharedPreferences pref = await SharedPreferences.getInstance();
+  //   var token = pref.getString('userToken');
+  //   final url = Uri.parse(
+  //       '$baseURL/user/customer/order/all_accepted_vendors?order_id=$orderId');
+  //   final response = await http.get(
+  //     url,
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Accept': 'application/json',
+  //       'Authorization': 'Bearer $token',
+  //     },
+  //   );
+  //
+  //   if (response.statusCode == 200) {
+  //     if (jsonDecode(response.body)['message'] ==
+  //         'This Customer Choose Service Provider against this Order') {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //           content: Text(jsonDecode(response.body)['message']),
+  //         ),
+  //       );
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => const UserBookingScreen(),
+  //         ),
+  //       );
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //           content: Text(jsonDecode(response.body)['message']),
+  //         ),
+  //       );
+  //       await Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => const UserBookingScreen(),
+  //         ),
+  //       );
+  //     }
+  //
+  //     return or.OrdersModel?.fromJson(jsonDecode(response.body));
+  //   } else {
+  //     return or.OrdersModel();
+  //   }
+  // }
+
   placeOrder(PlaceOrderModel p, context) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString('userToken');
@@ -350,7 +401,7 @@ class UserAuthProvider extends ChangeNotifier {
   }
 
   static Future<vc.VendorAcceptedOrder> getAcceptedVendorOrder(
-      dynamic id, context) async {
+      dynamic id) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString('userToken');
     final url = Uri.parse(
@@ -364,8 +415,10 @@ class UserAuthProvider extends ChangeNotifier {
       },
     );
     if (response.statusCode == 200) {
+      print(jsonDecode(response.body));
       return vc.VendorAcceptedOrder?.fromJson(jsonDecode(response.body));
     } else {
+      print(jsonDecode(response.body));
       return vc.VendorAcceptedOrder();
     }
   }
