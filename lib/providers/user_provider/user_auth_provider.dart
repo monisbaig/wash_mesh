@@ -2,7 +2,10 @@
 
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/models/user_models/orders_model.dart' as or;
@@ -11,9 +14,10 @@ import 'package:wash_mesh/models/user_models/vendor_accepted_order.dart' as vc;
 import 'package:wash_mesh/user_screens/user_registration_form.dart';
 
 import '../../models/user_models/mesh_categories_model.dart' as um;
-import '../../models/user_models/user_model.dart';
+import '../../models/user_models/user_model.dart' as u;
 import '../../models/user_models/wash_categories_model.dart' as um;
 import '../../models/user_models/wash_categories_model.dart';
+import '../../user_map_integration/user_global_variables/user_global_variables.dart';
 import '../../user_screens/user_login_form.dart';
 
 class UserAuthProvider extends ChangeNotifier {
@@ -21,7 +25,7 @@ class UserAuthProvider extends ChangeNotifier {
 
   // User Authentication Code:
 
-  registerUser(User userData, context) async {
+  registerUser(u.User userData, context) async {
     final url = Uri.parse('$baseURL/user/customer/register');
     final response = await http.post(
       url,
@@ -43,7 +47,14 @@ class UserAuthProvider extends ChangeNotifier {
     );
 
     if (response.statusCode == 200) {
-      dynamic result = jsonDecode(response.body)['message'];
+      dynamic result = await jsonDecode(response.body)['message'];
+
+      saveFormData(
+        email: userData.email,
+        password: userData.password,
+        name: userData.firstName,
+        phone: userData.phone,
+      );
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -73,7 +84,42 @@ class UserAuthProvider extends ChangeNotifier {
     }
     print(jsonDecode(response.body));
     notifyListeners();
-    return User.fromJson(jsonDecode(response.body));
+    return u.User.fromJson(jsonDecode(response.body));
+  }
+
+  saveFormData({
+    required dynamic email,
+    required dynamic password,
+    required dynamic name,
+    required dynamic phone,
+  }) async {
+    try {
+      final UserCredential user =
+          await firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (user.user != null) {
+        Map userData = {
+          'id': user.user!.uid,
+          'name': name,
+          'email': email,
+          'phone': phone,
+        };
+
+        DatabaseReference userRef =
+            FirebaseDatabase.instance.ref().child('users');
+        userRef.child(user.user!.uid).set(userData);
+        activeUser = user;
+
+        Fluttertoast.showToast(msg: 'Account has been created successfully.');
+      } else {
+        Fluttertoast.showToast(msg: 'Account has not been Created.');
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
   }
 
   loginUser({
@@ -88,7 +134,6 @@ class UserAuthProvider extends ChangeNotifier {
         SharedPreferences pref = await SharedPreferences.getInstance();
         // pref.setString('User', response.body);
         pref.setString('userToken', jsonDecode(response.body)['data']['token']);
-        print(jsonDecode(response.body)['data']['token']);
       }
       return jsonDecode(response.body)['message'];
     } else {

@@ -340,8 +340,8 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                           size: 20,
                         ),
                         validator: (value) {
-                          if (value!.isEmpty || value.length < 5) {
-                            return 'Please enter your password with at least 5 characters';
+                          if (value!.isEmpty || value.length < 6) {
+                            return 'Please enter your password with at least 6 characters';
                           }
                           return null;
                         },

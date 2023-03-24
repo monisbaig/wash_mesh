@@ -58,6 +58,9 @@ dependencies:
   firebase_database: ^10.0.14
   flutter_polyline_points: ^1.0.0
   flutter_geofire: ^2.0.3
+  firebase_messaging: ^14.3.0
+  assets_audio_player: ^3.0.6
+  fluttertoast: ^8.2.1
 
 dev_dependencies:
   flutter_test:
@@ -85,6 +88,7 @@ flutter:
   assets:
     - assets/images/
     - assets/translations/
+    - assets/notifications/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wash_mesh/user_chat_module/screens/user_auth_screen.dart';
 import 'package:wash_mesh/user_chat_module/screens/user_chat_screen.dart';
 
 void main() {
@@ -37,10 +36,8 @@ class UserChatApp extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          if (snapshot.hasData) {
-            return const UserChatScreen();
-          }
-          return const UserAuthScreen();
+
+          return const UserChatScreen();
         },
       ),
     );

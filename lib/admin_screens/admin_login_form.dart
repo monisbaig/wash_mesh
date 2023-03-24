@@ -1,8 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/admin_screens/admin_registration_form.dart';
@@ -12,6 +15,7 @@ import 'package:wash_mesh/widgets/custom_logo.dart';
 import 'package:wash_mesh/widgets/custom_navigation_bar_admin.dart';
 import 'package:wash_mesh/widgets/custom_text_field.dart';
 
+import '../admin_map_integration/admin_global_variables/admin_global_variables.dart';
 import '../providers/admin_provider/admin_auth_provider.dart';
 import 'admin_forget_password.dart';
 
@@ -48,6 +52,8 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
           prefs.setString("loginPhone", phoneNo.text);
           prefs.setString("loginPassword", password.text);
 
+          login();
+
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (context) => const CustomNavigationBarAdmin(),
@@ -64,6 +70,36 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
       }
     } catch (e) {
       rethrow;
+    }
+  }
+
+  void login() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var email = prefs.getString("email");
+
+      final UserCredential admin =
+          await firebaseAuth.signInWithEmailAndPassword(
+        email: email.toString(),
+        password: password.text.trim(),
+      );
+
+      if (admin.user != null) {
+        DatabaseReference userRef =
+            FirebaseDatabase.instance.ref().child('vendor');
+        userRef.child(firebaseAuth.currentUser!.uid).once().then((adminKey) {
+          final snap = adminKey.snapshot;
+          if (snap.value != null) {
+            Fluttertoast.showToast(msg: 'Login Successfully');
+          } else {
+            Fluttertoast.showToast(msg: 'No record exist with this email.');
+          }
+        });
+      } else {
+        Fluttertoast.showToast(msg: 'Login Failed, Check your credentials.');
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
     }
   }
 
@@ -128,8 +164,8 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
                         hint: 'password'.tr(),
                         controller: password,
                         validator: (value) {
-                          if (value!.isEmpty || value.length < 5) {
-                            return 'Please enter your password with at least 5 characters';
+                          if (value!.isEmpty || value.length < 6) {
+                            return 'Please enter your password with at least 6 characters';
                           }
                           return null;
                         },

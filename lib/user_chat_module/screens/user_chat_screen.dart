@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wash_mesh/user_screens/user_home_screen.dart';
 
 import '../widgets/chat/user_messages.dart';
 import '../widgets/chat/user_new_messages.dart';
@@ -62,36 +60,8 @@ class _UserChatScreenState extends State<UserChatScreen> {
                   ],
                 ),
               ),
-              DropdownMenuItem(
-                value: 'logout',
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.exit_to_app,
-                      color: Colors.white,
-                    ),
-                    SizedBox(width: 8.w),
-                    const Text(
-                      'Logout',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ],
             onChanged: (value) {
-              if (value == 'logout') {
-                FirebaseAuth.instance.signOut();
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const UserHomeScreen(),
-                  ),
-                  (route) => false,
-                );
-              }
               if (value == 'clear') {
                 deleteAll();
               }

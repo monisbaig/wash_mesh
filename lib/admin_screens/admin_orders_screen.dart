@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -5,6 +7,7 @@ import 'package:wash_mesh/models/admin_models/vendor_orders.dart';
 import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
+import 'package:wash_mesh/widgets/custom_navigation_bar_admin.dart';
 
 class AdminOrdersScreen extends StatefulWidget {
   const AdminOrdersScreen({Key? key}) : super(key: key);
@@ -109,6 +112,14 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
                                               await vendorAuthProvider
                                                   .vendorRejectOrder(
                                                       id: id, context: context);
+                                              Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const CustomNavigationBarAdmin(),
+                                                ),
+                                                (route) => false,
+                                              );
                                             },
                                             child: const Text(
                                               'Reject',
@@ -125,6 +136,15 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
                                               await vendorAuthProvider
                                                   .vendorAcceptOrder(
                                                       id: id, context: context);
+
+                                              Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const CustomNavigationBarAdmin(),
+                                                ),
+                                                (route) => false,
+                                              );
                                             },
                                             child: const Text(
                                               'Accept',

@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wash_mesh/admin_chat_module/screens/admin_auth_screen.dart';
 import 'package:wash_mesh/admin_chat_module/screens/admin_chat_screen.dart';
 
 void main() {
@@ -38,10 +37,7 @@ class AdminChatApp extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          if (snapshot.hasData) {
-            return const AdminChatScreen();
-          }
-          return const AdminAuthScreen();
+          return const AdminChatScreen();
         },
       ),
     );

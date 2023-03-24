@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,6 +13,7 @@ import 'package:wash_mesh/models/admin_models/vendor_applied.dart';
 import 'package:wash_mesh/models/admin_models/vendor_orders.dart';
 import 'package:wash_mesh/models/admin_models/wash_category_model.dart';
 
+import '../../admin_map_integration/admin_global_variables/admin_global_variables.dart';
 import '../../models/admin_models/admin_model.dart';
 
 class AdminAuthProvider extends ChangeNotifier {
@@ -48,9 +51,21 @@ class AdminAuthProvider extends ChangeNotifier {
 
     if (response.statusCode == 200) {
       dynamic token = jsonDecode(response.body)['data']['token'];
+      dynamic email =
+          await jsonDecode(response.body)['data']['Vendor']['email'];
+      dynamic vendorId =
+          await jsonDecode(response.body)['data']['Vendor']['id'];
       dynamic result = jsonDecode(response.body)['message'];
 
       // Service Provider Registered Successfully
+
+      saveFormData(
+        vendorId: vendorId,
+        email: email,
+        password: adminData.password,
+        name: adminData.firstName,
+        phone: adminData.phone,
+      );
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -83,6 +98,43 @@ class AdminAuthProvider extends ChangeNotifier {
     return Vendor.fromJson(jsonDecode(response.body));
   }
 
+  saveFormData({
+    required dynamic vendorId,
+    required dynamic email,
+    required dynamic password,
+    required dynamic name,
+    required dynamic phone,
+  }) async {
+    try {
+      final UserCredential admin =
+          await firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (admin.user != null) {
+        Map adminData = {
+          'id': admin.user!.uid,
+          'vendorId': vendorId.toString(),
+          'name': name,
+          'email': email,
+          'phone': phone,
+        };
+
+        DatabaseReference adminRef =
+            FirebaseDatabase.instance.ref().child('vendor');
+        adminRef.child(admin.user!.uid).set(adminData);
+        currentAdmin = admin;
+
+        Fluttertoast.showToast(msg: 'Account has been created successfully.');
+      } else {
+        Fluttertoast.showToast(msg: 'Account has not been Created.');
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+  }
+
   loginAdmin({
     var input,
     var password,
@@ -96,7 +148,8 @@ class AdminAuthProvider extends ChangeNotifier {
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString('Vendor', response.body);
         pref.setString('token', jsonDecode(response.body)['data']['token']);
-        print(jsonDecode(response.body)['data']['token']);
+        pref.setString(
+            'email', jsonDecode(response.body)['data']['Vendor']['email']);
       }
       return jsonDecode(response.body)['message'];
     } else {
@@ -215,11 +268,11 @@ class AdminAuthProvider extends ChangeNotifier {
       },
     );
     if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(jsonDecode(response.body)['message']),
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text(jsonDecode(response.body)['message']),
+      //   ),
+      // );
       return jsonDecode(response.body)['message'];
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

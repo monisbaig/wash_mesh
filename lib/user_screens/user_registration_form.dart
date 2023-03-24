@@ -14,7 +14,7 @@ import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
 import 'package:wash_mesh/widgets/custom_text_field.dart';
 
-import '../models/user_models/user_model.dart';
+import '../models/user_models/user_model.dart' as u;
 import '../providers/admin_provider/admin_auth_provider.dart';
 import '../providers/user_provider/user_auth_provider.dart';
 import '../widgets/custom_navigation_bar.dart';
@@ -69,7 +69,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
     try {
       final isValid = formKey.currentState!.validate();
       if (isValid) {
-        User user = User(
+        u.User user = u.User(
           firstName: firstName.text,
           lastName: lastName.text,
           email: email.text,
@@ -191,8 +191,8 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                         ),
                         controller: password,
                         validator: (value) {
-                          if (value!.isEmpty || value.length < 5) {
-                            return 'Please enter your password with at least 5 characters';
+                          if (value!.isEmpty || value.length < 6) {
+                            return 'Please enter your password with at least 6 characters';
                           }
                           return null;
                         },

@@ -1,8 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/user_screens/user_forget_password.dart';
@@ -14,6 +17,8 @@ import 'package:wash_mesh/widgets/custom_text_field.dart';
 
 import '../providers/admin_provider/admin_auth_provider.dart';
 import '../providers/user_provider/user_auth_provider.dart';
+import '../user_map_integration/assistants/user_assistant_methods.dart';
+import '../user_map_integration/user_global_variables/user_global_variables.dart';
 import '../widgets/custom_navigation_bar.dart';
 
 class UserLoginForm extends StatefulWidget {
@@ -38,16 +43,18 @@ class _UserLoginFormState extends State<UserLoginForm> {
           password: password.text,
         );
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('$result'),
-          ),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     content: Text('$result'),
+        //   ),
+        // );
 
         if (result == 'Login Successfully') {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString("userEmail", emailPhone.text);
           prefs.setString("userPassword", password.text);
+
+          login();
 
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
@@ -65,6 +72,34 @@ class _UserLoginFormState extends State<UserLoginForm> {
       }
     } catch (e) {
       rethrow;
+    }
+  }
+
+  void login() async {
+    try {
+      final UserCredential user = await firebaseAuth.signInWithEmailAndPassword(
+        email: emailPhone.text.trim(),
+        password: password.text.trim(),
+      );
+
+      if (user.user != null) {
+        UserAssistantMethods.readCurrentOnlineUserInfo();
+
+        DatabaseReference userRef =
+            FirebaseDatabase.instance.ref().child('users');
+        userRef.child(firebaseAuth.currentUser!.uid).once().then((userKey) {
+          final snap = userKey.snapshot;
+          if (snap.value != null) {
+            Fluttertoast.showToast(msg: 'Login Successfully');
+          } else {
+            Fluttertoast.showToast(msg: 'No record exist with this email.');
+          }
+        });
+      } else {
+        Fluttertoast.showToast(msg: 'Login Failed, Check your credentials.');
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
     }
   }
 
@@ -129,8 +164,8 @@ class _UserLoginFormState extends State<UserLoginForm> {
                         hint: 'password'.tr(),
                         controller: password,
                         validator: (value) {
-                          if (value!.isEmpty || value.length < 5) {
-                            return 'Please enter your password with at least 5 characters';
+                          if (value!.isEmpty || value.length < 6) {
+                            return 'Please enter your password with at least 6 characters';
                           }
                           return null;
                         },

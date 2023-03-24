@@ -3,8 +3,11 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +19,9 @@ import 'package:wash_mesh/admin_screens/upcoming_services.dart';
 import 'package:wash_mesh/global_variables/global_variables.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 
-import '../admin_assistant/admin_assistant_methods.dart';
+import '../admin_map_integration/admin_global_variables/admin_global_variables.dart';
+import '../admin_map_integration/assistants/admin_assistant_methods.dart';
+import '../admin_map_integration/notifications/push_notifications.dart';
 import '../models/admin_models/admin_model.dart';
 import '../providers/admin_provider/admin_auth_provider.dart';
 import '../providers/admin_provider/admin_info_provider.dart';
@@ -39,6 +44,42 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   Position? userCurrentPosition;
   LocationPermission? _locationPermission;
   bool isLoading = false;
+
+  // Request Location Permission Step 1
+  allowLocationPermission() async {
+    _locationPermission = await Geolocator.requestPermission();
+    if (_locationPermission == LocationPermission.denied) {
+      _locationPermission = await Geolocator.requestPermission();
+    }
+  }
+
+  // Update Users Location Method Step 1
+  userLocation() async {
+    Position currentPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    driverCurrentPosition = currentPosition;
+
+    LatLng latLng = LatLng(
+      driverCurrentPosition!.latitude,
+      driverCurrentPosition!.longitude,
+    );
+
+    CameraPosition cameraPosition = CameraPosition(target: latLng, zoom: 14);
+
+    newGoogleMapController!.animateCamera(
+      CameraUpdate.newCameraPosition(
+        cameraPosition,
+      ),
+    );
+
+    await AdminAssistantMethods.reverseGeocoding(
+        driverCurrentPosition!, context);
+  }
+
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
 
   void mapDarkTheme() {
     newGoogleMapController!.setMapStyle('''
@@ -206,51 +247,94 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                 ''');
   }
 
-  allowLocationPermission() async {
-    _locationPermission = await Geolocator.requestPermission();
-    if (_locationPermission == LocationPermission.denied) {
-      _locationPermission = await Geolocator.requestPermission();
-    }
-  }
+  bool isDriverActive = false;
 
-  userLocation() async {
-    setState(() {
-      isLoading = true;
-    });
-    Position currentPosition = await Geolocator.getCurrentPosition(
+  driverOnline() async {
+    Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
 
-    userCurrentPosition = currentPosition;
+    driverCurrentPosition = position;
 
-    LatLng latLngPosition =
-        LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude);
+    Geofire.initialize('activeDrivers');
 
-    CameraPosition cameraPosition = CameraPosition(
-      target: latLngPosition,
-      zoom: 14,
+    Geofire.setLocation(
+      firebaseAuth.currentUser!.uid,
+      driverCurrentPosition!.latitude,
+      driverCurrentPosition!.longitude,
     );
 
-    newGoogleMapController!.animateCamera(
-      CameraUpdate.newCameraPosition(
-        cameraPosition,
-      ),
-    );
+    DatabaseReference ref = FirebaseDatabase.instance
+        .ref()
+        .child('vendor')
+        .child(firebaseAuth.currentUser!.uid)
+        .child('vendorStatus');
 
-    await AdminAssistantMethods.reverseGeocoding(userCurrentPosition!, context);
-    setState(() {
-      isLoading = false;
+    ref.set('idle');
+    ref.onValue.listen((event) {});
+  }
+
+  getStreamLocation() {
+    streamSubscription =
+        Geolocator.getPositionStream().listen((Position position) {
+      driverCurrentPosition = position;
+
+      if (isDriverActive == true) {
+        Geofire.setLocation(
+          firebaseAuth.currentUser!.uid,
+          driverCurrentPosition!.latitude,
+          driverCurrentPosition!.longitude,
+        );
+
+        LatLng latLng = LatLng(
+          driverCurrentPosition!.latitude,
+          driverCurrentPosition!.longitude,
+        );
+
+        newGoogleMapController!.animateCamera(CameraUpdate.newLatLng(latLng));
+      }
     });
   }
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
+  driverOffline() {
+    Geofire.removeLocation(firebaseAuth.currentUser!.uid);
+
+    DatabaseReference? ref = FirebaseDatabase.instance
+        .ref()
+        .child('vendor')
+        .child(firebaseAuth.currentUser!.uid)
+        .child('vendorStatus');
+    ref.remove();
+    ref.onDisconnect();
+    ref = null;
+  }
+
+  readDriverInfo() async {
+    currentAdminUser = firebaseAuth.currentUser;
+
+    FirebaseDatabase.instance
+        .ref()
+        .child('vendor')
+        .child(currentAdminUser!.uid)
+        .once()
+        .then((driverData) {
+      if (driverData.snapshot.value != null) {
+        driverDataModel!.id = (driverData.snapshot.value as Map)['id'];
+        driverDataModel!.name = (driverData.snapshot.value as Map)['name'];
+        driverDataModel!.email = (driverData.snapshot.value as Map)['email'];
+        driverDataModel!.phone = (driverData.snapshot.value as Map)['phone'];
+      }
+    });
+
+    PushNotifications pushNotifications = PushNotifications();
+    pushNotifications.initializeCloudMessaging(context);
+    pushNotifications.generateToken();
+  }
 
   @override
   void initState() {
     super.initState();
     allowLocationPermission();
+    readDriverInfo();
   }
 
   @override
@@ -372,6 +456,28 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                       availability: availability,
                                       context: context,
                                     );
+
+                                    if (isDriverActive != true &&
+                                        availability == '2') {
+                                      driverOnline();
+                                      getStreamLocation();
+
+                                      setState(() {
+                                        isDriverActive = true;
+                                      });
+
+                                      Fluttertoast.showToast(
+                                          msg: 'You are online now');
+                                    } else {
+                                      driverOffline();
+                                      setState(() {
+                                        isDriverActive = false;
+                                      });
+
+                                      Fluttertoast.showToast(
+                                          msg: 'You are offline now');
+                                    }
+
                                     setState(() {});
                                   },
                                 ),

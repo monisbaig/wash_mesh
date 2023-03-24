@@ -23,7 +23,7 @@ import '../models/user_models/mesh_categories_model.dart' as mc;
 import '../models/user_models/user_model.dart';
 import '../models/user_models/wash_categories_model.dart' as um;
 import '../providers/user_provider/user_auth_provider.dart';
-import '../user_assistant/user_assistant_methods.dart';
+import '../user_map_integration/assistants/user_assistant_methods.dart';
 import 'mesh_book_screen.dart';
 import 'mesh_category_screen.dart';
 
