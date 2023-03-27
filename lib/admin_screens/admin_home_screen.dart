@@ -331,10 +331,10 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    allowLocationPermission();
-    readDriverInfo();
+  void didChangeDependencies() async {
+    await allowLocationPermission();
+    await readDriverInfo();
+    super.didChangeDependencies();
   }
 
   @override

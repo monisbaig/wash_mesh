@@ -32,7 +32,7 @@ class _AcceptedOrdersScreenState extends State<AcceptedOrdersScreen> {
           future:
               UserAuthProvider.getAcceptedVendorOrder(widget.acceptedOrderId),
           builder: (context, snapshot) {
-            return !snapshot.hasData
+            return snapshot.hasData && snapshot.data!.data == null
                 ? const Center(
                     child: Text(
                       textAlign: TextAlign.center,

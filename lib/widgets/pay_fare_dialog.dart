@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:wash_mesh/widgets/custom_navigation_bar_admin.dart';
 
-class FareAmountDialog extends StatefulWidget {
-  final double totalFareAmount;
+class PayFareDialog extends StatefulWidget {
+  final double fareAmount;
 
-  const FareAmountDialog({super.key, required this.totalFareAmount});
+  const PayFareDialog({super.key, required this.fareAmount});
 
   @override
-  State<FareAmountDialog> createState() => _FareAmountDialogState();
+  State<PayFareDialog> createState() => _PayFareDialogState();
 }
 
-class _FareAmountDialogState extends State<FareAmountDialog> {
+class _PayFareDialogState extends State<PayFareDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -42,7 +41,7 @@ class _FareAmountDialogState extends State<FareAmountDialog> {
             ),
             const SizedBox(height: 20),
             Text(
-              widget.totalFareAmount.toString(),
+              widget.fareAmount.toString(),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 50,
@@ -53,7 +52,7 @@ class _FareAmountDialogState extends State<FareAmountDialog> {
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                'Please collect your amount',
+                'Please pay your fee',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.blue,
@@ -66,28 +65,24 @@ class _FareAmountDialogState extends State<FareAmountDialog> {
               child: ElevatedButton(
                 onPressed: () {
                   Future.delayed(const Duration(seconds: 3), () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const CustomNavigationBarAdmin(),
-                      ),
-                    );
+                    Navigator.pop(context, 'cashPaid');
                   });
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      'Collect Cash',
+                      'Pay Cash',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 20,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      'Rs: ${widget.totalFareAmount}',
+                      'Rs: ${widget.fareAmount}',
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 20,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),

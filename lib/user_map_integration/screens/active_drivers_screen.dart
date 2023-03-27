@@ -32,7 +32,7 @@ class _ActiveDriversScreenState extends State<ActiveDriversScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Nearest Online Drivers',
+          'Nearest Online Vendors',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -46,7 +46,7 @@ class _ActiveDriversScreenState extends State<ActiveDriversScreen> {
             widget.rideRef!.remove();
 
             Fluttertoast.showToast(
-              msg: 'You cancelled the ride',
+              msg: 'You cancelled the order',
             );
             Navigator.pop(context);
           },
@@ -58,7 +58,7 @@ class _ActiveDriversScreenState extends State<ActiveDriversScreen> {
           return GestureDetector(
             onTap: () {
               setState(() {
-                selectedDriverId = activeDriversList![index]['id'];
+                selectedDriverId = activeDriversList![index]['id'].toString();
               });
               Navigator.pop(context, 'selectedDriver');
             },

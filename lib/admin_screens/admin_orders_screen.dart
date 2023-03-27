@@ -31,10 +31,10 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
             builder: (context, snapshot) {
               return !snapshot.hasData || snapshot.data!.data!.isEmpty
                   ? Center(
-                      heightFactor: 12.h,
+                      heightFactor: 9.h,
                       child: const Text(
                         textAlign: TextAlign.center,
-                        'No orders available\n Thank you.',
+                        'No orders available\n Or\n wait for the process...',
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.redAccent,

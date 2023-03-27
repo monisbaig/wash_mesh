@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
@@ -11,8 +12,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/providers/user_provider/user_info_provider.dart';
+import 'package:wash_mesh/widgets/custom_navigation_bar.dart';
 
-import '../../widgets/custom_navigation_bar.dart';
+import '../../widgets/pay_fare_dialog.dart';
 import '../../widgets/progress_dialog.dart';
 import '../assistants/user_assistant_methods.dart';
 import '../assistants/user_geofire_assistant.dart';
@@ -32,10 +34,15 @@ class _MainScreenState extends State<MainScreen> {
       Completer<GoogleMapController>();
   GoogleMapController? newGoogleMapController;
 
-  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   double searchLocationHeight = 300;
+  double driverResponseHeight = 0;
+  double assignedDriverInfoHeight = 0;
   double mapBottomPadding = 0;
-  bool openNavigationDrawer = true;
+
+  String driverStatus = 'On the way';
+  String rideRequestStatus = '';
+  bool requestPositionInfo = true;
+  StreamSubscription<DatabaseEvent>? tripRideRequestSubscription;
 
   Position? userCurrentPosition;
   LocationPermission? _locationPermission;
@@ -514,12 +521,126 @@ class _MainScreenState extends State<MainScreen> {
       'userName': userModel!.name,
       'userPhone': userModel!.phone,
       'originAddress': originLocation.locationName,
-      'driverId': 'waiting',
+      'vendorId': 'waiting',
     };
 
     rideRef!.set(userInfoMap);
 
+    tripRideRequestSubscription = rideRef!.onValue.listen((event) async {
+      if (event.snapshot.value == null) {
+        return;
+      }
+
+      if ((event.snapshot.value as Map)['vendorName'] != null) {
+        setState(() {
+          driverName = (event.snapshot.value as Map)['vendorName'];
+        });
+      }
+      if ((event.snapshot.value as Map)['vendorPhone'] != null) {
+        setState(() {
+          driverPhone = (event.snapshot.value as Map)['vendorPhone'];
+        });
+      }
+
+      if ((event.snapshot.value as Map)['status'] != null) {
+        rideRequestStatus = (event.snapshot.value as Map)['status'];
+      }
+
+      if ((event.snapshot.value as Map)['vendorLocation'] != null) {
+        double driverPositionLat = double.parse(
+            (event.snapshot.value as Map)['vendorLocation']['latitude']
+                .toString());
+        double driverPositionLng = double.parse(
+            (event.snapshot.value as Map)['vendorLocation']['longitude']
+                .toString());
+
+        LatLng driverPositionLatLng =
+            LatLng(driverPositionLat, driverPositionLng);
+
+        if (rideRequestStatus == 'accepted') {
+          updateDriverArrivalTime(driverPositionLatLng);
+        }
+        if (rideRequestStatus == 'arrived') {
+          setState(() {
+            driverStatus = 'Vendor has Arrived';
+          });
+        }
+        if (rideRequestStatus == 'onTrip') {
+          updateDestinationArrivalTime(driverPositionLatLng);
+        }
+        if (rideRequestStatus == 'ended') {
+          if ((event.snapshot.value as Map)['fareAmount'] != null) {
+            double fareAmount = double.parse(
+                (event.snapshot.value as Map)['fareAmount'].toString());
+
+            var response = await showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => PayFareDialog(
+                fareAmount: fareAmount,
+              ),
+            );
+            if (response == 'cashPaid') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CustomNavigationBar(),
+                ),
+              );
+              rideRef!.onDisconnect();
+              tripRideRequestSubscription!.cancel();
+            }
+          }
+        }
+      }
+    });
+
     activeNearestDriversList();
+  }
+
+  updateDestinationArrivalTime(driverPositionLatLng) async {
+    if (requestPositionInfo == true) {
+      requestPositionInfo = false;
+
+      var dropOffLocation =
+          Provider.of<UserInfoProvider>(context, listen: false)
+              .userDropOffLocation;
+
+      LatLng userDropOffPosition = LatLng(dropOffLocation!.locationLatitude!,
+          dropOffLocation.locationLongitude!);
+      var directionDetailsInfo = await UserAssistantMethods.getDirectionDetail(
+          driverPositionLatLng, userDropOffPosition);
+
+      if (directionDetailsInfo == null) {
+        return;
+      }
+      setState(() {
+        driverStatus =
+            'Towards Destination: ${directionDetailsInfo.durationText}';
+      });
+
+      requestPositionInfo = true;
+    }
+  }
+
+  updateDriverArrivalTime(driverPositionLatLng) async {
+    if (requestPositionInfo == true) {
+      requestPositionInfo = false;
+
+      LatLng userPickupPosition =
+          LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude);
+      var directionDetailsInfo = await UserAssistantMethods.getDirectionDetail(
+          driverPositionLatLng, userPickupPosition);
+
+      if (directionDetailsInfo == null) {
+        return;
+      }
+      setState(() {
+        driverStatus = 'On the way: ${directionDetailsInfo.durationText}';
+      });
+
+      requestPositionInfo = true;
+    }
   }
 
   void activeNearestDriversList() async {
@@ -536,7 +657,7 @@ class _MainScreenState extends State<MainScreen> {
       });
 
       Fluttertoast.showToast(
-        msg: 'No drivers currently available, Please try again after sometime',
+        msg: 'No vendor currently available, Please try again after sometime',
       );
 
       return;
@@ -559,11 +680,57 @@ class _MainScreenState extends State<MainScreen> {
           .then((snapshot) {
         if (snapshot.snapshot.value != null) {
           sendNotificationToDriver(selectedDriverId!);
+
+          showDriverResponse();
+
+          FirebaseDatabase.instance
+              .ref()
+              .child('vendor')
+              .child(selectedDriverId!)
+              .child('vendorStatus')
+              .onValue
+              .listen((event) {
+            if (event.snapshot.value == 'idle') {
+              Fluttertoast.showToast(
+                  msg:
+                      'The vendor has cancelled your request. Please choose another vendor');
+              Future.delayed(
+                const Duration(seconds: 3),
+                () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => const CustomNavigationBar(),
+                    ),
+                    (route) => false,
+                  );
+                },
+              );
+            }
+
+            if (event.snapshot.value == 'accepted') {
+              showAssignedDriverInfo();
+            }
+          });
         } else {
-          Fluttertoast.showToast(msg: 'This Driver not exist.');
+          Fluttertoast.showToast(msg: 'This vendor not exist.');
         }
       });
     }
+  }
+
+  showAssignedDriverInfo() {
+    setState(() {
+      driverResponseHeight = 0;
+      searchLocationHeight = 0;
+      assignedDriverInfoHeight = 300;
+    });
+  }
+
+  showDriverResponse() {
+    setState(() {
+      searchLocationHeight = 0;
+      driverResponseHeight = 300;
+    });
   }
 
   sendNotificationToDriver(String selectedDriverId) {
@@ -619,7 +786,6 @@ class _MainScreenState extends State<MainScreen> {
     activeDriversCustomMarker();
 
     return Scaffold(
-      key: scaffoldKey,
       body: Stack(
         children: [
           GoogleMap(
@@ -715,13 +881,13 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 10),
                       const Divider(
                         height: 1,
                         thickness: 1,
                         color: Colors.black,
                       ),
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 40),
                       ElevatedButton(
                         onPressed: () {
                           if (locationData == null) {
@@ -731,13 +897,126 @@ class _MainScreenState extends State<MainScreen> {
                             saveRideRequest();
                           }
                         },
-                        child: const Text('Send your location to Vendor'),
+                        child: const Text(
+                            'Send your location to Service Provider'),
                       ),
                     ],
                   ),
                 ),
               ),
             ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: driverResponseHeight,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Center(
+                  child: AnimatedTextKit(
+                    animatedTexts: [
+                      FadeAnimatedText(
+                        'Waiting for vendor response',
+                        duration: const Duration(seconds: 6),
+                        textAlign: TextAlign.center,
+                        textStyle: const TextStyle(
+                          fontSize: 28.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      ScaleAnimatedText(
+                        'Please wait...',
+                        duration: const Duration(seconds: 10),
+                        textAlign: TextAlign.center,
+                        textStyle: const TextStyle(
+                          fontSize: 30.0,
+                          fontFamily: 'Canterbury',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+                height: assignedDriverInfoHeight,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Text(
+                          driverStatus,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      const Divider(
+                        thickness: 1,
+                        height: 1,
+                        color: Colors.blue,
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        driverName,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Divider(
+                        thickness: 1,
+                        height: 1,
+                        color: Colors.blue,
+                      ),
+                      const SizedBox(height: 30),
+                      Center(
+                        child: ElevatedButton.icon(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.phone_android,
+                            color: Colors.white,
+                            size: 16,
+                          ),
+                          label: const Text(
+                            'Call Service Provider',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
           ),
         ],
       ),

@@ -366,18 +366,6 @@ class _AdminNewTripScreenState extends State<AdminNewTripScreen> {
     ref.child('vendorId').set(driverDataModel!.id);
     ref.child('vendorName').set(driverDataModel!.name);
     ref.child('vendorPhone').set(driverDataModel!.phone);
-
-    saveRequestIdToDriverHistory();
-  }
-
-  saveRequestIdToDriverHistory() {
-    DatabaseReference tripsRef = FirebaseDatabase.instance
-        .ref()
-        .child('vendor')
-        .child(currentAdminUser!.uid)
-        .child('tripsHistory');
-
-    tripsRef.child(widget.rideRequestModel.rideRequestId!).set(true);
   }
 
   @override
@@ -510,7 +498,7 @@ class _AdminNewTripScreenState extends State<AdminNewTripScreen> {
         .child('status')
         .set('ended');
 
-    driverStreamSubscription!.cancel();
+    // driverStreamSubscription!.cancel();
     Navigator.pop(context);
 
     showDialog(

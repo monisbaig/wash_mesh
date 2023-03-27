@@ -142,8 +142,7 @@ class UserAuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateUserData(
-      {var firstName, var lastName, var address, var phone, var gender}) async {
+  updateUserData({var firstName, var lastName, var address, var phone}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString('userToken');
     var jsonObject = {
@@ -151,7 +150,6 @@ class UserAuthProvider extends ChangeNotifier {
       'last_name': lastName,
       'address': address,
       'phone': phone,
-      'gender': gender,
     };
     var jsonString = jsonEncode(jsonObject);
 

@@ -59,7 +59,7 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
                             ),
                             SizedBox(height: 10.h),
                             SizedBox(
-                              height: 550.h,
+                              height: 530.h,
                               child: ListView.builder(
                                 itemCount: snapshot.data!.data!.length,
                                 itemBuilder: (context, index) {
