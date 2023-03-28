@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/models/admin_models/vendor_applied.dart';
 import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
@@ -229,8 +230,9 @@ class _AdminUpdateServicesState extends State<AdminUpdateServices> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Image.asset(
-                                      'assets/images/wash.png',
+                                    SvgPicture.asset(
+                                      'assets/svg/wash_one.svg',
+                                      width: 130.w,
                                       fit: BoxFit.cover,
                                     ),
                                   ],
@@ -276,8 +278,9 @@ class _AdminUpdateServicesState extends State<AdminUpdateServices> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Image.asset(
-                                      'assets/images/mesh.png',
+                                    SvgPicture.asset(
+                                      'assets/svg/mesh_one.svg',
+                                      width: 130.w,
                                       fit: BoxFit.cover,
                                     ),
                                   ],

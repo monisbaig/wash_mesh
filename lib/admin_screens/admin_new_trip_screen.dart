@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:wash_mesh/stopwatch/countdown_screen.dart';
 
 import '../admin_map_integration/admin_global_variables/admin_global_variables.dart';
 import '../admin_map_integration/assistants/admin_assistant_methods.dart';
@@ -701,10 +702,16 @@ class _AdminNewTripScreenState extends State<AdminNewTripScreen> {
                               .child(widget.rideRequestModel.rideRequestId!)
                               .child('status')
                               .set(rideRequestStatus);
-
-                          setState(() {
-                            buttonTitle = 'Finished';
-                          });
+                          var response = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const CountDownScreen(),
+                            ),
+                          );
+                          if (response == 'working') {
+                            setState(() {
+                              buttonTitle = 'Finished';
+                            });
+                          }
                         } else if (rideRequestStatus == 'working') {
                           endTripNow();
                         }

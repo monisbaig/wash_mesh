@@ -80,10 +80,16 @@ class AdminAuthProvider extends ChangeNotifier {
       );
     } else {
       String? error = jsonDecode(response.body)['message'];
+      String? email = jsonDecode(response.body)['error'];
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(error!),
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(email!),
         ),
       );
 

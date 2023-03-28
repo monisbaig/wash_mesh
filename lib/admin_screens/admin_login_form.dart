@@ -41,11 +41,11 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
           password: password.text,
         );
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('$result'),
-          ),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     content: Text('$result'),
+        //   ),
+        // );
 
         if (result == 'Service Provider Logged in Successfully!') {
           SharedPreferences prefs = await SharedPreferences.getInstance();

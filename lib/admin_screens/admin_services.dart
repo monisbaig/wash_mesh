@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/models/admin_models/vendor_applied.dart';
@@ -235,8 +236,9 @@ class _AdminServicesState extends State<AdminServices> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Image.asset(
-                                      'assets/images/wash.png',
+                                    SvgPicture.asset(
+                                      'assets/svg/wash_one.svg',
+                                      width: 130.w,
                                       fit: BoxFit.cover,
                                     ),
                                   ],
@@ -282,8 +284,9 @@ class _AdminServicesState extends State<AdminServices> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Image.asset(
-                                      'assets/images/mesh.png',
+                                    SvgPicture.asset(
+                                      'assets/svg/mesh_one.svg',
+                                      width: 130.w,
                                       fit: BoxFit.cover,
                                     ),
                                   ],

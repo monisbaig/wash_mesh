@@ -3,6 +3,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/admin_screens/admin_profile.dart';
@@ -46,8 +47,9 @@ class _AdminSettingsState extends State<AdminSettings> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/images/settings.png',
+                SvgPicture.asset(
+                  'assets/svg/settings.svg',
+                  width: 90.w,
                   fit: BoxFit.cover,
                 ),
               ],

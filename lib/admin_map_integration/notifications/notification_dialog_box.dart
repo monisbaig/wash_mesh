@@ -31,7 +31,7 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
       if (snapshot.snapshot.value != null) {
         getRequestId = snapshot.snapshot.value.toString();
       } else {
-        Fluttertoast.showToast(msg: 'This ride request do not exists.');
+        Fluttertoast.showToast(msg: 'This request do not exists.');
       }
 
       if (getRequestId == widget.rideRequestModel.rideRequestId) {
@@ -53,7 +53,7 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
           ),
         );
       } else {
-        Fluttertoast.showToast(msg: 'Invalid Ride Request.');
+        Fluttertoast.showToast(msg: 'Invalid Request.');
       }
     });
   }
@@ -145,7 +145,7 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
                           .remove();
                     }).then((message) {
                       Fluttertoast.showToast(
-                          msg: 'You cancelled the ride request.');
+                          msg: 'You cancelled the order request.');
                     });
                     Future.delayed(const Duration(seconds: 3), () {
                       Navigator.pop(context);

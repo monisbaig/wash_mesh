@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wash_mesh/user_screens/user_orders_screen.dart';
 
 import '../widgets/custom_background.dart';
@@ -13,19 +14,6 @@ class UserBookingScreen extends StatefulWidget {
 }
 
 class _UserBookingScreenState extends State<UserBookingScreen> {
-  final List items = [
-    'All',
-    'Pending',
-    'Accept',
-    'On Going',
-    'In Progress',
-    'Hold',
-    'Cancelled',
-    'Rejected',
-    'Failed',
-    'Completed',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return CustomBackground(
@@ -38,7 +26,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
               children: [
                 const CustomLogo(),
                 SizedBox(height: 15.h),
-                Image.asset('assets/images/booking.png'),
+                SvgPicture.asset('assets/svg/booking.svg'),
                 SizedBox(height: 30.h),
                 SizedBox(
                   width: 300.w,
