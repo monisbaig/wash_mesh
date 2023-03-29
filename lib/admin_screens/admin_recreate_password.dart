@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/providers/user_provider/user_auth_provider.dart';
 
@@ -28,11 +29,7 @@ class _AdminRecreatePasswordState extends State<AdminRecreatePassword> {
         newPassword: newPassword.text,
       );
       newPassword.clear();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('$result'),
-        ),
-      );
+      Fluttertoast.showToast(msg: result);
     } catch (e) {
       rethrow;
     }

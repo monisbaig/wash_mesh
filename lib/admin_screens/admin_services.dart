@@ -90,9 +90,8 @@ class _AdminServicesState extends State<AdminServices> {
             ElevatedButton(
               onPressed: () async {
                 await Provider.of<UserAuthProvider>(context, listen: false)
-                    .applyVendor(
+                    .applyWashService(
                   wash: _selectedwashcat,
-                  mesh: _selectedmeshcat,
                   token: widget.token!,
                   context: context,
                 );
@@ -141,8 +140,7 @@ class _AdminServicesState extends State<AdminServices> {
             ElevatedButton(
               onPressed: () async {
                 await Provider.of<UserAuthProvider>(context, listen: false)
-                    .applyVendor(
-                  wash: _selectedwashcat,
+                    .applyMeshService(
                   mesh: _selectedmeshcat,
                   token: widget.token!,
                   context: context,
@@ -223,7 +221,7 @@ class _AdminServicesState extends State<AdminServices> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'Services',
+                                      'Register your Service(s)',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 30.sp,

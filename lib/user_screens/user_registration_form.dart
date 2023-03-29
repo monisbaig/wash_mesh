@@ -145,7 +145,6 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'lastName'.tr(),
                         suffixIcon: const Icon(
@@ -160,9 +159,9 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'email'.tr(),
+                        keyboardType: TextInputType.emailAddress,
                         suffixIcon: const Icon(
                           Icons.star,
                           size: 20,
@@ -175,12 +174,11 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'phoneNo'.tr(),
+                        keyboardType: TextInputType.phone,
                         controller: phoneNo,
                       ),
-                      SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'password'.tr(),
                         suffixIcon: const Icon(
@@ -195,7 +193,6 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'confirmPassword'.tr(),
                         suffixIcon: const Icon(
@@ -204,7 +201,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                         ),
                         controller: confirmPassword,
                         validator: (value) {
-                          if (value!.isEmpty || value.length < 5) {
+                          if (value!.isEmpty || value.length < 6) {
                             return 'Please re-enter your password';
                           } else if (password.text != confirmPassword.text) {
                             return "password doesn't match";
@@ -212,7 +209,6 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'address'.tr(),
                         suffixIcon: const Icon(
@@ -227,7 +223,6 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10.h),
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.white,

@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wash_mesh/admin_chat_module/widgets/chat/admin_messages.dart';
 import 'package:wash_mesh/admin_chat_module/widgets/chat/admin_new_messages.dart';
-import 'package:wash_mesh/admin_screens/admin_home_screen.dart';
 
 class AdminChatScreen extends StatefulWidget {
   const AdminChatScreen({Key? key}) : super(key: key);
@@ -61,36 +59,8 @@ class _AdminChatScreenState extends State<AdminChatScreen> {
                   ],
                 ),
               ),
-              DropdownMenuItem(
-                value: 'logout',
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.exit_to_app,
-                      color: Colors.white,
-                    ),
-                    SizedBox(width: 8.w),
-                    const Text(
-                      'Logout',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ],
             onChanged: (value) {
-              if (value == 'logout') {
-                FirebaseAuth.instance.signOut();
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AdminHomeScreen(),
-                  ),
-                  (route) => false,
-                );
-              }
               if (value == 'clear') {
                 deleteAll();
               }
@@ -99,9 +69,9 @@ class _AdminChatScreenState extends State<AdminChatScreen> {
         ],
       ),
       body: Column(
-        children: [
+        children: const [
           Expanded(child: AdminMessages()),
-          const AdminNewMessages(),
+          AdminNewMessages(),
         ],
       ),
     );

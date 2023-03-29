@@ -14,3 +14,4 @@ String cloudeMessageServerToken =
 String userDropOffAddress = '';
 String driverName = '';
 String driverPhone = '';
+String? userToken;

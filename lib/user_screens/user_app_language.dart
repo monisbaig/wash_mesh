@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_navigation_bar.dart';
 
@@ -47,11 +48,7 @@ class _UserAppLanguageState extends State<UserAppLanguage> {
                     ),
                     (route) => false,
                   );
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Language set to english'),
-                    ),
-                  );
+                  Fluttertoast.showToast(msg: 'Language set to english');
                 });
               },
               child: Row(
@@ -96,11 +93,7 @@ class _UserAppLanguageState extends State<UserAppLanguage> {
                     ),
                     (route) => false,
                   );
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('زبان اردو پر سیٹ کر دی گئی۔'),
-                    ),
-                  );
+                  Fluttertoast.showToast(msg: 'زبان اردو پر سیٹ کر دی گئی۔');
                 });
               },
               child: Row(

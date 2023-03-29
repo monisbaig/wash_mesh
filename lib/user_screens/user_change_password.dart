@@ -3,6 +3,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_text_field.dart';
@@ -30,11 +31,7 @@ class _UserChangePasswordState extends State<UserChangePassword> {
       );
       newPassword.clear();
       // Password Upadate Successfully!
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('$result'),
-        ),
-      );
+      Fluttertoast.showToast(msg: result);
     } catch (e) {
       rethrow;
     }

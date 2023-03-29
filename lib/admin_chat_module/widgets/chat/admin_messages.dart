@@ -1,13 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wash_mesh/admin_map_integration/admin_global_variables/admin_global_variables.dart';
 
 import 'admin_message_bubble.dart';
 
 class AdminMessages extends StatelessWidget {
-  AdminMessages({Key? key}) : super(key: key);
-
-  final userId = FirebaseAuth.instance.currentUser;
+  const AdminMessages({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +26,9 @@ class AdminMessages extends StatelessWidget {
           itemCount: chatDocs.length,
           itemBuilder: (context, index) => AdminMessageBubble(
             chatDocs[index]['text'],
-            chatDocs[index]['userId'] == userId!.uid,
+            chatDocs[index]['vendorId'] == currentAdminUser!.uid,
             ValueKey(chatDocs[index].id),
-            chatDocs[index]['username'],
+            chatDocs[index]['vendorName'],
           ),
         );
       },

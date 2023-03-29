@@ -271,7 +271,6 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'lastName'.tr(),
                         suffixIcon: const Icon(
@@ -286,7 +285,6 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'userName'.tr(),
                         suffixIcon: const Icon(
@@ -301,9 +299,9 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'phoneNo'.tr(),
+                        keyboardType: TextInputType.phone,
                         suffixIcon: const Icon(
                           Icons.star,
                           size: 20,
@@ -316,9 +314,10 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'cnicNo'.tr(),
+                        keyboardType: TextInputType.number,
+                        maxLength: 13,
                         controller: cnicNo,
                         suffixIcon: const Icon(
                           Icons.star,
@@ -331,7 +330,6 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'password'.tr(),
                         controller: password,
@@ -346,7 +344,6 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'confirmPassword'.tr(),
                         controller: confirmPassword,
@@ -355,7 +352,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                           size: 20,
                         ),
                         validator: (value) {
-                          if (value!.isEmpty || value.length < 5) {
+                          if (value!.isEmpty || value.length < 6) {
                             return 'Please re-enter your password';
                           } else if (password.text != confirmPassword.text) {
                             return "password doesn't match";
@@ -363,17 +360,16 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'experience'.tr(),
+                        keyboardType: TextInputType.number,
                         controller: experience,
                       ),
-                      SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'referralCode'.tr(),
+                        keyboardType: TextInputType.number,
                         controller: code,
                       ),
-                      SizedBox(height: 10.h),
                       CustomTextField(
                         hint: 'address'.tr(),
                         controller: address,
@@ -388,7 +384,6 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10.h),
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.white,

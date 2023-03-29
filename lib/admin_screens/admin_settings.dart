@@ -28,232 +28,236 @@ class _AdminSettingsState extends State<AdminSettings> {
   Widget build(BuildContext context) {
     return CustomBackground(
       op: 0.1,
-      ch: Padding(
-        padding: EdgeInsets.symmetric(vertical: 45.h, horizontal: 12.w),
-        child: Column(
-          children: [
-            const CustomLogo(),
-            SizedBox(height: 15.h),
-            Container(
-              alignment: Alignment.center,
-              child: Text(
-                'Settings',
+      ch: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 45.h, horizontal: 12.w),
+          child: Column(
+            children: [
+              const CustomLogo(),
+              SizedBox(height: 15.h),
+              Container(
+                alignment: Alignment.center,
+                child: Text(
+                  'Settings',
+                  style: TextStyle(
+                    fontSize: 30.sp,
+                  ),
+                ),
+              ),
+              SizedBox(height: 10.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    'assets/svg/settings.svg',
+                    width: 90.w,
+                    fit: BoxFit.cover,
+                  ),
+                ],
+              ),
+              SizedBox(height: 40.h),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const AdminProfile(),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 55.h,
+                  decoration: BoxDecoration(
+                    color: CustomColor().mainColor,
+                    borderRadius: BorderRadius.circular(14.r),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(
+                          Icons.perm_contact_cal_outlined,
+                          size: 25.sp,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          'editProfile'.tr(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20.sp,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios_outlined,
+                          size: 20.sp,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10.h),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const AdminAppLanguage(),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 55.h,
+                  decoration: BoxDecoration(
+                    color: CustomColor().mainColor,
+                    borderRadius: BorderRadius.circular(14.r),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(
+                          Icons.language_outlined,
+                          size: 25.sp,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          'language'.tr(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20.sp,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios_outlined,
+                          size: 20.sp,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10.h),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const AdminChangePassword(),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 55.h,
+                  decoration: BoxDecoration(
+                    color: CustomColor().mainColor,
+                    borderRadius: BorderRadius.circular(14.r),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(
+                          Icons.lock,
+                          size: 25.sp,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          'changePassword'.tr(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20.sp,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios_outlined,
+                          size: 20.sp,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10.h),
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  width: double.infinity,
+                  height: 55.h,
+                  decoration: BoxDecoration(
+                    color: CustomColor().mainColor,
+                    borderRadius: BorderRadius.circular(14.r),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(
+                          Icons.error_outline_outlined,
+                          size: 25.sp,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          'about'.tr(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20.sp,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios_outlined,
+                          size: 20.sp,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 70.h),
+              InkWell(
+                onTap: () async {
+                  await Provider.of<AdminAuthProvider>(context, listen: false)
+                      .signOut();
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => const RegisterScreen(),
+                    ),
+                    (route) => false,
+                  );
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.remove('token');
+                  prefs.setBool('adminLoggedIn', false);
+                },
+                child: Text(
+                  'Logout',
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                    color: CustomColor().mainColor,
+                  ),
+                ),
+              ),
+              const Text(
+                'V 5.0.0',
                 style: TextStyle(
-                  fontSize: 30.sp,
+                  color: Colors.grey,
                 ),
               ),
-            ),
-            SizedBox(height: 10.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                  'assets/svg/settings.svg',
-                  width: 90.w,
-                  fit: BoxFit.cover,
-                ),
-              ],
-            ),
-            SizedBox(height: 40.h),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const AdminProfile(),
-                  ),
-                );
-              },
-              child: Container(
-                width: double.infinity,
-                height: 55.h,
-                decoration: BoxDecoration(
-                  color: CustomColor().mainColor,
-                  borderRadius: BorderRadius.circular(14.r),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(
-                        Icons.perm_contact_cal_outlined,
-                        size: 25.sp,
-                        color: Colors.white,
-                      ),
-                      Text(
-                        'editProfile'.tr(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20.sp,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        size: 20.sp,
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 10.h),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const AdminAppLanguage(),
-                  ),
-                );
-              },
-              child: Container(
-                width: double.infinity,
-                height: 55.h,
-                decoration: BoxDecoration(
-                  color: CustomColor().mainColor,
-                  borderRadius: BorderRadius.circular(14.r),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(
-                        Icons.language_outlined,
-                        size: 25.sp,
-                        color: Colors.white,
-                      ),
-                      Text(
-                        'language'.tr(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20.sp,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        size: 20.sp,
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 10.h),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const AdminChangePassword(),
-                  ),
-                );
-              },
-              child: Container(
-                width: double.infinity,
-                height: 55.h,
-                decoration: BoxDecoration(
-                  color: CustomColor().mainColor,
-                  borderRadius: BorderRadius.circular(14.r),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(
-                        Icons.lock,
-                        size: 25.sp,
-                        color: Colors.white,
-                      ),
-                      Text(
-                        'changePassword'.tr(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20.sp,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        size: 20.sp,
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 10.h),
-            InkWell(
-              onTap: () {},
-              child: Container(
-                width: double.infinity,
-                height: 55.h,
-                decoration: BoxDecoration(
-                  color: CustomColor().mainColor,
-                  borderRadius: BorderRadius.circular(14.r),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(
-                        Icons.error_outline_outlined,
-                        size: 25.sp,
-                        color: Colors.white,
-                      ),
-                      Text(
-                        'about'.tr(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20.sp,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        size: 20.sp,
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Expanded(child: Container()),
-            InkWell(
-              onTap: () async {
-                await Provider.of<AdminAuthProvider>(context, listen: false)
-                    .signOut();
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => const RegisterScreen(),
-                  ),
-                  (route) => false,
-                );
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.remove('token');
-              },
-              child: Text(
-                'Logout',
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                  color: CustomColor().mainColor,
-                ),
-              ),
-            ),
-            const Text(
-              'V 5.0.0',
-              style: TextStyle(
-                color: Colors.grey,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

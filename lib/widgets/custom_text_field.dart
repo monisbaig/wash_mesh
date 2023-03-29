@@ -6,6 +6,8 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final FormFieldValidator<String>? validator;
   final Widget? suffixIcon;
+  final TextInputType? keyboardType;
+  final int? maxLength;
 
   const CustomTextField({
     super.key,
@@ -13,13 +15,18 @@ class CustomTextField extends StatelessWidget {
     required this.controller,
     this.validator,
     this.suffixIcon,
+    this.keyboardType,
+    this.maxLength,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      keyboardType: keyboardType,
+      maxLength: maxLength,
       decoration: InputDecoration(
+        counter: const SizedBox(),
         suffixIcon: suffixIcon,
         hintText: hint,
         errorBorder: OutlineInputBorder(

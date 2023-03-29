@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -91,11 +92,7 @@ class _UserProfileState extends State<UserProfile> {
 
         await onUpdateImage();
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('$result'),
-          ),
-        );
+        Fluttertoast.showToast(msg: result);
 
         if (result != null) {
           Navigator.of(context).pushReplacement(

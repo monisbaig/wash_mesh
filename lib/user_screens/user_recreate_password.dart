@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/widgets/custom_text_field.dart';
 
@@ -27,11 +28,7 @@ class _UserRecreatePasswordState extends State<UserRecreatePassword> {
       );
       newPassword.clear();
       // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('$result'),
-        ),
-      );
+      Fluttertoast.showToast(msg: result);
     } catch (e) {
       rethrow;
     }

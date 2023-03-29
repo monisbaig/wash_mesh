@@ -151,6 +151,7 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
                       SizedBox(height: 8.h),
                       CustomTextField(
                         hint: 'phoneNo'.tr(),
+                        keyboardType: TextInputType.phone,
                         controller: phoneNo,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -159,7 +160,6 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 8.h),
                       CustomTextField(
                         hint: 'password'.tr(),
                         controller: password,

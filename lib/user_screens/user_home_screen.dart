@@ -7,6 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -62,7 +63,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
       });
     }
   }
-
 
   final Completer<GoogleMapController> _googleMapController =
       Completer<GoogleMapController>();
@@ -333,12 +333,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                       ),
                                     );
                                   } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content:
-                                            Text('Something went wrong!!!'),
-                                      ),
-                                    );
+                                    Fluttertoast.showToast(
+                                        msg: 'Something went wrong!!!');
                                   }
                                 },
                                 child: Column(
@@ -409,12 +405,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                       ),
                                     );
                                   } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content:
-                                            Text('Something went wrong!!!'),
-                                      ),
-                                    );
+                                    Fluttertoast.showToast(
+                                        msg: 'Something went wrong!!!');
                                   }
                                 },
                                 child: Column(

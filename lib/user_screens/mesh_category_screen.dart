@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/user_screens/mesh_book_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
@@ -98,12 +99,8 @@ class _MeshCategoryState extends State<MeshCategory> {
                                       ),
                                     );
                                   } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content:
-                                            Text('Something went wrong!!!'),
-                                      ),
-                                    );
+                                    Fluttertoast.showToast(
+                                        msg: 'Something went wrong!!!');
                                   }
                                 },
                                 child: Column(
@@ -169,12 +166,8 @@ class _MeshCategoryState extends State<MeshCategory> {
                                       ),
                                     );
                                   } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content:
-                                            Text('Something went wrong!!!'),
-                                      ),
-                                    );
+                                    Fluttertoast.showToast(
+                                        msg: 'Something went wrong!!!');
                                   }
                                 },
                                 child: Column(

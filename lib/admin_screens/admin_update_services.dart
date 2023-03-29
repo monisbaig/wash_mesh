@@ -104,7 +104,7 @@ class _AdminUpdateServicesState extends State<AdminUpdateServices> {
             ElevatedButton(
               onPressed: () async {
                 await Provider.of<UserAuthProvider>(context, listen: false)
-                    .updateVendor(_selectedwashcat, _selectedmeshcat, context);
+                    .updateWashService(_selectedwashcat, context);
                 setState(() {});
                 Navigator.pop(context);
               },
@@ -150,7 +150,7 @@ class _AdminUpdateServicesState extends State<AdminUpdateServices> {
             ElevatedButton(
               onPressed: () async {
                 await Provider.of<UserAuthProvider>(context, listen: false)
-                    .updateVendor(_selectedwashcat, _selectedmeshcat, context);
+                    .updateMeshService(_selectedmeshcat, context);
                 setState(() {});
                 Navigator.pop(context);
               },

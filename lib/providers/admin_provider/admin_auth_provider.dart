@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -67,11 +68,7 @@ class AdminAuthProvider extends ChangeNotifier {
         phone: adminData.phone,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(result!),
-        ),
-      );
+      Fluttertoast.showToast(msg: result);
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
@@ -79,19 +76,9 @@ class AdminAuthProvider extends ChangeNotifier {
         ),
       );
     } else {
-      String? error = jsonDecode(response.body)['message'];
       String? email = jsonDecode(response.body)['error'];
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(error!),
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(email!),
-        ),
-      );
+      Fluttertoast.showToast(msg: email!);
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
@@ -132,6 +119,14 @@ class AdminAuthProvider extends ChangeNotifier {
         adminRef.child(admin.user!.uid).set(adminData);
         currentAdmin = admin;
 
+        await FirebaseFirestore.instance
+            .collection('vendor')
+            .doc(admin.user!.uid)
+            .set({
+          'vendorId': admin.user!.uid,
+          'vendorName': name,
+        });
+
         Fluttertoast.showToast(msg: 'Account has been created successfully.');
       } else {
         Fluttertoast.showToast(msg: 'Account has not been Created.');
@@ -151,11 +146,13 @@ class AdminAuthProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       if (jsonDecode(response.body)['message'] ==
           'Service Provider Logged in Successfully!') {
-        SharedPreferences pref = await SharedPreferences.getInstance();
-        pref.setString('Vendor', response.body);
-        pref.setString('token', jsonDecode(response.body)['data']['token']);
-        pref.setString(
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('Vendor', response.body);
+        prefs.setString('token', jsonDecode(response.body)['data']['token']);
+        prefs.setString(
             'email', jsonDecode(response.body)['data']['Vendor']['email']);
+        prefs.setBool('adminLoggedIn', true);
+        prefs.setString('adminPersonalInfo', response.body);
       }
       return jsonDecode(response.body)['message'];
     } else {
@@ -281,11 +278,7 @@ class AdminAuthProvider extends ChangeNotifier {
       // );
       return jsonDecode(response.body)['message'];
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(jsonDecode(response.body)['message']),
-        ),
-      );
+      Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
     }
     notifyListeners();
   }
@@ -304,18 +297,11 @@ class AdminAuthProvider extends ChangeNotifier {
       },
     );
     if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(jsonDecode(response.body)['message']),
-        ),
-      );
+      Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
+
       return jsonDecode(response.body)['message'];
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(jsonDecode(response.body)['message']),
-        ),
-      );
+      Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
     }
     notifyListeners();
   }
@@ -334,18 +320,11 @@ class AdminAuthProvider extends ChangeNotifier {
       },
     );
     if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(jsonDecode(response.body)['message']),
-        ),
-      );
+      Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
+
       return jsonDecode(response.body)['message'];
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(jsonDecode(response.body)['message']),
-        ),
-      );
+      Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
     }
     notifyListeners();
   }

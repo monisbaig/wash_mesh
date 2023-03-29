@@ -42,12 +42,6 @@ class _UserLoginFormState extends State<UserLoginForm> {
           password: password.text,
         );
 
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(
-        //     content: Text('$result'),
-        //   ),
-        // );
-
         if (result == 'Login Successfully') {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString("userEmail", emailPhone.text);
@@ -151,6 +145,7 @@ class _UserLoginFormState extends State<UserLoginForm> {
                       CustomTextField(
                         hint: 'emailPhone'.tr(),
                         controller: emailPhone,
+                        keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value!.isEmpty || !value.contains('@')) {
                             return 'Please enter your email address';
@@ -158,7 +153,6 @@ class _UserLoginFormState extends State<UserLoginForm> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 8.h),
                       CustomTextField(
                         hint: 'password'.tr(),
                         controller: password,

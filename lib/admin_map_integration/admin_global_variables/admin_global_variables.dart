@@ -19,3 +19,4 @@ Position? driverCurrentPosition;
 
 AdminDriverDataModel? driverDataModel = AdminDriverDataModel();
 String? driverCarType = '';
+String? adminToken;

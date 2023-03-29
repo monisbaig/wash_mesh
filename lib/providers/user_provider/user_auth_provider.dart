@@ -56,11 +56,7 @@ class UserAuthProvider extends ChangeNotifier {
         phone: userData.phone,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(result!),
-        ),
-      );
+      Fluttertoast.showToast(msg: result);
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
@@ -68,19 +64,9 @@ class UserAuthProvider extends ChangeNotifier {
         ),
       );
     } else {
-      String? error = jsonDecode(response.body)['message'];
       String? email = jsonDecode(response.body)['error'];
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(error!),
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(email!),
-        ),
-      );
+      Fluttertoast.showToast(msg: email!);
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
@@ -137,9 +123,11 @@ class UserAuthProvider extends ChangeNotifier {
     final response = await http.post(url);
     if (response.statusCode == 200) {
       if (jsonDecode(response.body)['message'] == 'Login Successfully') {
-        SharedPreferences pref = await SharedPreferences.getInstance();
-        // pref.setString('User', response.body);
-        pref.setString('userToken', jsonDecode(response.body)['data']['token']);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString(
+            'userToken', jsonDecode(response.body)['data']['token']);
+        prefs.setBool('userLoggedIn', true);
+        prefs.setString('userPersonalInfo', response.body);
       }
       return jsonDecode(response.body)['message'];
     } else {
@@ -358,31 +346,24 @@ class UserAuthProvider extends ChangeNotifier {
       },
     );
     if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(jsonDecode(response.body)['message']),
-        ),
-      );
+      Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
+
       return jsonDecode(response.body)['message'];
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(jsonDecode(response.body)['message']),
-        ),
-      );
+      Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
     }
     notifyListeners();
   }
 
-  updateVendor(List<int> wash, List<int> mesh, context) async {
+  updateWashService(List<int> wash, context) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString('token');
-    List<int> catlst = wash + mesh;
+    List<int> catlst = wash;
 
     var list = catlst.map((i) => i.toString()).join(",");
 
     var url =
-        Uri.parse('$baseURL/user/vendor/category/apply?category_id=$list');
+        Uri.parse('$baseURL/user/vendor/category/apply/wash?category_id=$list');
     var response = await http.post(
       url,
       headers: {
@@ -393,35 +374,88 @@ class UserAuthProvider extends ChangeNotifier {
     );
 
     if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(jsonDecode(response.body)['message']),
-        ),
-      );
+      Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
 
       return jsonDecode(response.body)['message'];
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(jsonDecode(response.body)['message']),
-        ),
-      );
+      Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
     }
     notifyListeners();
   }
 
-  applyVendor({
+  updateMeshService(List<int> mesh, context) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+    List<int> catlst = mesh;
+
+    var list = catlst.map((i) => i.toString()).join(",");
+
+    var url =
+        Uri.parse('$baseURL/user/vendor/category/apply/mesh?category_id=$list');
+    var response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
+
+      return jsonDecode(response.body)['message'];
+    } else {
+      Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
+    }
+    notifyListeners();
+  }
+
+  applyWashService({
     required List<int> wash,
+    required BuildContext context,
+    required String token,
+  }) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+    List<int> catlst = wash;
+
+    var list = catlst.map((i) => i.toString()).join(",");
+
+    var url =
+        Uri.parse('$baseURL/user/vendor/category/apply/wash?category_id=$list');
+    var response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
+
+      return jsonDecode(response.body)['message'];
+    } else {
+      Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
+    }
+    notifyListeners();
+  }
+
+  applyMeshService({
     required List<int> mesh,
     required BuildContext context,
     required String token,
   }) async {
-    List<int> catlst = wash + mesh;
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+    List<int> catlst = mesh;
 
     var list = catlst.map((i) => i.toString()).join(",");
 
     var url =
-        Uri.parse('$baseURL/user/vendor/category/apply?category_id=$list');
+        Uri.parse('$baseURL/user/vendor/category/apply/mesh?category_id=$list');
     var response = await http.post(
       url,
       headers: {
@@ -432,19 +466,11 @@ class UserAuthProvider extends ChangeNotifier {
     );
 
     if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(jsonDecode(response.body)['message']),
-        ),
-      );
+      Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
 
       return jsonDecode(response.body)['message'];
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(jsonDecode(response.body)['message']),
-        ),
-      );
+      Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
     }
     notifyListeners();
   }
@@ -487,18 +513,10 @@ class UserAuthProvider extends ChangeNotifier {
       },
     );
     if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(jsonDecode(response.body)['message']),
-        ),
-      );
+      Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
       return jsonDecode(response.body)['message'];
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(jsonDecode(response.body)['message']),
-        ),
-      );
+      Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
     }
     notifyListeners();
   }

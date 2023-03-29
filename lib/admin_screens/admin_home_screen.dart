@@ -253,7 +253,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '${'hello'.tr()}, ${snapshot.data!.data!.vendor!.userName.toString().toCapitalized()}',
+                                    '${'hello'.tr()}, ${snapshot.data!.data!.vendor!.firstName.toString().toCapitalized()}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 26.sp,
