@@ -159,7 +159,6 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
 
   File? profileImg;
   dynamic convertedImage;
-  bool loading = false;
 
   profileImage() async {
     final ImagePicker picker = ImagePicker();
@@ -178,7 +177,12 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     });
   }
 
+  bool isLoading = false;
+
   onRegister() async {
+    setState(() {
+      isLoading = true;
+    });
     final adminData = Provider.of<AdminAuthProvider>(context, listen: false);
     try {
       final isValid = formKey.currentState!.validate();
@@ -210,6 +214,9 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
     } catch (e) {
       rethrow;
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -719,10 +726,14 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                     ),
                   ],
                 ),
-                CustomButton(
-                  onTextPress: isChecked == true ? onRegister : null,
-                  buttonText: 'Next',
-                ),
+                isLoading == true
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : CustomButton(
+                        onTextPress: isChecked == true ? onRegister : null,
+                        buttonText: 'Next',
+                      ),
               ],
             ),
           ),

@@ -95,6 +95,9 @@ class _MeshCategoryState extends State<MeshCategory> {
                                           snapshot.data!.data!
                                               .elementAt(index)
                                               .id,
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .fixedPrice,
                                         ),
                                       ),
                                     );
@@ -162,6 +165,9 @@ class _MeshCategoryState extends State<MeshCategory> {
                                           snapshot.data!.data!
                                               .elementAt(index)
                                               .id,
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .fixedPrice,
                                         ),
                                       ),
                                     );

@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:wash_mesh/providers/user_provider/user_info_provider.dart';
 import 'package:wash_mesh/widgets/custom_navigation_bar.dart';
 
+import '../../providers/user_provider/user_auth_provider.dart';
 import '../../widgets/pay_fare_dialog.dart';
 import '../../widgets/progress_dialog.dart';
 import '../assistants/user_assistant_methods.dart';
@@ -23,7 +24,14 @@ import '../user_global_variables/user_global_variables.dart';
 import 'active_drivers_screen.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  final dynamic orderId;
+  final dynamic vendorId;
+
+  const MainScreen({
+    super.key,
+    required this.orderId,
+    required this.vendorId,
+  });
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -503,7 +511,7 @@ class _MainScreenState extends State<MainScreen> {
 
   DatabaseReference? rideRef;
 
-  void saveRideRequest() {
+  saveRideRequest() {
     rideRef =
         FirebaseDatabase.instance.ref().child('All Order Requests').push();
 
@@ -693,7 +701,7 @@ class _MainScreenState extends State<MainScreen> {
             if (event.snapshot.value == 'idle') {
               Fluttertoast.showToast(
                   msg:
-                      'The vendor has cancelled your request. Please choose another vendor');
+                      'The vendor has cancelled your request. Please order again');
               Future.delayed(
                 const Duration(seconds: 3),
                 () {
@@ -782,6 +790,9 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     var locationData = Provider.of<UserInfoProvider>(context, listen: false)
         .userPickUpLocation;
+
+    var userAuthProvider =
+        Provider.of<UserAuthProvider>(context, listen: false);
 
     activeDriversCustomMarker();
 
@@ -889,12 +900,17 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                       const SizedBox(height: 40),
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (locationData == null) {
                             Fluttertoast.showToast(
                                 msg: 'Please select your location first');
                           } else {
                             saveRideRequest();
+                            await userAuthProvider.userAcceptOrder(
+                              orderId: widget.orderId,
+                              vendorId: widget.vendorId,
+                              context: context,
+                            );
                           }
                         },
                         child: const Text(

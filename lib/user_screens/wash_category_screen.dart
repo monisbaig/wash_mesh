@@ -100,6 +100,9 @@ class _WashCategoryState extends State<WashCategory> {
                                           snapshot.data!.data!
                                               .elementAt(index)
                                               .id,
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .fixedPrice,
                                         ),
                                       ),
                                     );
@@ -171,6 +174,9 @@ class _WashCategoryState extends State<WashCategory> {
                                           snapshot.data!.data!
                                               .elementAt(index)
                                               .id,
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .fixedPrice,
                                         ),
                                       ),
                                     );

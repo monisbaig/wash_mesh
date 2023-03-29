@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 import 'package:wash_mesh/models/user_models/vendor_accepted_order.dart';
 import 'package:wash_mesh/user_map_integration/screens/main_screen.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
@@ -22,8 +21,8 @@ class AcceptedOrdersScreen extends StatefulWidget {
 class _AcceptedOrdersScreenState extends State<AcceptedOrdersScreen> {
   @override
   Widget build(BuildContext context) {
-    var userAuthProvider =
-        Provider.of<UserAuthProvider>(context, listen: false);
+    // var userAuthProvider =
+    //     Provider.of<UserAuthProvider>(context, listen: false);
 
     return CustomBackground(
       op: 0.1,
@@ -107,16 +106,18 @@ class _AcceptedOrdersScreenState extends State<AcceptedOrdersScreen> {
                                               .elementAt(index)
                                               .orderId;
 
-                                          await userAuthProvider
-                                              .userAcceptOrder(
-                                            orderId: orderId,
-                                            vendorId: vendorId,
-                                            context: context,
-                                          );
-                                          Navigator.of(context).push(
+                                          // await userAuthProvider
+                                          //     .userAcceptOrder(
+                                          //   orderId: orderId,
+                                          //   vendorId: vendorId,
+                                          //   context: context,
+                                          // );
+                                          Navigator.of(context).pushReplacement(
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const MainScreen(),
+                                              builder: (context) => MainScreen(
+                                                orderId: orderId,
+                                                vendorId: vendorId,
+                                              ),
                                             ),
                                           );
                                         },

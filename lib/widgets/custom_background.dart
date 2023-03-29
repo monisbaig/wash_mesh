@@ -25,7 +25,7 @@ class CustomBackground extends StatelessWidget {
               image: DecorationImage(
                 opacity: op,
                 image: const AssetImage(
-                  'assets/images/app-icon.png',
+                  'assets/images/app_icon.png',
                 ),
               ),
             ),

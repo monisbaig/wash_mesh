@@ -19,10 +19,12 @@ import '../widgets/custom_logo.dart';
 class MeshBookScreen extends StatefulWidget {
   static late List<um.Data> data;
   static late String name;
+  static late dynamic price;
 
-  MeshBookScreen(List<um.Data> d, String n, id, {super.key}) {
+  MeshBookScreen(List<um.Data> d, String n, id, fixedPrice, {super.key}) {
     data = d;
     name = n;
+    price = fixedPrice;
     // print(data);
   }
 
@@ -37,6 +39,7 @@ class _MeshBookScreenState extends State<MeshBookScreen> {
   final List<int> _carnameid = [];
   final List<int> _attval = [];
   String? catname;
+  String? price;
   String? carname;
   int _catid = 0;
   int _att_id = 0;
@@ -104,6 +107,7 @@ class _MeshBookScreenState extends State<MeshBookScreen> {
     }
 
     catname = MeshBookScreen.name;
+    price = MeshBookScreen.price;
     carname = _carname.first;
   }
 
@@ -398,12 +402,12 @@ class _MeshBookScreenState extends State<MeshBookScreen> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const Text(
-                    '300',
+                  Text(
+                    price.toString(),
                     style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w500,
-                    ),
+                        fontSize: 30,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.red),
                   ),
                   SizedBox(height: 10.h),
                   Row(
@@ -439,7 +443,7 @@ class _MeshBookScreenState extends State<MeshBookScreen> {
                             List<String> lstdt = dt.split(':');
                             dt = "${lstdt[0]}:${lstdt[1]}";
                             PlaceOrderModel p = PlaceOrderModel(
-                              amount: '300',
+                              amount: price,
                               description: desp.text.toString(),
                               picture: picList,
                               orderAttribute: lst,

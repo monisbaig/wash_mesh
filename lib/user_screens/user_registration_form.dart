@@ -62,7 +62,12 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
     });
   }
 
+  bool isLoading = false;
+
   onRegister() async {
+    setState(() {
+      isLoading = true;
+    });
     final userData = Provider.of<UserAuthProvider>(context, listen: false);
     try {
       final isValid = formKey.currentState!.validate();
@@ -83,6 +88,9 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
     } catch (e) {
       rethrow;
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -343,10 +351,14 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                     ),
                   ],
                 ),
-                CustomButton(
-                  onTextPress: isChecked == true ? onRegister : null,
-                  buttonText: 'SIGN UP',
-                ),
+                isLoading == true
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : CustomButton(
+                        onTextPress: isChecked == true ? onRegister : null,
+                        buttonText: 'SIGN UP',
+                      ),
               ],
             ),
           ),

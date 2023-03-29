@@ -61,6 +61,7 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
                             SizedBox(
                               height: 530.h,
                               child: ListView.builder(
+                                reverse: true,
                                 itemCount: snapshot.data!.data!.length,
                                 itemBuilder: (context, index) {
                                   var status = snapshot.data!.data!

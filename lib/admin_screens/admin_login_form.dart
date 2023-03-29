@@ -30,8 +30,12 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
   final formKey = GlobalKey<FormState>();
   TextEditingController phoneNo = TextEditingController();
   TextEditingController password = TextEditingController();
+  bool isLoading = false;
 
   onSubmit() async {
+    setState(() {
+      isLoading = true;
+    });
     final adminData = Provider.of<AdminAuthProvider>(context, listen: false);
     try {
       final isValid = formKey.currentState!.validate();
@@ -71,6 +75,9 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
     } catch (e) {
       rethrow;
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void login() async {
@@ -211,10 +218,14 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
                   ],
                 ),
                 SizedBox(height: 160.h),
-                CustomButton(
-                  onTextPress: onSubmit,
-                  buttonText: 'LOG IN',
-                ),
+                isLoading == true
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : CustomButton(
+                        onTextPress: onSubmit,
+                        buttonText: 'LOG IN',
+                      ),
               ],
             ),
           ),

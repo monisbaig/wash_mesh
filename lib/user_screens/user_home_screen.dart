@@ -329,6 +329,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                           snapshot.data!.data!
                                               .elementAt(index)
                                               .id,
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .fixedPrice,
                                         ),
                                       ),
                                     );
@@ -401,6 +404,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                           snapshot.data!.data!
                                               .elementAt(index)
                                               .id,
+                                          snapshot.data!.data!
+                                              .elementAt(index)
+                                              .fixedPrice,
                                         ),
                                       ),
                                     );

@@ -31,8 +31,12 @@ class _UserLoginFormState extends State<UserLoginForm> {
   final formKey = GlobalKey<FormState>();
   TextEditingController emailPhone = TextEditingController();
   TextEditingController password = TextEditingController();
+  bool isLoading = false;
 
   onSubmit() async {
+    setState(() {
+      isLoading = true;
+    });
     final userData = Provider.of<UserAuthProvider>(context, listen: false);
     try {
       final isValid = formKey.currentState!.validate();
@@ -66,6 +70,9 @@ class _UserLoginFormState extends State<UserLoginForm> {
     } catch (e) {
       rethrow;
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void login() async {
@@ -237,10 +244,14 @@ class _UserLoginFormState extends State<UserLoginForm> {
                 //   ),
                 // ),
                 SizedBox(height: 60.h),
-                CustomButton(
-                  onTextPress: onSubmit,
-                  buttonText: 'LOG IN',
-                ),
+                isLoading == true
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : CustomButton(
+                        onTextPress: onSubmit,
+                        buttonText: 'LOG IN',
+                      ),
               ],
             ),
           ),

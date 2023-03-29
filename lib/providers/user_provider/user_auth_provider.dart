@@ -416,8 +416,6 @@ class UserAuthProvider extends ChangeNotifier {
     required BuildContext context,
     required String token,
   }) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var token = pref.getString('token');
     List<int> catlst = wash;
 
     var list = catlst.map((i) => i.toString()).join(",");
@@ -448,8 +446,6 @@ class UserAuthProvider extends ChangeNotifier {
     required BuildContext context,
     required String token,
   }) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var token = pref.getString('token');
     List<int> catlst = mesh;
 
     var list = catlst.map((i) => i.toString()).join(",");

@@ -31,6 +31,7 @@ class Data {
   dynamic id;
   dynamic name;
   dynamic image;
+  dynamic fixedPrice;
   List<CatAttribute>? catAttribute;
 
   Data({this.id, this.name, this.image, this.catAttribute});
@@ -39,6 +40,7 @@ class Data {
     id = json['id'];
     name = json['name'];
     image = json['image'];
+    fixedPrice = json['fixed_price'];
     if (json['cat_attribute'] != null) {
       catAttribute = <CatAttribute>[];
       json['cat_attribute'].forEach((v) {
@@ -52,6 +54,7 @@ class Data {
     data['id'] = id;
     data['name'] = name;
     data['image'] = image;
+    data['fixed_price'] = fixedPrice;
     if (catAttribute != null) {
       data['cat_attribute'] = catAttribute!.map((v) => v.toJson()).toList();
     }

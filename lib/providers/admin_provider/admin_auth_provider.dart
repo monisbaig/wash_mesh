@@ -120,7 +120,7 @@ class AdminAuthProvider extends ChangeNotifier {
         currentAdmin = admin;
 
         await FirebaseFirestore.instance
-            .collection('vendor')
+            .collection('users')
             .doc(admin.user!.uid)
             .set({
           'vendorId': admin.user!.uid,
