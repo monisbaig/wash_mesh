@@ -727,7 +727,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                   ],
                 ),
                 isLoading == true
-                    ? Center(
+                    ? const Center(
                         child: CircularProgressIndicator(),
                       )
                     : CustomButton(

@@ -405,7 +405,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   ),
                   Text(
                     price.toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.w500,
                       color: Colors.red,

@@ -404,7 +404,7 @@ class _MeshBookScreenState extends State<MeshBookScreen> {
                   ),
                   Text(
                     price.toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w500,
                         color: Colors.red),

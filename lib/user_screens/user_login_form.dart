@@ -210,42 +210,42 @@ class _UserLoginFormState extends State<UserLoginForm> {
                     ),
                   ],
                 ),
-                // SizedBox(height: 20.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     InkWell(
-                //       onTap: () async {
-                //         await Provider.of<AdminAuthProvider>(context,
-                //                 listen: false)
-                //             .signInWithGoogle();
-                //         Navigator.of(context).pushReplacement(
-                //           MaterialPageRoute(
-                //             builder: (context) => const CustomNavigationBar(),
-                //           ),
-                //         );
-                //       },
-                //       child: Image.asset('assets/images/google-logo.png',
-                //           height: 40.h),
-                //     ),
-                //     SizedBox(width: 16.w),
-                //     InkWell(
-                //       onTap: () {},
-                //       child: Image.asset('assets/images/facebook-logo.png',
-                //           height: 40.h),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 20.h),
-                // Text(
-                //   'Continue with',
-                //   style: TextStyle(
-                //     fontSize: 20.sp,
-                //   ),
-                // ),
+                SizedBox(height: 20.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        await Provider.of<UserAuthProvider>(context,
+                                listen: false)
+                            .loginSocialUser();
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const CustomNavigationBar(),
+                          ),
+                        );
+                      },
+                      child: Image.asset('assets/images/google-logo.png',
+                          height: 40.h),
+                    ),
+                    // SizedBox(width: 16.w),
+                    // InkWell(
+                    //   onTap: () {},
+                    //   child: Image.asset('assets/images/facebook-logo.png',
+                    //       height: 40.h),
+                    // ),
+                  ],
+                ),
+                SizedBox(height: 20.h),
+                Text(
+                  'Continue with',
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                  ),
+                ),
                 SizedBox(height: 60.h),
                 isLoading == true
-                    ? Center(
+                    ? const Center(
                         child: CircularProgressIndicator(),
                       )
                     : CustomButton(

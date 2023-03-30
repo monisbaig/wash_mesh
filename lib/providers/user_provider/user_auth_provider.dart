@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/models/user_models/orders_model.dart' as or;
@@ -77,6 +78,130 @@ class UserAuthProvider extends ChangeNotifier {
     print(jsonDecode(response.body));
     notifyListeners();
     return u.User.fromJson(jsonDecode(response.body));
+  }
+
+  registerSocialUser({var name, var email, context}) async {
+    final url = Uri.parse('$baseURL/user/customer/register/socialite');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'first_name': name,
+        'email': email,
+        'phone': '923001231231',
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      dynamic result = await jsonDecode(response.body)['message'];
+
+      Fluttertoast.showToast(msg: result);
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const UserLoginForm(),
+        ),
+      );
+    } else {
+      String? email = jsonDecode(response.body)['error'];
+
+      Fluttertoast.showToast(msg: email!);
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const UserRegistrationForm(),
+        ),
+      );
+    }
+    print(jsonDecode(response.body));
+    notifyListeners();
+    return u.User.fromJson(jsonDecode(response.body));
+  }
+
+  loginSocialUser() async {
+    dynamic mail;
+
+    final url = Uri.parse('$baseURL/user/customer/login/socialite?input=$mail');
+    final response = await http.post(url);
+
+    if (response.statusCode == 200) {
+      final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: gAuth.accessToken,
+        idToken: gAuth.idToken,
+      );
+
+      var googleMail = gUser.email;
+      mail = googleMail;
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('userToken', jsonDecode(response.body)['data']['token']);
+      prefs.setBool('userLoggedIn', true);
+      prefs.setString('userPersonalInfo', response.body);
+
+      print(jsonDecode(response.body)['message']);
+      print(response.body);
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } else {
+      print(response.body);
+    }
+    notifyListeners();
+  }
+
+  // loginWithGoogle() async {
+  //   final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+  //   final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+  //
+  //   final credential = GoogleAuthProvider.credential(
+  //     accessToken: gAuth.accessToken,
+  //     idToken: gAuth.idToken,
+  //   );
+  //
+  //   var googleMail = gUser.email;
+  //
+  //   await loginSocialUser(input: googleMail);
+  //
+  //   return await FirebaseAuth.instance.signInWithCredential(credential);
+  // }
+
+  signInWithGoogle(context) async {
+    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: gAuth.accessToken,
+      idToken: gAuth.idToken,
+    );
+
+    var googleId = gUser.id;
+    var googleName = gUser.displayName;
+    var googleMail = gUser.email;
+
+    await registerSocialUser(
+        name: googleName, email: googleMail, context: context);
+
+    if (gAuth.idToken != null) {
+      Map userData = {
+        'id': googleId,
+        'name': googleName,
+        'email': googleMail,
+      };
+
+      DatabaseReference userRef =
+          FirebaseDatabase.instance.ref().child('users');
+      userRef.child(googleId).set(userData);
+
+      Fluttertoast.showToast(msg: 'Account has been created successfully.');
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } else {
+      Fluttertoast.showToast(msg: 'Account has not been Created.');
+    }
   }
 
   saveFormData({

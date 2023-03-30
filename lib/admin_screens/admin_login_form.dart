@@ -219,7 +219,7 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
                 ),
                 SizedBox(height: 160.h),
                 isLoading == true
-                    ? Center(
+                    ? const Center(
                         child: CircularProgressIndicator(),
                       )
                     : CustomButton(

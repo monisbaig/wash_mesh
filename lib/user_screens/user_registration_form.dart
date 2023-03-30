@@ -297,29 +297,29 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                     style: TextStyle(fontSize: 20.sp),
                   ),
                 ),
-                // SizedBox(height: 15.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     InkWell(
-                //       onTap: () async {
-                //         await Provider.of<AdminAuthProvider>(context,
-                //                 listen: false)
-                //             .signInWithGoogle();
-                //         Navigator.of(context).pushReplacement(
-                //           MaterialPageRoute(
-                //             builder: (context) => const CustomNavigationBar(),
-                //           ),
-                //         );
-                //       },
-                //       child: Image.asset('assets/images/google-logo.png',
-                //           height: 40.h),
-                //     ),
-                //     SizedBox(width: 16.w),
-                //     Image.asset('assets/images/facebook-logo.png',
-                //         height: 40.h),
-                //   ],
-                // ),
+                SizedBox(height: 15.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        await Provider.of<UserAuthProvider>(context,
+                                listen: false)
+                            .signInWithGoogle(context);
+                        // Navigator.of(context).pushReplacement(
+                        //   MaterialPageRoute(
+                        //     builder: (context) => const CustomNavigationBar(),
+                        //   ),
+                        // );
+                      },
+                      child: Image.asset('assets/images/google-logo.png',
+                          height: 40.h),
+                    ),
+                    // SizedBox(width: 16.w),
+                    // Image.asset('assets/images/facebook-logo.png',
+                    //     height: 40.h),
+                  ],
+                ),
                 SizedBox(height: 15.h),
                 if (isChecked == false)
                   Text(
@@ -352,7 +352,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                   ],
                 ),
                 isLoading == true
-                    ? Center(
+                    ? const Center(
                         child: CircularProgressIndicator(),
                       )
                     : CustomButton(
