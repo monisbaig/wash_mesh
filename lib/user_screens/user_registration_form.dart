@@ -302,9 +302,8 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
-                      onTap: () async {
-                        await Provider.of<UserAuthProvider>(context,
-                                listen: false)
+                      onTap: () {
+                        Provider.of<UserAuthProvider>(context, listen: false)
                             .signInWithGoogle(context);
                         // Navigator.of(context).pushReplacement(
                         //   MaterialPageRoute(

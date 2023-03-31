@@ -89,9 +89,8 @@ class UserAuthProvider extends ChangeNotifier {
         'Accept': 'application/json',
       },
       body: jsonEncode(<String, dynamic>{
-        'first_name': name,
+        'user_name': name,
         'email': email,
-        'phone': '923001231231',
       }),
     );
 
@@ -122,23 +121,21 @@ class UserAuthProvider extends ChangeNotifier {
   }
 
   loginSocialUser() async {
-    dynamic mail;
+    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication gAuth = await gUser!.authentication;
 
-    final url = Uri.parse('$baseURL/user/customer/login/socialite?input=$mail');
+    final credential = GoogleAuthProvider.credential(
+      accessToken: gAuth.accessToken,
+      idToken: gAuth.idToken,
+    );
+
+    var googleMail = gUser.email;
+
+    final url =
+        Uri.parse('$baseURL/user/customer/login/socialite?input=$googleMail');
     final response = await http.post(url);
 
     if (response.statusCode == 200) {
-      final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
-      final GoogleSignInAuthentication gAuth = await gUser!.authentication;
-
-      final credential = GoogleAuthProvider.credential(
-        accessToken: gAuth.accessToken,
-        idToken: gAuth.idToken,
-      );
-
-      var googleMail = gUser.email;
-      mail = googleMail;
-
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('userToken', jsonDecode(response.body)['data']['token']);
       prefs.setBool('userLoggedIn', true);
@@ -152,22 +149,6 @@ class UserAuthProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
-
-  // loginWithGoogle() async {
-  //   final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
-  //   final GoogleSignInAuthentication gAuth = await gUser!.authentication;
-  //
-  //   final credential = GoogleAuthProvider.credential(
-  //     accessToken: gAuth.accessToken,
-  //     idToken: gAuth.idToken,
-  //   );
-  //
-  //   var googleMail = gUser.email;
-  //
-  //   await loginSocialUser(input: googleMail);
-  //
-  //   return await FirebaseAuth.instance.signInWithCredential(credential);
-  // }
 
   signInWithGoogle(context) async {
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();

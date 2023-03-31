@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/admin_screens/admin_registration_form.dart';
@@ -342,12 +341,6 @@ class AdminAuthProvider extends ChangeNotifier {
     } catch (e) {
       return <WashCategoryModel>[];
     }
-  }
-
-  signOut() async {
-    final GoogleSignInAccount? gUser = await GoogleSignIn().signOut();
-    await FirebaseAuth.instance.signOut();
-    return gUser;
   }
 
   static Future<VendorApplied> getVendorApplied() async {

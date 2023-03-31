@@ -1,10 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/register_screen.dart';
 import 'package:wash_mesh/user_screens/user_app_language.dart';
@@ -12,7 +12,7 @@ import 'package:wash_mesh/user_screens/user_change_password.dart';
 import 'package:wash_mesh/user_screens/user_profile.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 
-import '../providers/admin_provider/admin_auth_provider.dart';
+import '../services/firebase_auth_methods.dart';
 import '../widgets/custom_colors.dart';
 import '../widgets/custom_logo.dart';
 
@@ -227,8 +227,8 @@ class _UserSettingsState extends State<UserSettings> {
               SizedBox(height: 70.h),
               InkWell(
                 onTap: () async {
-                  await Provider.of<AdminAuthProvider>(context, listen: false)
-                      .signOut();
+                  await FirebaseAuthMethods(FirebaseAuth.instance)
+                      .signOut(context);
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (context) => const RegisterScreen(),
