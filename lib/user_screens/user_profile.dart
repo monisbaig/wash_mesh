@@ -57,11 +57,11 @@ class _UserProfileState extends State<UserProfile> {
 
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body) as Map<String, dynamic>;
-      var firstN = json['data']['User']['first_name'];
-      var lastN = json['data']['User']['last_name'];
-      var add = json['data']['User']['address'];
-      var img = json['data']['User']['image'];
-      var phn = json['data']['User']['phone'];
+      dynamic firstN = json['data']['User']['first_name'];
+      dynamic lastN = json['data']['User']['last_name'];
+      dynamic add = json['data']['User']['address'];
+      dynamic img = json['data']['User']['image'];
+      dynamic phn = json['data']['User']['phone'];
 
       setState(() {
         firstName.text = firstN;

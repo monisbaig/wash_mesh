@@ -23,7 +23,7 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
         child: FutureBuilder<or.OrdersModel>(
           future: UserAuthProvider.getOrders(),
           builder: (context, snapshot) {
-            return !snapshot.hasData
+            return !snapshot.hasData || snapshot.data!.data == null
                 ? const Center(
                     child: Text(
                       textAlign: TextAlign.center,
@@ -61,7 +61,6 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
                             SizedBox(
                               height: 530.h,
                               child: ListView.builder(
-                                reverse: true,
                                 itemCount: snapshot.data!.data!.length,
                                 itemBuilder: (context, index) {
                                   var status = snapshot.data!.data!
@@ -108,7 +107,18 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
                                                   ),
                                                 );
                                               },
-                                              child: const Text('Order Status'),
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(8),
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    width: 1,
+                                                    color: Colors.blue,
+                                                  ),
+                                                ),
+                                                child:
+                                                    const Text('Order Status'),
+                                              ),
                                             )
                                           : const Text(''),
                                     ),

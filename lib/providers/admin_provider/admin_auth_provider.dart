@@ -71,7 +71,8 @@ class AdminAuthProvider extends ChangeNotifier {
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => AdminServices(token: token),
+          builder: (context) =>
+              AdminServices(token: token, phone: adminData.phone),
         ),
       );
     } else {

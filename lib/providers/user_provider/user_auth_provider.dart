@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +20,7 @@ import '../../models/user_models/user_model.dart' as u;
 import '../../models/user_models/wash_categories_model.dart' as um;
 import '../../models/user_models/wash_categories_model.dart';
 import '../../user_map_integration/user_global_variables/user_global_variables.dart';
+import '../../user_screens/user_home_otp.dart';
 import '../../user_screens/user_login_form.dart';
 
 class UserAuthProvider extends ChangeNotifier {
@@ -57,11 +59,13 @@ class UserAuthProvider extends ChangeNotifier {
         phone: userData.phone,
       );
 
+      await otpCode(userData.phone, context);
+
       Fluttertoast.showToast(msg: result);
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const UserLoginForm(),
+          builder: (context) => const UserHomeOTP(),
         ),
       );
     } else {
@@ -80,6 +84,23 @@ class UserAuthProvider extends ChangeNotifier {
     return u.User.fromJson(jsonDecode(response.body));
   }
 
+  otpCode(var phoneNo, context) async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: '+$phoneNo',
+      verificationCompleted: (PhoneAuthCredential credential) {},
+      verificationFailed: (FirebaseAuthException e) {},
+      codeSent: (String verificationId, int? resendToken) {
+        UserRegistrationForm.verify = verificationId;
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const UserHomeOTP(),
+          ),
+        );
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
+
   registerSocialUser({var name, var email, context}) async {
     final url = Uri.parse('$baseURL/user/customer/register/socialite');
     final response = await http.post(
@@ -91,6 +112,7 @@ class UserAuthProvider extends ChangeNotifier {
       body: jsonEncode(<String, dynamic>{
         'user_name': name,
         'email': email,
+        'image': Image.asset('assets/images/profile.png').toString(),
       }),
     );
 
@@ -150,36 +172,108 @@ class UserAuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  loginSocialFacebook() async {
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+
+    final OAuthCredential facebookAuthCredential =
+        FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+    final userData =
+        FacebookAuth.instance.getUserData() as Map<String, dynamic>;
+
+    var faceBookEmail = userData['email'];
+
+    final url = Uri.parse(
+        '$baseURL/user/customer/login/socialite?input=$faceBookEmail');
+    final response = await http.post(url);
+
+    if (response.statusCode == 200) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('userToken', jsonDecode(response.body)['data']['token']);
+      prefs.setBool('userLoggedIn', true);
+      prefs.setString('userPersonalInfo', response.body);
+
+      print(jsonDecode(response.body)['message']);
+      print(response.body);
+      return await FirebaseAuth.instance
+          .signInWithCredential(facebookAuthCredential);
+    } else {
+      print(response.body);
+    }
+    notifyListeners();
+  }
+
   signInWithGoogle(context) async {
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication gAuth = await gUser!.authentication;
 
-    final credential = GoogleAuthProvider.credential(
+    AuthCredential credential = GoogleAuthProvider.credential(
       accessToken: gAuth.accessToken,
       idToken: gAuth.idToken,
     );
 
-    var googleId = gUser.id;
-    var googleName = gUser.displayName;
-    var googleMail = gUser.email;
-
-    await registerSocialUser(
-        name: googleName, email: googleMail, context: context);
-
     if (gAuth.idToken != null) {
+      var googleName = gUser.displayName;
+      var googleMail = gUser.email;
+
+      await registerSocialUser(
+          name: googleName, email: googleMail, context: context);
+
+      var authResult =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      var user = authResult.user!.uid;
+
       Map userData = {
-        'id': googleId,
+        'id': user,
         'name': googleName,
         'email': googleMail,
       };
 
       DatabaseReference userRef =
           FirebaseDatabase.instance.ref().child('users');
-      userRef.child(googleId).set(userData);
+      userRef.child(user).set(userData);
 
       Fluttertoast.showToast(msg: 'Account has been created successfully.');
+    } else {
+      Fluttertoast.showToast(msg: 'Account has not been Created.');
+    }
+  }
 
-      return await FirebaseAuth.instance.signInWithCredential(credential);
+  signInWithFacebook(context) async {
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+
+    final OAuthCredential facebookAuthCredential =
+        FacebookAuthProvider.credential(
+      loginResult.accessToken!.token,
+    );
+
+    if (facebookAuthCredential.accessToken != null) {
+      final userData =
+          FacebookAuth.instance.getUserData() as Map<String, dynamic>;
+
+      var faceBookName = userData['name'];
+      var faceBookEmail = userData['email'];
+
+      await registerSocialUser(
+          name: faceBookName, email: faceBookEmail, context: context);
+
+      var authResult = await FirebaseAuth.instance
+          .signInWithCredential(facebookAuthCredential);
+
+      var user = authResult.user!.uid;
+
+      Map faceBookData = {
+        'id': user,
+        'name': faceBookName,
+        'email': faceBookEmail,
+      };
+
+      DatabaseReference userRef =
+          FirebaseDatabase.instance.ref().child('users');
+      userRef.child(user).set(faceBookData);
+
+      Fluttertoast.showToast(msg: 'Account has been created successfully.');
     } else {
       Fluttertoast.showToast(msg: 'Account has not been Created.');
     }

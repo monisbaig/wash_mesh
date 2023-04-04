@@ -41,6 +41,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
   final List<int> _attval = [];
   String? catname;
   String? price;
+  String? attributeRate;
   String? carname;
   int _catid = 0;
   int _att_id = 0;
@@ -101,6 +102,12 @@ class _WashBookScreenState extends State<WashBookScreen> {
                   .attributeValue!
                   .elementAt(k)
                   .attributeId));
+              attributeRate = WashBookScreen.data
+                  .elementAt(i)
+                  .catAttribute!
+                  .elementAt(j)
+                  .attribute!
+                  .rate;
             }
           }
         }
@@ -155,6 +162,8 @@ class _WashBookScreenState extends State<WashBookScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var totalAmount = int.parse(price!) + int.parse(attributeRate!);
+
     return CustomBackground(
       op: 0.1,
       ch: SingleChildScrollView(
@@ -404,7 +413,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                     ),
                   ),
                   Text(
-                    price.toString(),
+                    '$totalAmount',
                     style: const TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.w500,
@@ -445,7 +454,7 @@ class _WashBookScreenState extends State<WashBookScreen> {
                             List<String> lstdt = dt.split(':');
                             dt = "${lstdt[0]}:${lstdt[1]}";
                             PlaceOrderModel p = PlaceOrderModel(
-                              amount: price,
+                              amount: totalAmount.toString(),
                               description: desp.text.toString(),
                               picture: picList,
                               orderAttribute: lst,

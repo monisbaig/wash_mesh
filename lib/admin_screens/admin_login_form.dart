@@ -65,6 +65,7 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
             (route) => false,
           );
         } else {
+          Fluttertoast.showToast(msg: 'Login Failed, Check your credentials.');
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => const AdminLoginForm(),

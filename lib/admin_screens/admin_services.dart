@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,12 +15,14 @@ import 'package:wash_mesh/widgets/custom_colors.dart';
 
 import '../providers/user_provider/user_auth_provider.dart';
 import '../widgets/custom_logo.dart';
-import 'admin_login_form.dart';
+import 'admin_home_otp.dart';
+import 'admin_registration_form.dart';
 
 class AdminServices extends StatefulWidget {
   final String? token;
+  final dynamic phone;
 
-  const AdminServices({super.key, required this.token});
+  const AdminServices({super.key, required this.token, required this.phone});
 
   @override
   State<AdminServices> createState() => _AdminServicesState();
@@ -106,6 +109,23 @@ class _AdminServicesState extends State<AdminServices> {
     );
   }
 
+  otpCode(var phoneNo, context) async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: '+$phoneNo',
+      verificationCompleted: (PhoneAuthCredential credential) {},
+      verificationFailed: (FirebaseAuthException e) {},
+      codeSent: (String verificationId, int? resendToken) {
+        AdminRegisterScreen.verify = verificationId;
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const AdminHomeOTP(),
+          ),
+        );
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
+
   _meshcat(nameid ijk) async {
     await showDialog<nameid>(
       context: context,
@@ -145,14 +165,8 @@ class _AdminServicesState extends State<AdminServices> {
                   token: widget.token!,
                   context: context,
                 );
-                setState(() {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => const AdminLoginForm(),
-                    ),
-                    (route) => false,
-                  );
-                });
+
+                await otpCode(widget.phone, context);
               },
               child: const Text('Submit'),
             ),

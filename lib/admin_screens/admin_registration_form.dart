@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:wash_mesh/admin_screens/admin_login_form.dart';
 import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
@@ -17,9 +16,12 @@ import 'package:wash_mesh/widgets/custom_logo.dart';
 import '../models/admin_models/admin_model.dart';
 import '../widgets/custom_colors.dart';
 import '../widgets/custom_text_field.dart';
+import 'admin_login_form.dart';
 
 class AdminRegisterScreen extends StatefulWidget {
   const AdminRegisterScreen({Key? key}) : super(key: key);
+
+  static String verify = '';
 
   @override
   State<AdminRegisterScreen> createState() => _AdminRegisterScreenState();
@@ -399,7 +401,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                         child: DropdownButtonFormField<String>(
                           value: selectedGender,
                           hint: const Text(
-                            'Gender',
+                            'Gender*',
                             style: TextStyle(color: Colors.grey),
                           ),
                           validator: (value) {
@@ -441,22 +443,6 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                         ),
                       ),
                     ],
-                  ),
-                ),
-                SizedBox(height: 20.h),
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const AdminLoginForm(),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    'alreadyAccount'.tr(),
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                    ),
                   ),
                 ),
                 SizedBox(height: 20.h),
@@ -623,7 +609,7 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 35.h),
+                SizedBox(height: 20.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -734,6 +720,22 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                         onTextPress: isChecked == true ? onRegister : null,
                         buttonText: 'Next',
                       ),
+                SizedBox(height: 20.h),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const AdminLoginForm(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'alreadyAccount'.tr(),
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

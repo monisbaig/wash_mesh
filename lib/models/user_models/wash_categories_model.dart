@@ -95,6 +95,7 @@ class Attribute {
   dynamic id;
   dynamic name;
   dynamic type;
+  dynamic rate;
   List<AttributeValue>? attributeValue;
 
   Attribute({this.id, this.name, this.type, this.attributeValue});
@@ -103,6 +104,7 @@ class Attribute {
     id = json['id'];
     name = json['name'];
     type = json['type'];
+    rate = json['rate'];
     if (json['attribute_value'] != null) {
       attributeValue = <AttributeValue>[];
       json['attribute_value'].forEach((v) {
@@ -116,6 +118,7 @@ class Attribute {
     data['id'] = id;
     data['name'] = name;
     data['type'] = type;
+    data['rate'] = rate;
     if (attributeValue != null) {
       data['attribute_value'] = attributeValue!.map((v) => v.toJson()).toList();
     }

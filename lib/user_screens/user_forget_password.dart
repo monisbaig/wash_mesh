@@ -28,7 +28,7 @@ class _UserForgetPasswordState extends State<UserForgetPassword> {
         UserForgetPassword.verify = verificationId;
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const OtpScreen(),
+            builder: (context) => const UserOtpScreen(),
           ),
         );
       },

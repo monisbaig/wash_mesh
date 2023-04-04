@@ -20,6 +20,8 @@ import '../providers/user_provider/user_auth_provider.dart';
 class UserRegistrationForm extends StatefulWidget {
   const UserRegistrationForm({Key? key}) : super(key: key);
 
+  static String verify = '';
+
   @override
   State<UserRegistrationForm> createState() => _UserRegistrationFormState();
 }
@@ -185,7 +187,17 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       CustomTextField(
                         hint: 'phoneNo'.tr(),
                         keyboardType: TextInputType.phone,
+                        suffixIcon: const Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
                         controller: phoneNo,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your phone number';
+                          }
+                          return null;
+                        },
                       ),
                       CustomTextField(
                         hint: 'password'.tr(),
@@ -305,18 +317,29 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                       onTap: () {
                         Provider.of<UserAuthProvider>(context, listen: false)
                             .signInWithGoogle(context);
-                        // Navigator.of(context).pushReplacement(
-                        //   MaterialPageRoute(
-                        //     builder: (context) => const CustomNavigationBar(),
-                        //   ),
-                        // );
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const UserLoginForm(),
+                          ),
+                        );
                       },
                       child: Image.asset('assets/images/google-logo.png',
                           height: 40.h),
                     ),
-                    // SizedBox(width: 16.w),
-                    // Image.asset('assets/images/facebook-logo.png',
-                    //     height: 40.h),
+                    SizedBox(width: 16.w),
+                    InkWell(
+                      onTap: () {
+                        Provider.of<UserAuthProvider>(context, listen: false)
+                            .signInWithFacebook(context);
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const UserLoginForm(),
+                          ),
+                        );
+                      },
+                      child: Image.asset('assets/images/facebook-logo.png',
+                          height: 40.h),
+                    ),
                   ],
                 ),
                 SizedBox(height: 15.h),

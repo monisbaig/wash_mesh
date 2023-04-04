@@ -4,36 +4,43 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
-import 'package:wash_mesh/user_screens/user_forget_password.dart';
-import 'package:wash_mesh/user_screens/user_recreate_password.dart';
+import 'package:wash_mesh/user_screens/user_login_form.dart';
+import 'package:wash_mesh/user_screens/user_registration_form.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
 
-class UserOtpScreen extends StatefulWidget {
-  const UserOtpScreen({Key? key}) : super(key: key);
+class UserHomeOTP extends StatefulWidget {
+  const UserHomeOTP({Key? key}) : super(key: key);
 
   @override
-  State<UserOtpScreen> createState() => _UserOtpScreenState();
+  State<UserHomeOTP> createState() => _UserHomeOTPState();
 }
 
-class _UserOtpScreenState extends State<UserOtpScreen> {
+class _UserHomeOTPState extends State<UserHomeOTP> {
   var smsCode = '';
 
   otpVerify() async {
     try {
       final FirebaseAuth auth = FirebaseAuth.instance;
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: UserForgetPassword.verify,
+        verificationId: UserRegistrationForm.verify,
         smsCode: smsCode,
       );
       await auth.signInWithCredential(credential);
-      Navigator.of(context).pushReplacement(
+      Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context) => const UserRecreatePassword(),
+          builder: (context) => const UserLoginForm(),
         ),
+        (route) => false,
       );
     } catch (e) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => const UserLoginForm(),
+        ),
+        (route) => false,
+      );
       rethrow;
     }
   }
@@ -96,13 +103,6 @@ class _UserOtpScreenState extends State<UserOtpScreen> {
                     },
                   )
                 ],
-              ),
-              SizedBox(height: 25.h),
-              Text(
-                'Resend Within 45s',
-                style: TextStyle(
-                  fontSize: 17.sp,
-                ),
               ),
               Expanded(child: Container()),
               CustomButton(

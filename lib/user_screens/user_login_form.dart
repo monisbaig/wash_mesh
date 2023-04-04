@@ -228,12 +228,21 @@ class _UserLoginFormState extends State<UserLoginForm> {
                       child: Image.asset('assets/images/google-logo.png',
                           height: 40.h),
                     ),
-                    // SizedBox(width: 16.w),
-                    // InkWell(
-                    //   onTap: () {},
-                    //   child: Image.asset('assets/images/facebook-logo.png',
-                    //       height: 40.h),
-                    // ),
+                    SizedBox(width: 16.w),
+                    InkWell(
+                      onTap: () async {
+                        await Provider.of<UserAuthProvider>(context,
+                                listen: false)
+                            .loginSocialFacebook();
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const CustomNavigationBar(),
+                          ),
+                        );
+                      },
+                      child: Image.asset('assets/images/facebook-logo.png',
+                          height: 40.h),
+                    ),
                   ],
                 ),
                 SizedBox(height: 20.h),
