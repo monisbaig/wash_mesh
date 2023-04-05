@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/user_screens/user_forget_password.dart';
 import 'package:wash_mesh/user_screens/user_registration_form.dart';
+import 'package:wash_mesh/user_screens/user_social_profile.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
@@ -211,6 +212,13 @@ class _UserLoginFormState extends State<UserLoginForm> {
                   ],
                 ),
                 SizedBox(height: 20.h),
+                Text(
+                  'Continue with',
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                  ),
+                ),
+                SizedBox(height: 20.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -221,7 +229,7 @@ class _UserLoginFormState extends State<UserLoginForm> {
                             .loginSocialUser();
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => const CustomNavigationBar(),
+                            builder: (context) => const UserSocialProfile(),
                           ),
                         );
                       },
@@ -236,7 +244,7 @@ class _UserLoginFormState extends State<UserLoginForm> {
                             .loginSocialFacebook();
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => const CustomNavigationBar(),
+                            builder: (context) => const UserSocialProfile(),
                           ),
                         );
                       },
@@ -244,13 +252,6 @@ class _UserLoginFormState extends State<UserLoginForm> {
                           height: 40.h),
                     ),
                   ],
-                ),
-                SizedBox(height: 20.h),
-                Text(
-                  'Continue with',
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                  ),
                 ),
                 SizedBox(height: 60.h),
                 isLoading == true

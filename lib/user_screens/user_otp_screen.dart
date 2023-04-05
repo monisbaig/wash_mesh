@@ -41,8 +41,8 @@ class _UserOtpScreenState extends State<UserOtpScreen> {
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
-      width: 56,
-      height: 56,
+      width: 56.w,
+      height: 56.h,
       textStyle: const TextStyle(
           fontSize: 20,
           color: Color.fromRGBO(30, 60, 87, 1),
@@ -85,15 +85,18 @@ class _UserOtpScreenState extends State<UserOtpScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Pinput(
-                    focusedPinTheme: focusedPinTheme,
-                    submittedPinTheme: submittedPinTheme,
-                    pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
-                    length: 6,
-                    showCursor: true,
-                    onChanged: (value) {
-                      smsCode = value;
-                    },
+                  SizedBox(
+                    width: 340.w,
+                    child: Pinput(
+                      focusedPinTheme: focusedPinTheme,
+                      submittedPinTheme: submittedPinTheme,
+                      pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+                      length: 6,
+                      showCursor: true,
+                      onChanged: (value) {
+                        smsCode = value;
+                      },
+                    ),
                   )
                 ],
               ),

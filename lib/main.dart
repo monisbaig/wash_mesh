@@ -9,7 +9,7 @@ import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
 import 'package:wash_mesh/providers/admin_provider/admin_info_provider.dart';
 import 'package:wash_mesh/providers/user_provider/user_auth_provider.dart';
 import 'package:wash_mesh/providers/user_provider/user_info_provider.dart';
-import 'package:wash_mesh/splash_screen.dart';
+import 'package:wash_mesh/user_screens/user_home_otp.dart';
 
 import 'firebase_options.dart';
 
@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
               Theme.of(context).textTheme,
             ),
           ),
-          home: const SplashScreen(),
+          home: const UserHomeOTP(),
         ),
       ),
     );
