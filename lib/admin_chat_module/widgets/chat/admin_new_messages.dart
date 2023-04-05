@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wash_mesh/admin_map_integration/admin_global_variables/admin_global_variables.dart';
 
 class AdminNewMessages extends StatefulWidget {
   const AdminNewMessages({Key? key}) : super(key: key);
@@ -16,18 +16,17 @@ class _AdminNewMessagesState extends State<AdminNewMessages> {
   Future<void> _sendMessage() async {
     FocusScope.of(context).unfocus();
 
-    final adminData = await FirebaseFirestore.instance
+    final user = FirebaseAuth.instance.currentUser;
+    final userData = await FirebaseFirestore.instance
         .collection('users')
-        .doc(currentAdminUser!.uid)
+        .doc(user!.uid)
         .get();
-
     FirebaseFirestore.instance.collection('chat').add({
       'text': _enteredMessage,
       'createdAt': Timestamp.now(),
-      'vendorId': currentAdminUser!.uid,
-      'vendorName': adminData['vendorName'],
+      'userId': user.uid,
+      'username': userData['username'],
     });
-
     _messagesController.clear();
   }
 

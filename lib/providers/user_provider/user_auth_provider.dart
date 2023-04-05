@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -234,6 +235,12 @@ class UserAuthProvider extends ChangeNotifier {
           FirebaseDatabase.instance.ref().child('users');
       userRef.child(user).set(userData);
 
+      await FirebaseFirestore.instance.collection('users').doc(user).set({
+        'userId': user,
+        'username': googleName,
+        'email': googleMail,
+      });
+
       Fluttertoast.showToast(msg: 'Account has been created successfully.');
     } else {
       Fluttertoast.showToast(msg: 'Account has not been Created.');
@@ -273,6 +280,12 @@ class UserAuthProvider extends ChangeNotifier {
           FirebaseDatabase.instance.ref().child('users');
       userRef.child(user).set(faceBookData);
 
+      await FirebaseFirestore.instance.collection('users').doc(user).set({
+        'userId': user,
+        'username': faceBookName,
+        'email': faceBookEmail,
+      });
+
       Fluttertoast.showToast(msg: 'Account has been created successfully.');
     } else {
       Fluttertoast.showToast(msg: 'Account has not been Created.');
@@ -304,6 +317,15 @@ class UserAuthProvider extends ChangeNotifier {
             FirebaseDatabase.instance.ref().child('users');
         userRef.child(user.user!.uid).set(userData);
         activeUser = user;
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.user!.uid)
+            .set({
+          'userId': user.user!.uid,
+          'username': name,
+          'email': email,
+        });
 
         Fluttertoast.showToast(msg: 'Account has been created successfully.');
       } else {
@@ -358,6 +380,26 @@ class UserAuthProvider extends ChangeNotifier {
       },
     );
     if (response.statusCode == 200) {
+      return jsonDecode(response.body)['message'];
+    }
+    notifyListeners();
+  }
+
+  userLogout() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('userToken');
+
+    var url = Uri.parse('$baseURL/user/customer/logout');
+    var response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      print(jsonDecode(response.body)['message']);
       return jsonDecode(response.body)['message'];
     }
     notifyListeners();

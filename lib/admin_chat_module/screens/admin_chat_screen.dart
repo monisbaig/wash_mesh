@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wash_mesh/admin_chat_module/widgets/chat/admin_messages.dart';
-import 'package:wash_mesh/admin_chat_module/widgets/chat/admin_new_messages.dart';
+
+import '../widgets/chat/admin_messages.dart';
+import '../widgets/chat/admin_new_messages.dart';
 
 class AdminChatScreen extends StatefulWidget {
   const AdminChatScreen({Key? key}) : super(key: key);
@@ -34,8 +34,8 @@ class _AdminChatScreenState extends State<AdminChatScreen> {
           DropdownButton(
             elevation: 0,
             underline: Container(),
-            borderRadius: BorderRadius.circular(16.r),
-            dropdownColor: Colors.blue,
+            borderRadius: BorderRadius.circular(16),
+            dropdownColor: Colors.pinkAccent,
             icon: Icon(
               Icons.more_vert,
               color: Theme.of(context).primaryIconTheme.color,
@@ -44,13 +44,15 @@ class _AdminChatScreenState extends State<AdminChatScreen> {
               DropdownMenuItem(
                 value: 'clear',
                 child: Row(
-                  children: [
-                    const Icon(
+                  children: const [
+                    Icon(
                       Icons.clear_all,
                       color: Colors.white,
                     ),
-                    SizedBox(width: 8.w),
-                    const Text(
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
                       'Clear Chat',
                       style: TextStyle(
                         color: Colors.white,
@@ -69,9 +71,9 @@ class _AdminChatScreenState extends State<AdminChatScreen> {
         ],
       ),
       body: Column(
-        children: const [
+        children: [
           Expanded(child: AdminMessages()),
-          AdminNewMessages(),
+          const AdminNewMessages(),
         ],
       ),
     );

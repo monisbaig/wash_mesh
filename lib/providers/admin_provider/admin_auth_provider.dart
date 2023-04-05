@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/admin_screens/admin_registration_form.dart';
 import 'package:wash_mesh/admin_screens/admin_services.dart';
+import 'package:wash_mesh/models/admin_models/order_detail_model.dart';
 import 'package:wash_mesh/models/admin_models/vendor_applied.dart';
 import 'package:wash_mesh/models/admin_models/vendor_orders.dart';
 import 'package:wash_mesh/models/admin_models/wash_category_model.dart';
@@ -123,8 +124,9 @@ class AdminAuthProvider extends ChangeNotifier {
             .collection('users')
             .doc(admin.user!.uid)
             .set({
-          'vendorId': admin.user!.uid,
-          'vendorName': name,
+          'userId': admin.user!.uid,
+          'username': name,
+          'email': email,
         });
 
         Fluttertoast.showToast(msg: 'Account has been created successfully.');
@@ -199,6 +201,28 @@ class AdminAuthProvider extends ChangeNotifier {
     } else {
       return 'Registration Failed';
     }
+  }
+
+  adminLogout() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+
+    var url = Uri.parse('$baseURL/user/vendor/logout');
+    var response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      print(jsonDecode(response.body)['message']);
+      return jsonDecode(response.body)['message'];
+    } else {
+      print(jsonDecode(response.body)['message']);
+    }
+    notifyListeners();
   }
 
   updateAdminData(
@@ -376,6 +400,71 @@ class AdminAuthProvider extends ChangeNotifier {
       return VendorOrders.fromJson(jsonDecode(response.body));
     } else {
       return VendorOrders();
+    }
+  }
+
+  static Future<OrderDetailModel> getVendorEarnings() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+    final url = Uri.parse('$baseURL/user/order/vendor?status=10');
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
+      return OrderDetailModel.fromJson(jsonDecode(response.body));
+    } else {
+      return OrderDetailModel();
+    }
+  }
+
+  static Future<OrderDetailModel> getVendorBookings() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+    final url = Uri.parse('$baseURL/user/order/vendor?status=all');
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
+      return OrderDetailModel.fromJson(jsonDecode(response.body));
+    } else {
+      return OrderDetailModel();
+    }
+  }
+
+  static Future<OrderDetailModel> getVendorUpcomingServices() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+    final url =
+        Uri.parse('$baseURL/user/order/vendor?status=all&sortBy=upcoming');
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
+      return OrderDetailModel.fromJson(jsonDecode(response.body));
+    } else {
+      return OrderDetailModel();
+    }
+  }
+
+  static Future<OrderDetailModel> getVendorTodayServices() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+    final url = Uri.parse('$baseURL/user/order/vendor?status=all&sortBy=today');
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
+      return OrderDetailModel.fromJson(jsonDecode(response.body));
+    } else {
+      return OrderDetailModel();
     }
   }
 

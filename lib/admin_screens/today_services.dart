@@ -1,80 +1,144 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
+import 'package:wash_mesh/widgets/custom_background.dart';
+import 'package:wash_mesh/widgets/custom_logo.dart';
 
-import '../widgets/custom_background.dart';
-import '../widgets/custom_logo.dart';
+import '../models/admin_models/order_detail_model.dart';
 
-class TodayServicesScreen extends StatelessWidget {
-  TodayServicesScreen({Key? key}) : super(key: key);
+class TodayServicesScreen extends StatefulWidget {
+  const TodayServicesScreen({Key? key}) : super(key: key);
 
-  final List items = [
-    'All',
-    'Pending',
-    'Accept',
-    'On Going',
-    'In Progress',
-    'Hold',
-    'Cancelled',
-    'Rejected',
-    'Failed',
-    'Completed',
-  ];
+  @override
+  State<TodayServicesScreen> createState() => _TodayServicesScreenState();
+}
 
+class _TodayServicesScreenState extends State<TodayServicesScreen> {
   @override
   Widget build(BuildContext context) {
     return CustomBackground(
       op: 0.1,
-      ch: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 45.h, horizontal: 12.w),
-            child: Column(
-              children: [
-                const CustomLogo(),
-                SizedBox(height: 15.h),
-                Image.asset('assets/images/booking.png'),
-                SizedBox(height: 30.h),
-                Container(
-                  width: 300.w,
-                  height: 450.h,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(25),
-                    child: GridView.builder(
-                      itemCount: items.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1,
-                        mainAxisExtent: 35,
+      ch: SafeArea(
+        child: SingleChildScrollView(
+          child: FutureBuilder<OrderDetailModel>(
+            future: AdminAuthProvider.getVendorTodayServices(),
+            builder: (context, snapshot) {
+              return !snapshot.hasData || snapshot.data!.data!.data!.isEmpty
+                  ? Center(
+                      heightFactor: 9.h,
+                      child: const Text(
+                        textAlign: TextAlign.center,
+                        'No services available\n Or\n wait for the process...',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.redAccent,
+                        ),
                       ),
-                      itemBuilder: (context, index) => Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(items[index]),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                // SizedBox(height: 30.h),
-                // CustomButton(
-                //   onTextPress: () {
-                //     Navigator.of(context).push(
-                //       MaterialPageRoute(
-                //         builder: (context) => const UserHomeScreen(),
-                //       ),
-                //     );
-                //   },
-                //   buttonText: 'OK',
-                //   v: 15.h,
-                //   h: 140.w,
-                // ),
-                // SizedBox(height: 20.h),
-              ],
-            ),
+                    )
+                  : snapshot.connectionState == ConnectionState.waiting
+                      ? const Padding(
+                          padding: EdgeInsets.only(top: 320),
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                      : Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 45.h, horizontal: 12.w),
+                          child: Column(
+                            children: [
+                              const CustomLogo(),
+                              SizedBox(height: 10.h),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Today Services',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30.sp,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10.h),
+                              SizedBox(
+                                height: 550.h,
+                                child: ListView.builder(
+                                  itemCount: snapshot.data!.data!.data!.length,
+                                  itemBuilder: (context, index) {
+                                    var status = snapshot.data!.data!.data!
+                                        .elementAt(index)
+                                        .status;
+                                    return Container(
+                                      margin: const EdgeInsets.only(bottom: 6),
+                                      padding: const EdgeInsets.all(16),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              const Text("Amount :"),
+                                              SizedBox(width: 5.h),
+                                              Text(
+                                                "${snapshot.data!.data!.data!.elementAt(index).amount}",
+                                              ),
+                                              SizedBox(width: 5.h),
+                                              const Text("| Extra Charges :"),
+                                              SizedBox(width: 5.h),
+                                              Text(
+                                                "${snapshot.data!.data!.data!.elementAt(index).extraCharges}",
+                                              ),
+                                              SizedBox(width: 5.h),
+                                              const Text("| Total :"),
+                                              SizedBox(width: 5.h),
+                                              Text(
+                                                "${snapshot.data!.data!.data!.elementAt(index).total}",
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5.h),
+                                          Row(
+                                            children: [
+                                              const Text("Description :"),
+                                              SizedBox(width: 5.h),
+                                              Text(
+                                                "${snapshot.data!.data!.data!.elementAt(index).description}",
+                                              ),
+                                              // SizedBox(width: 5.h),
+                                              // const Text("| Status :"),
+                                              // SizedBox(width: 5.h),
+                                              // const Text('Completed'),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5.h),
+                                          Row(
+                                            children: [
+                                              const Text("Service At :"),
+                                              SizedBox(width: 5.h),
+                                              Text(
+                                                snapshot.data!.data!.data!
+                                                    .elementAt(index)
+                                                    .serviceAt!
+                                                    .substring(0, 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+            },
           ),
         ),
       ),

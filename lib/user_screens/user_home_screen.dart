@@ -57,7 +57,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     );
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body) as Map<String, dynamic>;
-      var firstN = json['data']['User']['user_name'];
+      var firstN = json['data']['User']['first_name'];
       setState(() {
         firstName = firstN;
       });

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../widgets/chat/user_messages.dart';
 import '../widgets/chat/user_new_messages.dart';
@@ -35,8 +34,8 @@ class _UserChatScreenState extends State<UserChatScreen> {
           DropdownButton(
             elevation: 0,
             underline: Container(),
-            borderRadius: BorderRadius.circular(16.r),
-            dropdownColor: Colors.blue,
+            borderRadius: BorderRadius.circular(16),
+            dropdownColor: Colors.pinkAccent,
             icon: Icon(
               Icons.more_vert,
               color: Theme.of(context).primaryIconTheme.color,
@@ -45,13 +44,15 @@ class _UserChatScreenState extends State<UserChatScreen> {
               DropdownMenuItem(
                 value: 'clear',
                 child: Row(
-                  children: [
-                    const Icon(
+                  children: const [
+                    Icon(
                       Icons.clear_all,
                       color: Colors.white,
                     ),
-                    SizedBox(width: 8.w),
-                    const Text(
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
                       'Clear Chat',
                       style: TextStyle(
                         color: Colors.white,

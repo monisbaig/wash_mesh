@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserMessageBubble extends StatelessWidget {
   final String message;
@@ -16,18 +15,20 @@ class UserMessageBubble extends StatelessWidget {
       mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Container(
-          width: 140.w,
-          margin: EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
-          padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
+          width: 140,
+          margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
           decoration: BoxDecoration(
             color: isMe
                 ? Colors.grey.shade300
                 : Theme.of(context).colorScheme.secondary,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12.r),
-              topRight: Radius.circular(12.r),
-              bottomLeft: !isMe ? Radius.circular(0.r) : Radius.circular(12.r),
-              bottomRight: isMe ? Radius.circular(0.r) : Radius.circular(12.r),
+              topLeft: const Radius.circular(12),
+              topRight: const Radius.circular(12),
+              bottomLeft:
+                  !isMe ? const Radius.circular(0) : const Radius.circular(12),
+              bottomRight:
+                  isMe ? const Radius.circular(0) : const Radius.circular(12),
             ),
           ),
           child: Column(

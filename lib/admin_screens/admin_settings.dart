@@ -5,11 +5,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/admin_screens/admin_profile.dart';
 import 'package:wash_mesh/services/firebase_auth_methods.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 
+import '../providers/admin_provider/admin_auth_provider.dart';
 import '../register_screen.dart';
 import '../widgets/custom_colors.dart';
 import '../widgets/custom_logo.dart';
@@ -228,17 +230,23 @@ class _AdminSettingsState extends State<AdminSettings> {
               SizedBox(height: 70.h),
               InkWell(
                 onTap: () async {
-                  FirebaseAuthMethods(FirebaseAuth.instance).signOut(context);
+                  await FirebaseAuthMethods(FirebaseAuth.instance)
+                      .signOut(context);
+
+                  await Provider.of<AdminAuthProvider>(context, listen: false)
+                      .adminLogout();
+
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.remove('token');
+                  prefs.setBool('adminLoggedIn', false);
+
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (context) => const RegisterScreen(),
                     ),
                     (route) => false,
                   );
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  prefs.remove('token');
-                  prefs.setBool('adminLoggedIn', false);
                 },
                 child: Text(
                   'Logout',

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_button.dart';
@@ -28,7 +29,7 @@ class AdminRegisterScreen extends StatefulWidget {
 }
 
 class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
-  bool? isChecked = false;
+  bool? agree = false;
   final formKey = GlobalKey<FormState>();
   File? expCert;
   File? cnicFront;
@@ -682,42 +683,119 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
                   ],
                 ),
                 SizedBox(height: 20.h),
-                if (isChecked == false)
-                  Text(
-                    'Select Terms and conditions',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red.shade500,
-                    ),
-                  ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Checkbox(
-                      value: isChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isChecked = value;
-                        });
-                      },
+                    Container(
+                      margin: EdgeInsets.only(top: 10.h, left: 20.w),
+                      child: Checkbox(
+                        value: agree,
+                        onChanged: (value) {
+                          setState(() {
+                            agree = value!;
+                          });
+                        },
+                        activeColor: Colors.blue,
+                        checkColor: Colors.white,
+                      ),
                     ),
-                    Text(
-                      'Terms and conditions*',
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue,
+                    Container(
+                      margin: EdgeInsets.only(left: 10.w, top: 10.h),
+                      child: InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              actions: <Widget>[
+                                SizedBox(
+                                  height: 650.h,
+                                  child: SfPdfViewer.asset(
+                                    'assets/pdf_files/vendor.pdf',
+                                  ),
+                                ),
+                                Center(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(ctx).pop();
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.all(14),
+                                          child: const Text(
+                                            "Cancel",
+                                            style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          agree = true;
+                                          setState(() {});
+                                          Navigator.of(ctx).pop();
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.all(14),
+                                          child: const Text("I agree",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              'I agree to the',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                            Text(
+                              ' Terms & Conditions',
+                              style: TextStyle(
+                                color: Colors.redAccent,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
                 ),
+                Visibility(
+                    visible: agree == false,
+                    child: Container(
+                      margin: EdgeInsets.only(left: 30.w, top: 10.h),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Please agree to the Terms & Conditions',
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 12.sp,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
+                SizedBox(height: 20.h),
                 isLoading == true
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
                     : CustomButton(
-                        onTextPress: isChecked == true ? onRegister : null,
+                        onTextPress: agree == true ? onRegister : null,
                         buttonText: 'Next',
                       ),
                 SizedBox(height: 20.h),

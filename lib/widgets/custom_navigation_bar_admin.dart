@@ -1,11 +1,11 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:wash_mesh/admin_chat_module/main.dart';
 import 'package:wash_mesh/admin_screens/admin_home_screen.dart';
 import 'package:wash_mesh/admin_screens/admin_settings.dart';
 import 'package:wash_mesh/admin_screens/admin_update_services.dart';
 import 'package:wash_mesh/widgets/custom_colors.dart';
 
+import '../admin_chat_module/admin_chat_app.dart';
 import '../admin_screens/admin_booking_screen.dart';
 
 class CustomNavigationBarAdmin extends StatefulWidget {

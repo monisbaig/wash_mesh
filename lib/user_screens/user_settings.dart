@@ -5,7 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wash_mesh/providers/user_provider/user_auth_provider.dart';
 import 'package:wash_mesh/register_screen.dart';
 import 'package:wash_mesh/user_screens/user_app_language.dart';
 import 'package:wash_mesh/user_screens/user_change_password.dart';
@@ -229,16 +231,21 @@ class _UserSettingsState extends State<UserSettings> {
                 onTap: () async {
                   await FirebaseAuthMethods(FirebaseAuth.instance)
                       .signOut(context);
+
+                  await Provider.of<UserAuthProvider>(context, listen: false)
+                      .userLogout();
+
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.remove('userToken');
+                  prefs.setBool('userLoggedIn', false);
+
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (context) => const RegisterScreen(),
                     ),
                     (route) => false,
                   );
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  prefs.remove('userToken');
-                  prefs.setBool('userLoggedIn', false);
                 },
                 child: Text(
                   'Logout',
