@@ -238,7 +238,7 @@ class _AdminServicesState extends State<AdminServices> {
                                       'Register your Service(s)',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 30.sp,
+                                        fontSize: 24.sp,
                                       ),
                                     ),
                                   ],

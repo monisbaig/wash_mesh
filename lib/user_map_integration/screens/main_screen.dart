@@ -15,8 +15,8 @@ import 'package:wash_mesh/providers/user_provider/user_info_provider.dart';
 import 'package:wash_mesh/widgets/custom_navigation_bar.dart';
 
 import '../../providers/user_provider/user_auth_provider.dart';
-import '../../widgets/pay_fare_dialog.dart';
 import '../../widgets/progress_dialog.dart';
+import '../../widgets/user_pay_fare_dialog.dart';
 import '../assistants/user_assistant_methods.dart';
 import '../assistants/user_geofire_assistant.dart';
 import '../models/active_drivers_model.dart';
@@ -511,7 +511,7 @@ class _MainScreenState extends State<MainScreen> {
 
   DatabaseReference? rideRef;
 
-  saveRideRequest() {
+  saveRideRequest({required dynamic orderId, required dynamic vendorId}) {
     rideRef =
         FirebaseDatabase.instance.ref().child('All Order Requests').push();
 
@@ -530,6 +530,8 @@ class _MainScreenState extends State<MainScreen> {
       'userPhone': userModel!.phone,
       'originAddress': originLocation.locationName,
       'vendorId': 'waiting',
+      'orderId': orderId,
+      'apiVendorId': vendorId,
     };
 
     rideRef!.set(userInfoMap);
@@ -584,7 +586,7 @@ class _MainScreenState extends State<MainScreen> {
             var response = await showDialog(
               context: context,
               barrierDismissible: false,
-              builder: (context) => PayFareDialog(
+              builder: (context) => UserPayFareDialog(
                 fareAmount: fareAmount,
               ),
             );
@@ -905,11 +907,14 @@ class _MainScreenState extends State<MainScreen> {
                             Fluttertoast.showToast(
                                 msg: 'Please select your location first');
                           } else {
-                            saveRideRequest();
                             await userAuthProvider.userAcceptOrder(
                               orderId: widget.orderId,
                               vendorId: widget.vendorId,
                               context: context,
+                            );
+                            saveRideRequest(
+                              orderId: widget.orderId,
+                              vendorId: widget.vendorId,
                             );
                           }
                         },

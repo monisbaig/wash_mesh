@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class PayFareDialog extends StatefulWidget {
-  final double fareAmount;
+class AdminExtraChargesDialog extends StatefulWidget {
+  final double totalFareAmount;
 
-  const PayFareDialog({super.key, required this.fareAmount});
+  const AdminExtraChargesDialog({super.key, required this.totalFareAmount});
 
   @override
-  State<PayFareDialog> createState() => _PayFareDialogState();
+  State<AdminExtraChargesDialog> createState() =>
+      _AdminExtraChargesDialogState();
 }
 
-class _PayFareDialogState extends State<PayFareDialog> {
+class _AdminExtraChargesDialogState extends State<AdminExtraChargesDialog> {
+  String? extraCharges;
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -41,7 +45,7 @@ class _PayFareDialogState extends State<PayFareDialog> {
             ),
             const SizedBox(height: 20),
             Text(
-              widget.fareAmount.toString(),
+              widget.totalFareAmount.toString(),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 50,
@@ -49,14 +53,30 @@ class _PayFareDialogState extends State<PayFareDialog> {
               ),
             ),
             const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'Please pay your fee',
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(22),
+              ),
+              width: 200.w,
+              child: TextField(
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.blue,
+                decoration: InputDecoration(
+                  hintText: 'Enter extra charges',
+                  hintStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 13.sp,
+                  ),
+                  border: InputBorder.none,
                 ),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  extraCharges = value;
+                },
               ),
             ),
             const SizedBox(height: 10),
@@ -64,25 +84,15 @@ class _PayFareDialogState extends State<PayFareDialog> {
               padding: const EdgeInsets.all(18),
               child: ElevatedButton(
                 onPressed: () {
-                  Future.delayed(const Duration(seconds: 3), () {
-                    Navigator.pop(context, 'cashPaid');
-                  });
+                  Navigator.pop(context, 'done');
                 },
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Pay Cash',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
                     Text(
-                      'Rs: ${widget.fareAmount}',
-                      style: const TextStyle(
-                        fontSize: 20,
+                      'Submit',
+                      style: TextStyle(
+                        fontSize: 16,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),

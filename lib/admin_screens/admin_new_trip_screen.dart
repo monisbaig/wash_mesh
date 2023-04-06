@@ -7,12 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:wash_mesh/stopwatch/countdown_screen.dart';
+import 'package:wash_mesh/widgets/admin_total_charges_dialog.dart';
 
 import '../admin_map_integration/admin_global_variables/admin_global_variables.dart';
 import '../admin_map_integration/assistants/admin_assistant_methods.dart';
 import '../admin_map_integration/models/admin_ride_request_model.dart';
-import '../widgets/fare_amount_dialog.dart';
+import '../providers/admin_provider/admin_auth_provider.dart';
+import '../widgets/admin_extra_charges_dialog.dart';
 import '../widgets/progress_dialog.dart';
 
 class AdminNewTripScreen extends StatefulWidget {
@@ -465,7 +468,38 @@ class _AdminNewTripScreenState extends State<AdminNewTripScreen> {
     }
   }
 
+  extraCharges() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const ProgressDialog(message: 'Please wait...'),
+    );
+
+    double totalFareAmount = 200;
+
+    FirebaseDatabase.instance
+        .ref()
+        .child('All Order Requests')
+        .child(widget.rideRequestModel.rideRequestId!)
+        .child('fareAmount')
+        .set(totalFareAmount.toString());
+
+    Navigator.pop(context);
+
+    var response = await showDialog(
+      context: context,
+      builder: (context) => AdminExtraChargesDialog(
+        totalFareAmount: totalFareAmount,
+      ),
+    );
+
+    if (response == 'done') {
+      endTripNow();
+    }
+  }
+
   endTripNow() async {
+    var adminData = Provider.of<AdminAuthProvider>(context, listen: false);
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -485,12 +519,27 @@ class _AdminNewTripScreenState extends State<AdminNewTripScreen> {
     double totalFareAmount =
         AdminAssistantMethods.calculateTripFee(tripDirectionInfo!);
 
-    FirebaseDatabase.instance
-        .ref()
+    // var amount = FirebaseDatabase.instance
+    //     .ref()
+    //     .child('All Order Requests')
+    //     .child(widget.rideRequestModel.rideRequestId!)
+    //     .child('fareAmount')
+    //     .get();
+
+    dynamic amount;
+
+    final ref = FirebaseDatabase.instance.ref();
+    final snapshot = await ref
         .child('All Order Requests')
         .child(widget.rideRequestModel.rideRequestId!)
         .child('fareAmount')
-        .set(totalFareAmount.toString());
+        .get();
+    if (snapshot.exists) {
+      amount = snapshot.value;
+      print(amount);
+    } else {
+      print('No data available.');
+    }
 
     FirebaseDatabase.instance
         .ref()
@@ -499,47 +548,51 @@ class _AdminNewTripScreenState extends State<AdminNewTripScreen> {
         .child('status')
         .set('ended');
 
-    // driverStreamSubscription!.cancel();
+    driverStreamSubscription!.cancel();
+    await adminData.updateAvailability(
+      context: context,
+      availability: '2',
+    );
     Navigator.pop(context);
 
     showDialog(
       context: context,
-      builder: (context) => FareAmountDialog(
-        totalFareAmount: totalFareAmount,
+      builder: (context) => AdminTotalChargesDialog(
+        totalFareAmount: amount.toString(),
       ),
     );
 
-    saveDriverEarnings(totalFareAmount);
+    // saveDriverEarnings(totalFareAmount);
   }
 
-  saveDriverEarnings(double totalFareAmount) {
-    FirebaseDatabase.instance
-        .ref()
-        .child('vendor')
-        .child(currentAdminUser!.uid)
-        .child('earnings')
-        .once()
-        .then((snapshot) {
-      if (snapshot.snapshot.value != null) {
-        double oldEarnings = double.parse(snapshot.snapshot.value.toString());
-
-        double driverTotalEarnings = totalFareAmount + oldEarnings;
-        FirebaseDatabase.instance
-            .ref()
-            .child('vendor')
-            .child(currentAdminUser!.uid)
-            .child('earnings')
-            .set(driverTotalEarnings.toString());
-      } else {
-        FirebaseDatabase.instance
-            .ref()
-            .child('vendor')
-            .child(currentAdminUser!.uid)
-            .child('earnings')
-            .set(totalFareAmount.toString());
-      }
-    });
-  }
+  // saveDriverEarnings(double totalFareAmount) {
+  //   FirebaseDatabase.instance
+  //       .ref()
+  //       .child('vendor')
+  //       .child(currentAdminUser!.uid)
+  //       .child('earnings')
+  //       .once()
+  //       .then((snapshot) {
+  //     if (snapshot.snapshot.value != null) {
+  //       double oldEarnings = double.parse(snapshot.snapshot.value.toString());
+  //
+  //       double driverTotalEarnings = totalFareAmount + oldEarnings;
+  //       FirebaseDatabase.instance
+  //           .ref()
+  //           .child('vendor')
+  //           .child(currentAdminUser!.uid)
+  //           .child('earnings')
+  //           .set(driverTotalEarnings.toString());
+  //     } else {
+  //       FirebaseDatabase.instance
+  //           .ref()
+  //           .child('vendor')
+  //           .child(currentAdminUser!.uid)
+  //           .child('earnings')
+  //           .set(totalFareAmount.toString());
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -713,7 +766,7 @@ class _AdminNewTripScreenState extends State<AdminNewTripScreen> {
                             });
                           }
                         } else if (rideRequestStatus == 'working') {
-                          endTripNow();
+                          extraCharges();
                         }
                       },
                       icon: const Icon(

@@ -16,6 +16,7 @@ import 'package:wash_mesh/widgets/custom_navigation_bar_admin.dart';
 import 'package:wash_mesh/widgets/custom_text_field.dart';
 
 import '../admin_map_integration/admin_global_variables/admin_global_variables.dart';
+import '../admin_map_integration/notifications/push_notifications.dart';
 import '../providers/admin_provider/admin_auth_provider.dart';
 import 'admin_forget_password.dart';
 
@@ -40,9 +41,30 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
     try {
       final isValid = formKey.currentState!.validate();
       if (isValid) {
+        await login();
+
+        PushNotifications pushNotifications = PushNotifications();
+        await pushNotifications.generateToken();
+
+        dynamic fcmToken;
+
+        final ref = FirebaseDatabase.instance.ref();
+        final snapshot = await ref
+            .child('vendor')
+            .child(firebaseAuth.currentUser!.uid)
+            .child('fcmToken')
+            .get();
+        if (snapshot.exists) {
+          fcmToken = snapshot.value;
+          print(fcmToken);
+        } else {
+          print('No data available.');
+        }
+
         final result = await adminData.loginAdmin(
           input: phoneNo.text,
           password: password.text,
+          fcmToken: fcmToken,
         );
 
         // ScaffoldMessenger.of(context).showSnackBar(
@@ -55,8 +77,6 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString("loginPhone", phoneNo.text);
           prefs.setString("loginPassword", password.text);
-
-          login();
 
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
@@ -81,7 +101,7 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
     });
   }
 
-  void login() async {
+  login() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var email = prefs.getString("email");

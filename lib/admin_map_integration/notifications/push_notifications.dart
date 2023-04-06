@@ -82,7 +82,7 @@ class PushNotifications {
     FirebaseDatabase.instance
         .ref()
         .child('vendor')
-        .child(currentAdminUser!.uid)
+        .child(firebaseAuth.currentUser!.uid)
         .child('fcmToken')
         .set(fcmToken);
 

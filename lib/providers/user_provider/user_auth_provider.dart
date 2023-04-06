@@ -166,7 +166,7 @@ class UserAuthProvider extends ChangeNotifier {
 
       print(jsonDecode(response.body)['message']);
       print(response.body);
-      return await FirebaseAuth.instance.signInWithCredential(credential);
+      await FirebaseAuth.instance.signInWithCredential(credential);
     } else {
       print(response.body);
     }

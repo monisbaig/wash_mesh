@@ -141,9 +141,10 @@ class AdminAuthProvider extends ChangeNotifier {
   loginAdmin({
     var input,
     var password,
+    var fcmToken,
   }) async {
-    final url =
-        Uri.parse('$baseURL/user/vendor/login?input=$input&password=$password');
+    final url = Uri.parse(
+        '$baseURL/user/vendor/login?input=$input&password=$password&fcm_token=$fcmToken');
     final response = await http.post(url);
     if (response.statusCode == 200) {
       if (jsonDecode(response.body)['message'] ==
@@ -156,8 +157,11 @@ class AdminAuthProvider extends ChangeNotifier {
         prefs.setBool('adminLoggedIn', true);
         prefs.setString('adminPersonalInfo', response.body);
       }
+      print(response.body);
+      print(fcmToken);
       return jsonDecode(response.body)['message'];
     } else {
+      print(fcmToken);
       print(response.body);
     }
     notifyListeners();
