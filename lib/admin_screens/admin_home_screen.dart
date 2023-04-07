@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
@@ -21,8 +22,8 @@ import 'package:wash_mesh/global_variables/global_variables.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 
 import '../admin_map_integration/admin_global_variables/admin_global_variables.dart';
+import '../admin_map_integration/admin_notifications/admin_push_notifications.dart';
 import '../admin_map_integration/assistants/admin_assistant_methods.dart';
-import '../admin_map_integration/notifications/push_notifications.dart';
 import '../models/admin_models/admin_model.dart';
 import '../providers/admin_provider/admin_auth_provider.dart';
 import '../providers/admin_provider/admin_info_provider.dart';
@@ -123,7 +124,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     Geofire.initialize('activeDrivers');
 
     Geofire.setLocation(
-      firebaseAuth.currentUser!.uid,
+      FirebaseAuth.instance.currentUser!.uid,
       driverCurrentPosition!.latitude,
       driverCurrentPosition!.longitude,
     );
@@ -131,7 +132,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     DatabaseReference ref = FirebaseDatabase.instance
         .ref()
         .child('vendor')
-        .child(firebaseAuth.currentUser!.uid)
+        .child(FirebaseAuth.instance.currentUser!.uid)
         .child('vendorStatus');
 
     ref.set('idle');
@@ -145,7 +146,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 
       if (isDriverActive == true) {
         Geofire.setLocation(
-          firebaseAuth.currentUser!.uid,
+          FirebaseAuth.instance.currentUser!.uid,
           driverCurrentPosition!.latitude,
           driverCurrentPosition!.longitude,
         );
@@ -160,13 +161,14 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     });
   }
 
-  driverOffline() {
-    Geofire.removeLocation(firebaseAuth.currentUser!.uid);
+  driverOffline() async {
+    await Geofire.removeLocation(FirebaseAuth.instance.currentUser!.uid);
+    await Geofire.stopListener();
 
     DatabaseReference? ref = FirebaseDatabase.instance
         .ref()
         .child('vendor')
-        .child(firebaseAuth.currentUser!.uid)
+        .child(FirebaseAuth.instance.currentUser!.uid)
         .child('vendorStatus');
     ref.remove();
     ref.onDisconnect();
@@ -174,7 +176,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   }
 
   readDriverInfo() async {
-    currentAdminUser = firebaseAuth.currentUser;
+    currentAdminUser = FirebaseAuth.instance.currentUser;
 
     FirebaseDatabase.instance
         .ref()
@@ -190,7 +192,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       }
     });
 
-    PushNotifications pushNotifications = PushNotifications();
+    AdminPushNotifications pushNotifications = AdminPushNotifications();
     pushNotifications.initializeCloudMessaging(context);
     pushNotifications.generateToken();
   }
@@ -493,23 +495,18 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          TotalEarningsScreen(),
+                                          const TotalEarningsScreen(),
                                     ),
                                   );
                                 },
                                 child: Column(
                                   children: [
-                                    Container(
-                                      width: 80.w,
-                                      height: 87.h,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(45.r),
-                                      ),
+                                    CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      radius: 40.sp,
                                       child: Icon(
                                         Icons.camera,
-                                        size: 50,
+                                        size: 43.sp,
                                         color: CustomColor().mainColor,
                                       ),
                                     ),
@@ -534,23 +531,18 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          TotalBookingScreen(),
+                                          const TotalBookingScreen(),
                                     ),
                                   );
                                 },
                                 child: Column(
                                   children: [
-                                    Container(
-                                      width: 80.w,
-                                      height: 87.h,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(45.r),
-                                      ),
+                                    CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      radius: 40.sp,
                                       child: Icon(
                                         Icons.edit_calendar_outlined,
-                                        size: 50,
+                                        size: 43.sp,
                                         color: CustomColor().mainColor,
                                       ),
                                     ),
@@ -575,23 +567,18 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          UpcomingServiceScreen(),
+                                          const UpcomingServiceScreen(),
                                     ),
                                   );
                                 },
                                 child: Column(
                                   children: [
-                                    Container(
-                                      width: 80.w,
-                                      height: 87.h,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(45.r),
-                                      ),
+                                    CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      radius: 40.sp,
                                       child: Icon(
                                         Icons.list_alt_outlined,
-                                        size: 50,
+                                        size: 43.sp,
                                         color: CustomColor().mainColor,
                                       ),
                                     ),
@@ -616,23 +603,18 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          TodayServicesScreen(),
+                                          const TodayServicesScreen(),
                                     ),
                                   );
                                 },
                                 child: Column(
                                   children: [
-                                    Container(
-                                      width: 80.w,
-                                      height: 87.h,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(45.r),
-                                      ),
+                                    CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      radius: 40.sp,
                                       child: Icon(
                                         Icons.design_services_outlined,
-                                        size: 50,
+                                        size: 43.sp,
                                         color: CustomColor().mainColor,
                                       ),
                                     ),

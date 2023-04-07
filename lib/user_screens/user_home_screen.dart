@@ -29,6 +29,8 @@ import '../user_map_integration/assistants/user_assistant_methods.dart';
 import 'mesh_book_screen.dart';
 import 'mesh_category_screen.dart';
 
+dynamic firstName;
+
 class UserHomeScreen extends StatefulWidget {
   const UserHomeScreen({Key? key}) : super(key: key);
 
@@ -40,7 +42,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   User user = User();
 
   bool isLoading = false;
-  dynamic firstName;
 
   getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -116,8 +117,13 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   @override
   void initState() {
     super.initState();
-    allowLocationPermission();
     getUserData();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    await allowLocationPermission();
   }
 
   @override

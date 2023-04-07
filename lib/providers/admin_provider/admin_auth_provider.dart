@@ -152,8 +152,8 @@ class AdminAuthProvider extends ChangeNotifier {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('Vendor', response.body);
         prefs.setString('token', jsonDecode(response.body)['data']['token']);
-        prefs.setString(
-            'email', jsonDecode(response.body)['data']['Vendor']['email']);
+        prefs.setString('email',
+            jsonDecode(response.body)['data']['Vendor']['email'].toString());
         prefs.setBool('adminLoggedIn', true);
         prefs.setString('adminPersonalInfo', response.body);
       }

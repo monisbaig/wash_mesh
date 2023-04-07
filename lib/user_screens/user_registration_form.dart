@@ -78,12 +78,12 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
         u.User user = u.User(
           firstName: firstName.text,
           lastName: lastName.text,
-          email: email.text,
-          password: password.text,
-          confirmPassword: confirmPassword.text,
+          email: email.text.trim(),
+          password: password.text.trim(),
+          confirmPassword: confirmPassword.text.trim(),
           address: address.text,
           image: convertedImage,
-          phone: phoneNo.text,
+          phone: phoneNo.text.trim(),
           gender: selectedGender,
         );
         await userData.registerUser(user, context);
@@ -296,19 +296,10 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                     ],
                   ),
                 ),
-                SizedBox(height: 20.h),
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const UserLoginForm(),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    'alreadyAccount'.tr(),
-                    style: TextStyle(fontSize: 20.sp),
-                  ),
+                SizedBox(height: 15.h),
+                Text(
+                  'Register with',
+                  style: TextStyle(fontSize: 20.sp),
                 ),
                 SizedBox(height: 15.h),
                 Row(
@@ -344,6 +335,20 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
                   ],
                 ),
                 SizedBox(height: 15.h),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const UserLoginForm(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'alreadyAccount'.tr(),
+                    style: TextStyle(fontSize: 20.sp),
+                  ),
+                ),
+                SizedBox(height: 10.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [

@@ -10,8 +10,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'admin_global_variables/admin_global_variables.dart';
+import 'admin_notifications/admin_push_notifications.dart';
 import 'assistants/admin_assistant_methods.dart';
-import 'notifications/push_notifications.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -308,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
 
-    PushNotifications pushNotifications = PushNotifications();
+    AdminPushNotifications pushNotifications = AdminPushNotifications();
     pushNotifications.initializeCloudMessaging(context);
     pushNotifications.generateToken();
   }

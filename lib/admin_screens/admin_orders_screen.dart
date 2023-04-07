@@ -70,6 +70,7 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
                               SizedBox(height: 10.h),
                               ListView.builder(
                                 shrinkWrap: true,
+                                physics: const ScrollPhysics(),
                                 itemCount: snapshot.data!.data!.length,
                                 itemBuilder: (context, index) {
                                   var status = snapshot.data!.data!
@@ -88,7 +89,7 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           const Text("Amount :"),
-                                          SizedBox(height: 10.h),
+                                          SizedBox(height: 6.h),
                                           Text(
                                             "${snapshot.data!.data!.elementAt(index).amount}",
                                           ),
@@ -127,7 +128,7 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
                                                   TextStyle(color: Colors.red),
                                             ),
                                           ),
-                                          SizedBox(height: 10.h),
+                                          SizedBox(height: 6.h),
                                           InkWell(
                                             onTap: () async {
                                               var id = snapshot.data!.data!

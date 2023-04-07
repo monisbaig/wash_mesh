@@ -8,16 +8,18 @@ import '../../admin_screens/admin_new_trip_screen.dart';
 import '../admin_global_variables/admin_global_variables.dart';
 import '../models/admin_ride_request_model.dart';
 
-class NotificationDialogBox extends StatefulWidget {
+class AdminNotificationDialogBox extends StatefulWidget {
   final AdminRideRequestModel rideRequestModel;
 
-  const NotificationDialogBox({super.key, required this.rideRequestModel});
+  const AdminNotificationDialogBox({super.key, required this.rideRequestModel});
 
   @override
-  State<NotificationDialogBox> createState() => _NotificationDialogBoxState();
+  State<AdminNotificationDialogBox> createState() =>
+      _AdminNotificationDialogBoxState();
 }
 
-class _NotificationDialogBoxState extends State<NotificationDialogBox> {
+class _AdminNotificationDialogBoxState
+    extends State<AdminNotificationDialogBox> {
   acceptRideRequest(context) {
     String? getRequestId;
 

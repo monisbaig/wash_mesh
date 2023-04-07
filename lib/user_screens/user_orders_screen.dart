@@ -82,7 +82,7 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           const Text("Amount :"),
-                                          SizedBox(height: 10.h),
+                                          SizedBox(height: 6.h),
                                           Text(
                                             "${snapshot.data!.data!.elementAt(index).amount}",
                                           ),

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,8 +22,11 @@ import '../../models/user_models/user_model.dart' as u;
 import '../../models/user_models/wash_categories_model.dart' as um;
 import '../../models/user_models/wash_categories_model.dart';
 import '../../user_map_integration/user_global_variables/user_global_variables.dart';
+import '../../user_map_integration/user_notifications/user_push_notifications.dart';
 import '../../user_screens/user_home_otp.dart';
 import '../../user_screens/user_login_form.dart';
+import '../../user_screens/user_social_profile.dart';
+import '../../widgets/custom_navigation_bar.dart';
 
 class UserAuthProvider extends ChangeNotifier {
   static const baseURL = 'https://washmesh.stackbuffers.com/api';
@@ -113,7 +117,6 @@ class UserAuthProvider extends ChangeNotifier {
       body: jsonEncode(<String, dynamic>{
         'user_name': name,
         'email': email,
-        'image': Image.asset('assets/images/profile.png').toString(),
       }),
     );
 
@@ -143,7 +146,7 @@ class UserAuthProvider extends ChangeNotifier {
     return u.User.fromJson(jsonDecode(response.body));
   }
 
-  loginSocialUser() async {
+  loginSocialUser(context) async {
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication gAuth = await gUser!.authentication;
 
@@ -154,8 +157,39 @@ class UserAuthProvider extends ChangeNotifier {
 
     var googleMail = gUser.email;
 
-    final url =
-        Uri.parse('$baseURL/user/customer/login/socialite?input=$googleMail');
+    var userData = await FirebaseAuth.instance.signInWithCredential(credential);
+
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    final fcmTokenGenerate = await messaging.getToken();
+
+    FirebaseDatabase.instance
+        .ref()
+        .child('users')
+        .child(userData.user!.uid)
+        .child('fcmToken')
+        .set(fcmTokenGenerate);
+
+    await messaging.subscribeToTopic('allVendors');
+    await messaging.subscribeToTopic('allUsers');
+
+    dynamic fcmToken;
+
+    final ref = FirebaseDatabase.instance.ref();
+    final snapshot = await ref
+        .child('users')
+        .child(userData.user!.uid)
+        .child('fcmToken')
+        .get();
+    if (snapshot.exists) {
+      fcmToken = snapshot.value;
+      print(fcmToken);
+    } else {
+      print('No data available.');
+    }
+
+    final url = Uri.parse(
+        '$baseURL/user/customer/login/socialite?input=$googleMail&fcm_token=$fcmToken');
     final response = await http.post(url);
 
     if (response.statusCode == 200) {
@@ -164,9 +198,25 @@ class UserAuthProvider extends ChangeNotifier {
       prefs.setBool('userLoggedIn', true);
       prefs.setString('userPersonalInfo', response.body);
 
+      var firstName =
+          await jsonDecode(response.body)['data']['User']['first_name'];
+
+      if (firstName != null) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const CustomNavigationBar(),
+          ),
+        );
+      } else {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const UserSocialProfile(),
+          ),
+        );
+      }
+
       print(jsonDecode(response.body)['message']);
       print(response.body);
-      await FirebaseAuth.instance.signInWithCredential(credential);
     } else {
       print(response.body);
     }
@@ -184,8 +234,26 @@ class UserAuthProvider extends ChangeNotifier {
 
     var faceBookEmail = userData['email'];
 
+    UserPushNotifications pushNotifications = UserPushNotifications();
+    await pushNotifications.generateToken();
+
+    dynamic fcmToken;
+
+    final ref = FirebaseDatabase.instance.ref();
+    final snapshot = await ref
+        .child('users')
+        .child(firebaseAuth.currentUser!.uid)
+        .child('fcmToken')
+        .get();
+    if (snapshot.exists) {
+      fcmToken = snapshot.value;
+      print(fcmToken);
+    } else {
+      print('No data available.');
+    }
+
     final url = Uri.parse(
-        '$baseURL/user/customer/login/socialite?input=$faceBookEmail');
+        '$baseURL/user/customer/login/socialite?input=$faceBookEmail&fcm_token=$fcmToken');
     final response = await http.post(url);
 
     if (response.statusCode == 200) {
@@ -217,29 +285,33 @@ class UserAuthProvider extends ChangeNotifier {
       var googleName = gUser.displayName;
       var googleMail = gUser.email;
 
-      await registerSocialUser(
-          name: googleName, email: googleMail, context: context);
-
       var authResult =
           await FirebaseAuth.instance.signInWithCredential(credential);
 
-      var user = authResult.user!.uid;
-
       Map userData = {
-        'id': user,
+        'id': authResult.user!.uid,
         'name': googleName,
         'email': googleMail,
       };
 
       DatabaseReference userRef =
           FirebaseDatabase.instance.ref().child('users');
-      userRef.child(user).set(userData);
+      userRef.child(authResult.user!.uid).set(userData);
 
-      await FirebaseFirestore.instance.collection('users').doc(user).set({
-        'userId': user,
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(authResult.user!.uid)
+          .set({
+        'userId': authResult.user!.uid,
         'username': googleName,
         'email': googleMail,
       });
+
+      await registerSocialUser(
+        name: googleName,
+        email: googleMail,
+        context: context,
+      );
 
       Fluttertoast.showToast(msg: 'Account has been created successfully.');
     } else {
@@ -262,9 +334,6 @@ class UserAuthProvider extends ChangeNotifier {
       var faceBookName = userData['name'];
       var faceBookEmail = userData['email'];
 
-      await registerSocialUser(
-          name: faceBookName, email: faceBookEmail, context: context);
-
       var authResult = await FirebaseAuth.instance
           .signInWithCredential(facebookAuthCredential);
 
@@ -285,6 +354,12 @@ class UserAuthProvider extends ChangeNotifier {
         'username': faceBookName,
         'email': faceBookEmail,
       });
+
+      await registerSocialUser(
+        name: faceBookName,
+        email: faceBookEmail,
+        context: context,
+      );
 
       Fluttertoast.showToast(msg: 'Account has been created successfully.');
     } else {
@@ -339,9 +414,10 @@ class UserAuthProvider extends ChangeNotifier {
   loginUser({
     var input,
     var password,
+    var fcmToken,
   }) async {
     final url = Uri.parse(
-        '$baseURL/user/customer/login?input=$input&password=$password');
+        '$baseURL/user/customer/login?input=$input&password=$password&fcm_token=$fcmToken');
     final response = await http.post(url);
     if (response.statusCode == 200) {
       if (jsonDecode(response.body)['message'] == 'Login Successfully') {
@@ -351,6 +427,7 @@ class UserAuthProvider extends ChangeNotifier {
         prefs.setBool('userLoggedIn', true);
         prefs.setString('userPersonalInfo', response.body);
       }
+      print(response.body);
       return jsonDecode(response.body)['message'];
     } else {
       print(response.body);

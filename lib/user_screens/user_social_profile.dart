@@ -9,7 +9,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/providers/user_provider/user_auth_provider.dart';
-import 'package:wash_mesh/user_screens/user_settings.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_text_field.dart';
 
@@ -95,7 +94,7 @@ class _UserSocialProfileState extends State<UserSocialProfile> {
       } else {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => const UserSettings(),
+            builder: (context) => const CustomNavigationBar(),
           ),
         );
       }

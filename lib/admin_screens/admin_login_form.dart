@@ -16,7 +16,7 @@ import 'package:wash_mesh/widgets/custom_navigation_bar_admin.dart';
 import 'package:wash_mesh/widgets/custom_text_field.dart';
 
 import '../admin_map_integration/admin_global_variables/admin_global_variables.dart';
-import '../admin_map_integration/notifications/push_notifications.dart';
+import '../admin_map_integration/admin_notifications/admin_push_notifications.dart';
 import '../providers/admin_provider/admin_auth_provider.dart';
 import 'admin_forget_password.dart';
 
@@ -41,9 +41,15 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
     try {
       final isValid = formKey.currentState!.validate();
       if (isValid) {
+        await adminData.loginAdmin(
+          input: phoneNo.text.trim(),
+          password: password.text.trim(),
+          fcmToken: '',
+        );
+
         await login();
 
-        PushNotifications pushNotifications = PushNotifications();
+        AdminPushNotifications pushNotifications = AdminPushNotifications();
         await pushNotifications.generateToken();
 
         dynamic fcmToken;
@@ -62,8 +68,8 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
         }
 
         final result = await adminData.loginAdmin(
-          input: phoneNo.text,
-          password: password.text,
+          input: phoneNo.text.trim(),
+          password: password.text.trim(),
           fcmToken: fcmToken,
         );
 
@@ -105,10 +111,11 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var email = prefs.getString("email");
+      print(email);
 
       final UserCredential admin =
           await firebaseAuth.signInWithEmailAndPassword(
-        email: email.toString(),
+        email: email.toString().trim(),
         password: password.text.trim(),
       );
 

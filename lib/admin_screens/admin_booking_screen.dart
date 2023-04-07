@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:wash_mesh/widgets/admin_extra_charges_dialog.dart';
+import 'package:wash_mesh/admin_screens/admin_orders_screen.dart';
 
 import '../widgets/custom_background.dart';
 import '../widgets/custom_logo.dart';
@@ -51,8 +51,7 @@ class _AdminBookingScreenState extends State<AdminBookingScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              const AdminExtraChargesDialog(totalFareAmount: 0),
+                          builder: (context) => const AdminOrdersScreen(),
                         ),
                       );
                     },

@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wash_mesh/user_screens/user_forget_password.dart';
+import 'package:wash_mesh/user_screens/user_home_screen.dart';
 import 'package:wash_mesh/user_screens/user_registration_form.dart';
 import 'package:wash_mesh/user_screens/user_social_profile.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
@@ -19,6 +20,7 @@ import 'package:wash_mesh/widgets/custom_text_field.dart';
 import '../providers/user_provider/user_auth_provider.dart';
 import '../user_map_integration/assistants/user_assistant_methods.dart';
 import '../user_map_integration/user_global_variables/user_global_variables.dart';
+import '../user_map_integration/user_notifications/user_push_notifications.dart';
 import '../widgets/custom_navigation_bar.dart';
 
 class UserLoginForm extends StatefulWidget {
@@ -42,17 +44,36 @@ class _UserLoginFormState extends State<UserLoginForm> {
     try {
       final isValid = formKey.currentState!.validate();
       if (isValid) {
+        await login();
+
+        UserPushNotifications pushNotifications = UserPushNotifications();
+        await pushNotifications.generateToken();
+
+        dynamic fcmToken;
+
+        final ref = FirebaseDatabase.instance.ref();
+        final snapshot = await ref
+            .child('users')
+            .child(firebaseAuth.currentUser!.uid)
+            .child('fcmToken')
+            .get();
+        if (snapshot.exists) {
+          fcmToken = snapshot.value;
+          print(fcmToken);
+        } else {
+          print('No data available.');
+        }
+
         final result = await userData.loginUser(
-          input: emailPhone.text,
-          password: password.text,
+          input: emailPhone.text.trim(),
+          password: password.text.trim(),
+          fcmToken: fcmToken,
         );
 
         if (result == 'Login Successfully') {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString("userEmail", emailPhone.text);
           prefs.setString("userPassword", password.text);
-
-          login();
 
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
@@ -76,7 +97,7 @@ class _UserLoginFormState extends State<UserLoginForm> {
     });
   }
 
-  void login() async {
+  login() async {
     try {
       final UserCredential user = await firebaseAuth.signInWithEmailAndPassword(
         email: emailPhone.text.trim(),
@@ -226,12 +247,7 @@ class _UserLoginFormState extends State<UserLoginForm> {
                       onTap: () async {
                         await Provider.of<UserAuthProvider>(context,
                                 listen: false)
-                            .loginSocialUser();
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => const UserSocialProfile(),
-                          ),
-                        );
+                            .loginSocialUser(context);
                       },
                       child: Image.asset('assets/images/google-logo.png',
                           height: 40.h),
@@ -242,11 +258,19 @@ class _UserLoginFormState extends State<UserLoginForm> {
                         await Provider.of<UserAuthProvider>(context,
                                 listen: false)
                             .loginSocialFacebook();
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => const UserSocialProfile(),
-                          ),
-                        );
+                        if (firstName != null) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const CustomNavigationBar(),
+                            ),
+                          );
+                        } else {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const UserSocialProfile(),
+                            ),
+                          );
+                        }
                       },
                       child: Image.asset('assets/images/facebook-logo.png',
                           height: 40.h),

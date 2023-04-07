@@ -4,12 +4,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:wash_mesh/admin_map_integration/notifications/notification_dialog_box.dart';
 
 import '../admin_global_variables/admin_global_variables.dart';
 import '../models/admin_ride_request_model.dart';
+import 'admin_notification_dialog_box.dart';
 
-class PushNotifications {
+class AdminPushNotifications {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   Future initializeCloudMessaging(context) async {
@@ -66,7 +66,7 @@ class PushNotifications {
 
         showDialog(
           context: context,
-          builder: (context) => NotificationDialogBox(
+          builder: (context) => AdminNotificationDialogBox(
             rideRequestModel: rideRequestModel,
           ),
         );
