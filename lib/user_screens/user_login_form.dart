@@ -247,7 +247,11 @@ class _UserLoginFormState extends State<UserLoginForm> {
                       onTap: () async {
                         await Provider.of<UserAuthProvider>(context,
                                 listen: false)
-                            .loginSocialUser(context);
+                            .signInWithGoogle(context);
+
+                        // await Provider.of<UserAuthProvider>(context,
+                        //         listen: false)
+                        //     .loginSocialUser(context);
                       },
                       child: Image.asset('assets/images/google-logo.png',
                           height: 40.h),
@@ -257,7 +261,11 @@ class _UserLoginFormState extends State<UserLoginForm> {
                       onTap: () async {
                         await Provider.of<UserAuthProvider>(context,
                                 listen: false)
-                            .loginSocialFacebook();
+                            .signInWithFacebook(context);
+
+                        // await Provider.of<UserAuthProvider>(context,
+                        //         listen: false)
+                        //     .loginSocialFacebook();
                         if (firstName != null) {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(

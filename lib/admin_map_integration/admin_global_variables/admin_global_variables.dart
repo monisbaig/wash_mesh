@@ -16,6 +16,7 @@ StreamSubscription<Position>? streamSubscription;
 StreamSubscription<Position>? driverStreamSubscription;
 AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
 Position? driverCurrentPosition;
+bool isDriverActive = false;
 
 AdminDriverDataModel? driverDataModel = AdminDriverDataModel();
 String? driverCarType = '';

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wash_mesh/providers/user_provider/user_auth_provider.dart';
+import 'package:wash_mesh/user_map_integration/user_global_variables/user_global_variables.dart';
 
 class UserPayFareDialog extends StatefulWidget {
   final double fareAmount;
+  final String orderId;
 
-  const UserPayFareDialog({super.key, required this.fareAmount});
+  const UserPayFareDialog(
+      {super.key, required this.fareAmount, required this.orderId});
 
   @override
   State<UserPayFareDialog> createState() => _UserPayFareDialogState();
@@ -12,6 +17,8 @@ class UserPayFareDialog extends StatefulWidget {
 class _UserPayFareDialogState extends State<UserPayFareDialog> {
   @override
   Widget build(BuildContext context) {
+    var userData = Provider.of<UserAuthProvider>(context, listen: false);
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
@@ -66,6 +73,8 @@ class _UserPayFareDialogState extends State<UserPayFareDialog> {
                 onPressed: () {
                   Future.delayed(const Duration(seconds: 3), () {
                     Navigator.pop(context, 'cashPaid');
+                    userData.completeOrder(id: widget.orderId);
+                    dList.clear();
                   });
                 },
                 child: Row(

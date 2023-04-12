@@ -26,11 +26,13 @@ import 'active_drivers_screen.dart';
 class MainScreen extends StatefulWidget {
   final dynamic orderId;
   final dynamic vendorId;
+  final dynamic orderAmount;
 
   const MainScreen({
     super.key,
     required this.orderId,
     required this.vendorId,
+    required this.orderAmount,
   });
 
   @override
@@ -51,6 +53,8 @@ class _MainScreenState extends State<MainScreen> {
   String rideRequestStatus = '';
   bool requestPositionInfo = true;
   StreamSubscription<DatabaseEvent>? tripRideRequestSubscription;
+
+  List<ActiveDriversModel> onlineNearByAvailableDriversList = [];
 
   Position? userCurrentPosition;
   LocationPermission? _locationPermission;
@@ -435,13 +439,11 @@ class _MainScreenState extends State<MainScreen> {
             if (activeDriversNearby == true) {
               activeDriversPosition();
             }
-
             break;
 
           case Geofire.onKeyExited:
             UserGeoFireAssistant.removeActiveDriver(map['key']);
-            activeDriversPosition();
-
+            // activeDriversPosition();
             break;
 
           case Geofire.onKeyMoved:
@@ -453,13 +455,11 @@ class _MainScreenState extends State<MainScreen> {
 
             UserGeoFireAssistant.updateActiveDriver(activeDriversModel);
             activeDriversPosition();
-
             break;
 
           case Geofire.onGeoQueryReady:
             activeDriversNearby = true;
             activeDriversPosition();
-
             break;
         }
       }
@@ -511,7 +511,11 @@ class _MainScreenState extends State<MainScreen> {
 
   DatabaseReference? rideRef;
 
-  saveRideRequest({required dynamic orderId, required dynamic vendorId}) {
+  saveRideRequest({
+    required dynamic orderId,
+    required dynamic vendorId,
+    required dynamic orderAmount,
+  }) {
     rideRef =
         FirebaseDatabase.instance.ref().child('All Order Requests').push();
 
@@ -532,6 +536,7 @@ class _MainScreenState extends State<MainScreen> {
       'vendorId': 'waiting',
       'orderId': orderId,
       'apiVendorId': vendorId,
+      'orderAmount': orderAmount,
     };
 
     rideRef!.set(userInfoMap);
@@ -579,32 +584,42 @@ class _MainScreenState extends State<MainScreen> {
           updateDestinationArrivalTime(driverPositionLatLng);
         }
         if (rideRequestStatus == 'ended') {
-          if ((event.snapshot.value as Map)['fareAmount'] != null) {
+          if ((event.snapshot.value as Map)['orderAmount'] != null) {
             double fareAmount = double.parse(
-                (event.snapshot.value as Map)['fareAmount'].toString());
+                (event.snapshot.value as Map)['orderAmount'].toString());
+
+            String orderId =
+                (event.snapshot.value as Map)['orderId'].toString();
 
             var response = await showDialog(
               context: context,
               barrierDismissible: false,
               builder: (context) => UserPayFareDialog(
                 fareAmount: fareAmount,
+                orderId: orderId,
               ),
             );
             if (response == 'cashPaid') {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const CustomNavigationBar(),
-                ),
-              );
+              setState(() {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CustomNavigationBar(),
+                  ),
+                );
+              });
+
               rideRef!.onDisconnect();
               tripRideRequestSubscription!.cancel();
+              rideRef?.onChildRemoved;
+              rideRef!.remove();
             }
           }
         }
       }
     });
 
+    onlineNearByAvailableDriversList = UserGeoFireAssistant.activeDriversList;
     activeNearestDriversList();
   }
 
@@ -654,9 +669,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void activeNearestDriversList() async {
-    List availableDriversList = UserGeoFireAssistant.activeDriversList;
-
-    if (availableDriversList.isEmpty) {
+    if (onlineNearByAvailableDriversList.isEmpty) {
       rideRef!.remove();
 
       setState(() {
@@ -673,7 +686,7 @@ class _MainScreenState extends State<MainScreen> {
       return;
     }
 
-    await retrieveActiveDriversInfo(availableDriversList);
+    await retrieveActiveDriversInfo(onlineNearByAvailableDriversList);
 
     var response = await Navigator.of(context).push(
       MaterialPageRoute(
@@ -774,16 +787,17 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  retrieveActiveDriversInfo(List availableDriversList) async {
+  retrieveActiveDriversInfo(availableDriversList) async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref().child('vendor');
+
     for (int i = 0; i < availableDriversList.length; i++) {
-      DatabaseReference ref = FirebaseDatabase.instance.ref().child('vendor');
       await ref
-          .child(availableDriversList[i].driverId.toString())
+          .child(availableDriversList[i].driverId)
           .once()
           .then((dataSnapshot) {
         var driverKeyInfo = dataSnapshot.snapshot.value;
 
-        activeDriversList!.add(driverKeyInfo);
+        dList.add(driverKeyInfo);
       });
     }
   }
@@ -915,6 +929,7 @@ class _MainScreenState extends State<MainScreen> {
                             saveRideRequest(
                               orderId: widget.orderId,
                               vendorId: widget.vendorId,
+                              orderAmount: widget.orderAmount,
                             );
                           }
                         },
@@ -1018,22 +1033,40 @@ class _MainScreenState extends State<MainScreen> {
                         color: Colors.blue,
                       ),
                       const SizedBox(height: 30),
-                      Center(
-                        child: ElevatedButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.phone_android,
-                            color: Colors.white,
-                            size: 16,
-                          ),
-                          label: const Text(
-                            'Call Service Provider',
-                            style: TextStyle(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ElevatedButton.icon(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.phone_android,
                               color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                              size: 16,
+                            ),
+                            label: const Text(
+                              'Call Service Provider',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
+                          ElevatedButton.icon(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.chat,
+                              color: Colors.white,
+                              size: 16,
+                            ),
+                            label: const Text(
+                              'Chat',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

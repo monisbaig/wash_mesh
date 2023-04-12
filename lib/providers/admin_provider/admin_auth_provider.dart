@@ -13,6 +13,7 @@ import 'package:wash_mesh/models/admin_models/order_detail_model.dart';
 import 'package:wash_mesh/models/admin_models/vendor_applied.dart';
 import 'package:wash_mesh/models/admin_models/vendor_orders.dart';
 import 'package:wash_mesh/models/admin_models/wash_category_model.dart';
+import 'package:wash_mesh/models/single_order_detail_model.dart';
 
 import '../../admin_map_integration/admin_global_variables/admin_global_variables.dart';
 import '../../models/admin_models/admin_model.dart';
@@ -357,6 +358,30 @@ class AdminAuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  extraCharges({dynamic id, dynamic charges, context}) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+
+    var url = Uri.parse(
+        '$baseURL/user/vendor/order/status/deliverd?order_id=$id&extra_charges=$charges');
+    var response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      // Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
+
+      return jsonDecode(response.body)['message'];
+    } else {
+      // Fluttertoast.showToast(msg: jsonDecode(response.body)['message']);
+    }
+    notifyListeners();
+  }
+
   Future<List<WashCategoryModel>> getInfo() async {
     final url = Uri.parse('$baseURL/wash/categories');
     final response = await http.get(url);
@@ -407,6 +432,39 @@ class AdminAuthProvider extends ChangeNotifier {
     }
   }
 
+  static Future<SingleOrderDetailModel> getSingleOrderDetail(
+      {var orderId}) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+    final url = Uri.parse('$baseURL/user/order/single_order?order_id=$orderId');
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
+      return SingleOrderDetailModel.fromJson(jsonDecode(response.body));
+    } else {
+      return SingleOrderDetailModel();
+    }
+  }
+
+  static Future<VendorOrders> getResponseOrders() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+    final url = Uri.parse('$baseURL/user/vendor/orders/responsed');
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
+      return VendorOrders.fromJson(jsonDecode(response.body));
+    } else {
+      return VendorOrders();
+    }
+  }
+
   static Future<OrderDetailModel> getVendorEarnings() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString('token');
@@ -427,6 +485,22 @@ class AdminAuthProvider extends ChangeNotifier {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString('token');
     final url = Uri.parse('$baseURL/user/order/vendor?status=all');
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
+      return OrderDetailModel.fromJson(jsonDecode(response.body));
+    } else {
+      return OrderDetailModel();
+    }
+  }
+
+  static Future<OrderDetailModel> getAcceptedBookings() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('token');
+    final url = Uri.parse('$baseURL/user/order/vendor?status=2');
     final response = await http.get(url, headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',

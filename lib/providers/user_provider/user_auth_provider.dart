@@ -24,7 +24,6 @@ import '../../models/user_models/wash_categories_model.dart';
 import '../../user_map_integration/user_global_variables/user_global_variables.dart';
 import '../../user_map_integration/user_notifications/user_push_notifications.dart';
 import '../../user_screens/user_home_otp.dart';
-import '../../user_screens/user_login_form.dart';
 import '../../user_screens/user_social_profile.dart';
 import '../../widgets/custom_navigation_bar.dart';
 
@@ -106,7 +105,7 @@ class UserAuthProvider extends ChangeNotifier {
     );
   }
 
-  registerSocialUser({var name, var email, context}) async {
+  registerSocialUser({var email, context}) async {
     final url = Uri.parse('$baseURL/user/customer/register/socialite');
     final response = await http.post(
       url,
@@ -115,7 +114,6 @@ class UserAuthProvider extends ChangeNotifier {
         'Accept': 'application/json',
       },
       body: jsonEncode(<String, dynamic>{
-        'user_name': name,
         'email': email,
       }),
     );
@@ -123,25 +121,38 @@ class UserAuthProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       dynamic result = await jsonDecode(response.body)['message'];
 
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('userToken', jsonDecode(response.body)['data']['token']);
+      prefs.setBool('userLoggedIn', true);
+      prefs.setString('userPersonalInfo', response.body);
+
+      var firstName =
+          await jsonDecode(response.body)['data']['User']['first_name'];
+
+      if (firstName != null) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const CustomNavigationBar(),
+          ),
+        );
+      } else {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const UserSocialProfile(),
+          ),
+        );
+      }
+
       Fluttertoast.showToast(msg: result);
 
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const UserLoginForm(),
-        ),
-      );
+      print(jsonDecode(response.body));
     } else {
       String? email = jsonDecode(response.body)['error'];
 
       Fluttertoast.showToast(msg: email!);
 
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const UserRegistrationForm(),
-        ),
-      );
+      print(jsonDecode(response.body));
     }
-    print(jsonDecode(response.body));
     notifyListeners();
     return u.User.fromJson(jsonDecode(response.body));
   }
@@ -308,12 +319,11 @@ class UserAuthProvider extends ChangeNotifier {
       });
 
       await registerSocialUser(
-        name: googleName,
         email: googleMail,
         context: context,
       );
 
-      Fluttertoast.showToast(msg: 'Account has been created successfully.');
+      // Fluttertoast.showToast(msg: 'Account has been created successfully.');
     } else {
       Fluttertoast.showToast(msg: 'Account has not been Created.');
     }
@@ -356,12 +366,11 @@ class UserAuthProvider extends ChangeNotifier {
       });
 
       await registerSocialUser(
-        name: faceBookName,
         email: faceBookEmail,
         context: context,
       );
 
-      Fluttertoast.showToast(msg: 'Account has been created successfully.');
+      // Fluttertoast.showToast(msg: 'Account has been created successfully.');
     } else {
       Fluttertoast.showToast(msg: 'Account has not been Created.');
     }
@@ -858,6 +867,27 @@ class UserAuthProvider extends ChangeNotifier {
       return jsonDecode(response.body)['message'];
     }
     notifyListeners();
+  }
+
+  completeOrder({var id}) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('userToken');
+    var url = Uri.parse('$baseURL/vendor/update/password?password=$id');
+    var response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    notifyListeners();
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['message'];
+    } else {
+      return jsonDecode(response.body)['message'];
+    }
   }
 }
 

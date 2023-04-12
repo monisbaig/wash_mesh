@@ -118,12 +118,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   void initState() {
     super.initState();
     getUserData();
-  }
-
-  @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
-    await allowLocationPermission();
+    allowLocationPermission();
   }
 
   @override

@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wash_mesh/admin_map_integration/admin_global_variables/admin_global_variables.dart';
 import 'package:wash_mesh/admin_screens/admin_profile.dart';
 import 'package:wash_mesh/services/firebase_auth_methods.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
@@ -231,8 +232,9 @@ class _AdminSettingsState extends State<AdminSettings> {
               SizedBox(height: 70.h),
               InkWell(
                 onTap: () async {
-                  await Geofire.removeLocation(
+                  Geofire.removeLocation(
                       FirebaseAuth.instance.currentUser!.uid);
+                  isDriverActive = false;
 
                   await FirebaseAuthMethods(FirebaseAuth.instance)
                       .signOut(context);

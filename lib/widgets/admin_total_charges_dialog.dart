@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wash_mesh/widgets/custom_navigation_bar_admin.dart';
 
 class AdminTotalChargesDialog extends StatefulWidget {
-  final String totalFareAmount;
+  final String orderAmount;
 
-  const AdminTotalChargesDialog({super.key, required this.totalFareAmount});
+  const AdminTotalChargesDialog({super.key, required this.orderAmount});
 
   @override
   State<AdminTotalChargesDialog> createState() =>
@@ -13,8 +12,6 @@ class AdminTotalChargesDialog extends StatefulWidget {
 }
 
 class _AdminTotalChargesDialogState extends State<AdminTotalChargesDialog> {
-  String? extraCharges;
-
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -46,38 +43,11 @@ class _AdminTotalChargesDialogState extends State<AdminTotalChargesDialog> {
             ),
             const SizedBox(height: 20),
             Text(
-              widget.totalFareAmount,
+              widget.orderAmount,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 50,
                 color: Colors.blue,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(22),
-              ),
-              width: 200.w,
-              child: TextField(
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  hintText: 'Enter extra charges',
-                  hintStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: 13.sp,
-                  ),
-                  border: InputBorder.none,
-                ),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  extraCharges = value;
-                },
               ),
             ),
             const SizedBox(height: 10),
@@ -108,7 +78,7 @@ class _AdminTotalChargesDialogState extends State<AdminTotalChargesDialog> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      'Submit',
+                      'Collect Amount',
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.white,
@@ -116,7 +86,7 @@ class _AdminTotalChargesDialogState extends State<AdminTotalChargesDialog> {
                       ),
                     ),
                     Text(
-                      'Rs: ${widget.totalFareAmount}',
+                      'Rs: ${widget.orderAmount}',
                       style: const TextStyle(
                         fontSize: 16,
                         color: Colors.white,

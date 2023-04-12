@@ -1,10 +1,16 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+
+import '../admin_screens/admin_single_order_detail.dart';
+import '../providers/admin_provider/admin_auth_provider.dart';
 
 class AdminExtraChargesDialog extends StatefulWidget {
-  final double totalFareAmount;
+  final String orderAmount;
 
-  const AdminExtraChargesDialog({super.key, required this.totalFareAmount});
+  const AdminExtraChargesDialog({super.key, required this.orderAmount});
 
   @override
   State<AdminExtraChargesDialog> createState() =>
@@ -16,6 +22,9 @@ class _AdminExtraChargesDialogState extends State<AdminExtraChargesDialog> {
 
   @override
   Widget build(BuildContext context) {
+    var vendorAuthProvider =
+        Provider.of<AdminAuthProvider>(context, listen: false);
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
@@ -45,7 +54,7 @@ class _AdminExtraChargesDialogState extends State<AdminExtraChargesDialog> {
             ),
             const SizedBox(height: 20),
             Text(
-              widget.totalFareAmount.toString(),
+              widget.orderAmount,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 50,
@@ -83,7 +92,13 @@ class _AdminExtraChargesDialogState extends State<AdminExtraChargesDialog> {
             Padding(
               padding: const EdgeInsets.all(18),
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  await vendorAuthProvider.extraCharges(
+                    context: context,
+                    id: acceptedOrderId,
+                    charges: extraCharges,
+                  );
+
                   Navigator.pop(context, 'done');
                 },
                 child: Row(

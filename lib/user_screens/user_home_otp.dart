@@ -27,7 +27,7 @@ class _UserHomeOTPState extends State<UserHomeOTP> {
         verificationId: UserRegistrationForm.verify,
         smsCode: smsCode,
       );
-      await auth.signInWithCredential(credential);
+      // await auth.signInWithCredential(credential);
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
           builder: (context) => const UserLoginForm(),

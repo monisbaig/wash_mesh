@@ -27,7 +27,7 @@ class _AdminHomeOTPState extends State<AdminHomeOTP> {
         verificationId: AdminRegisterScreen.verify,
         smsCode: smsCode,
       );
-      await auth.signInWithCredential(credential);
+      // await auth.signInWithCredential(credential);
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
           builder: (context) => const AdminLoginForm(),

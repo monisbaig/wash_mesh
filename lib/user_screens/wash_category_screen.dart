@@ -121,7 +121,6 @@ class _WashCategoryState extends State<WashCategory> {
                                       width: 80.w,
                                       height: 80.h,
                                     ),
-                                    SizedBox(height: 10.h),
                                     Flexible(
                                       child: Text(
                                         "${snapshot.data!.data!.elementAt(index).name}",

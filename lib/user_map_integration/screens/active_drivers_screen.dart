@@ -53,12 +53,12 @@ class _ActiveDriversScreenState extends State<ActiveDriversScreen> {
         ),
       ),
       body: ListView.builder(
-        itemCount: activeDriversList!.length,
+        itemCount: dList.length,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
               setState(() {
-                selectedDriverId = activeDriversList![index]['id'].toString();
+                selectedDriverId = dList[index]['id'].toString();
               });
               Navigator.pop(context, 'selectedDriver');
             },
@@ -70,14 +70,14 @@ class _ActiveDriversScreenState extends State<ActiveDriversScreen> {
               child: ListTile(
                 contentPadding: const EdgeInsets.all(8),
                 title: Text(
-                  activeDriversList![index]['name'],
+                  dList[index]['name'],
                   style: const TextStyle(
                     fontSize: 14,
                     color: Colors.white,
                   ),
                 ),
                 subtitle: Text(
-                  activeDriversList![index]['phone'],
+                  dList[index]['phone'],
                   style: const TextStyle(
                     fontSize: 14,
                     color: Colors.white,

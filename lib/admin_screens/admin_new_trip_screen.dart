@@ -2,8 +2,10 @@
 
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -475,21 +477,43 @@ class _AdminNewTripScreenState extends State<AdminNewTripScreen> {
       builder: (context) => const ProgressDialog(message: 'Please wait...'),
     );
 
-    double totalFareAmount = 200;
+    // String totalFareAmount = totalAmount;
+    // String orderId = acceptedOrderId;
 
-    FirebaseDatabase.instance
-        .ref()
+    // FirebaseDatabase.instance
+    //     .ref()
+    //     .child('All Order Requests')
+    //     .child(widget.rideRequestModel.rideRequestId!)
+    //     .child('fareAmount')
+    //     .set(totalFareAmount);
+
+    // FirebaseDatabase.instance
+    //     .ref()
+    //     .child('All Order Requests')
+    //     .child(widget.rideRequestModel.rideRequestId!)
+    //     .child('orderId')
+    //     .set(orderId);
+
+    dynamic orderAmount;
+
+    final ref = FirebaseDatabase.instance.ref();
+    final snapshot = await ref
         .child('All Order Requests')
         .child(widget.rideRequestModel.rideRequestId!)
-        .child('fareAmount')
-        .set(totalFareAmount.toString());
+        .child('orderAmount')
+        .get();
+    if (snapshot.exists) {
+      orderAmount = snapshot.value;
+    } else {
+      print('No data available.');
+    }
 
     Navigator.pop(context);
 
     var response = await showDialog(
       context: context,
       builder: (context) => AdminExtraChargesDialog(
-        totalFareAmount: totalFareAmount,
+        orderAmount: orderAmount,
       ),
     );
 
@@ -519,20 +543,13 @@ class _AdminNewTripScreenState extends State<AdminNewTripScreen> {
     double totalFareAmount =
         AdminAssistantMethods.calculateTripFee(tripDirectionInfo!);
 
-    // var amount = FirebaseDatabase.instance
-    //     .ref()
-    //     .child('All Order Requests')
-    //     .child(widget.rideRequestModel.rideRequestId!)
-    //     .child('fareAmount')
-    //     .get();
-
     dynamic amount;
 
     final ref = FirebaseDatabase.instance.ref();
     final snapshot = await ref
         .child('All Order Requests')
         .child(widget.rideRequestModel.rideRequestId!)
-        .child('fareAmount')
+        .child('orderAmount')
         .get();
     if (snapshot.exists) {
       amount = snapshot.value;
@@ -553,12 +570,14 @@ class _AdminNewTripScreenState extends State<AdminNewTripScreen> {
       context: context,
       availability: '2',
     );
+    await Geofire.removeLocation(FirebaseAuth.instance.currentUser!.uid);
+    await Geofire.stopListener();
     Navigator.pop(context);
 
     showDialog(
       context: context,
       builder: (context) => AdminTotalChargesDialog(
-        totalFareAmount: amount.toString(),
+        orderAmount: amount,
       ),
     );
 

@@ -6,7 +6,8 @@ import '../models/map_user_model.dart';
 final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 UserCredential? activeUser;
 MapUserModel? userModel;
-List? activeDriversList = [];
+List dList = [];
+
 DirectionDetailsModel? tripDirectionDetails;
 String? selectedDriverId;
 String cloudeMessageServerToken =

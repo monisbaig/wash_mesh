@@ -113,8 +113,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     zoom: 14.4746,
   );
 
-  bool isDriverActive = false;
-
   driverOnline() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -198,15 +196,16 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   }
 
   @override
-  void didChangeDependencies() async {
-    await readDriverInfo();
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
+    readDriverInfo();
+    allowLocationPermission();
   }
 
   @override
-  void initState() {
-    super.initState();
-    allowLocationPermission();
+  void dispose() {
+    super.dispose();
+    streamSubscription!.cancel();
   }
 
   @override

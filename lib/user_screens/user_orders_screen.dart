@@ -20,8 +20,8 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
     return CustomBackground(
       op: 0.1,
       ch: SafeArea(
-        child: FutureBuilder<or.OrdersModel>(
-          future: UserAuthProvider.getOrders(),
+        child: StreamBuilder<or.OrdersModel>(
+          stream: UserAuthProvider.getOrders().asStream(),
           builder: (context, snapshot) {
             return !snapshot.hasData || snapshot.data!.data == null
                 ? const Center(
@@ -68,6 +68,9 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
                                       .status;
                                   var orderId =
                                       snapshot.data!.data!.elementAt(index).id;
+                                  var orderAmount = snapshot.data!.data!
+                                      .elementAt(index)
+                                      .amount;
 
                                   return Container(
                                     margin: const EdgeInsets.only(bottom: 6),
@@ -103,6 +106,8 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
                                                     builder: (context) =>
                                                         AcceptedOrdersScreen(
                                                       acceptedOrderId: orderId,
+                                                      acceptedOrderAmount:
+                                                          orderAmount,
                                                     ),
                                                   ),
                                                 );

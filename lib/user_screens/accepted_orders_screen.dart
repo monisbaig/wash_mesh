@@ -11,8 +11,12 @@ import '../providers/user_provider/user_auth_provider.dart';
 
 class AcceptedOrdersScreen extends StatefulWidget {
   final dynamic acceptedOrderId;
+  final dynamic acceptedOrderAmount;
 
-  const AcceptedOrdersScreen({super.key, required this.acceptedOrderId});
+  const AcceptedOrdersScreen(
+      {super.key,
+      required this.acceptedOrderId,
+      required this.acceptedOrderAmount});
 
   @override
   State<AcceptedOrdersScreen> createState() => _AcceptedOrdersScreenState();
@@ -117,6 +121,8 @@ class _AcceptedOrdersScreenState extends State<AcceptedOrdersScreen> {
                                               builder: (context) => MainScreen(
                                                 orderId: orderId,
                                                 vendorId: vendorId,
+                                                orderAmount:
+                                                    widget.acceptedOrderAmount,
                                               ),
                                             ),
                                           );

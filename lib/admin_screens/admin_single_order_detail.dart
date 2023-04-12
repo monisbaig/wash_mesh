@@ -1,33 +1,53 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wash_mesh/models/admin_models/vendor_orders.dart';
+import 'package:wash_mesh/models/single_order_detail_model.dart';
 import 'package:wash_mesh/providers/admin_provider/admin_auth_provider.dart';
 import 'package:wash_mesh/widgets/custom_background.dart';
 import 'package:wash_mesh/widgets/custom_logo.dart';
 
-class AdminRespondedScreen extends StatefulWidget {
-  const AdminRespondedScreen({Key? key}) : super(key: key);
+dynamic acceptedOrderAmount;
+dynamic acceptedOrderId;
+dynamic totalAmount;
+
+class AdminSingleOrderDetail extends StatefulWidget {
+  final dynamic acceptedOrderId;
+  final dynamic acceptedOrderAmount;
+  final dynamic totalAmount;
+
+  const AdminSingleOrderDetail({
+    super.key,
+    required this.acceptedOrderId,
+    required this.acceptedOrderAmount,
+    required this.totalAmount,
+  });
 
   @override
-  State<AdminRespondedScreen> createState() => _AdminRespondedScreenState();
+  State<AdminSingleOrderDetail> createState() => _AdminSingleOrderDetailState();
 }
 
-class _AdminRespondedScreenState extends State<AdminRespondedScreen> {
+class _AdminSingleOrderDetailState extends State<AdminSingleOrderDetail> {
   @override
   Widget build(BuildContext context) {
+    acceptedOrderId = widget.acceptedOrderId;
+    acceptedOrderAmount = widget.acceptedOrderAmount;
+    totalAmount = widget.totalAmount;
+
     return CustomBackground(
       op: 0.1,
       ch: SafeArea(
         child: SingleChildScrollView(
-          child: FutureBuilder<VendorOrders>(
-            future: AdminAuthProvider.getResponseOrders(),
+          child: FutureBuilder<SingleOrderDetailModel>(
+            future: AdminAuthProvider.getSingleOrderDetail(
+                orderId: widget.acceptedOrderId),
             builder: (context, snapshot) {
-              return !snapshot.hasData || snapshot.data!.data!.isEmpty
+              return !snapshot.hasData || snapshot.data?.data == null
                   ? Center(
-                      heightFactor: 27.h,
+                      heightFactor: 9.h,
                       child: const Text(
                         textAlign: TextAlign.center,
-                        'Service Provider Responded Orders!',
+                        'No orders accepted\n Or\n wait for the process...',
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.redAccent,
@@ -52,7 +72,7 @@ class _AdminRespondedScreenState extends State<AdminRespondedScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'Vendor Orders Response',
+                                    'All Accepted Orders',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 22.sp,
@@ -61,14 +81,11 @@ class _AdminRespondedScreenState extends State<AdminRespondedScreen> {
                                 ],
                               ),
                               SizedBox(height: 10.h),
-                              ListView.builder(
+                              ListView(
                                 shrinkWrap: true,
-                                itemCount: snapshot.data!.data!.length,
-                                itemBuilder: (context, index) {
-                                  var status = snapshot.data!.data!
-                                      .elementAt(index)
-                                      .status;
-                                  return Container(
+                                physics: const ScrollPhysics(),
+                                children: [
+                                  Container(
                                     margin: const EdgeInsets.only(bottom: 6),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
@@ -83,19 +100,30 @@ class _AdminRespondedScreenState extends State<AdminRespondedScreen> {
                                           const Text("Amount :"),
                                           SizedBox(height: 6.h),
                                           Text(
-                                            "${snapshot.data!.data!.elementAt(index).amount}",
+                                            "${widget.acceptedOrderAmount}",
                                           ),
                                         ],
                                       ),
-                                      title: status == '1'
-                                          ? const Text('Pending')
+                                      title: snapshot.data!.data!.status == '2'
+                                          ? const Text('Accepted')
                                           : const Text(''),
                                       subtitle: Text(
-                                        "Description : ${snapshot.data!.data!.elementAt(index).description}",
+                                        "Description : ${snapshot.data!.data!.description}",
+                                      ),
+                                      trailing: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text("Total Amount :"),
+                                          SizedBox(height: 6.h),
+                                          Text(
+                                            "${widget.totalAmount}",
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  );
-                                },
+                                  ),
+                                ],
                               ),
                             ],
                           ),
