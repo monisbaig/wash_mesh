@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wash_mesh/providers/user_provider/user_auth_provider.dart';
-import 'package:wash_mesh/user_map_integration/user_global_variables/user_global_variables.dart';
 
 class UserPayFareDialog extends StatefulWidget {
   final double fareAmount;
@@ -74,7 +73,6 @@ class _UserPayFareDialogState extends State<UserPayFareDialog> {
                   Future.delayed(const Duration(seconds: 3), () {
                     Navigator.pop(context, 'cashPaid');
                     userData.completeOrder(id: widget.orderId);
-                    dList.clear();
                   });
                 },
                 child: Row(
